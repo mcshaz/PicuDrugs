@@ -1,0 +1,22 @@
+﻿span.colHeader {
+	display: inline;
+	width: auto;
+}
+span.colHeaderInner {
+	display: inline;
+	white-space: nowrap;
+	line-height: 1;
+}
+/* This element stretches the parent to be square
+   by using the mechanics of vertical margins  */
+span.colHeaderInner:after {
+	display: inline;
+	margin: auto;
+}
+thead th {
+    padding:2px 1em;
+}
+#individualInfusions {
+    *width:20em;
+}
+

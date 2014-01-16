@@ -1,0 +1,82 @@
+﻿/*Vertical text by @kizmarh*/
+.colHeader {
+	display: inline-block;
+	width: 1.5em;
+}
+.colHeaderInner {
+	display: inline-block;
+	white-space: nowrap;
+	line-height: 1.5;
+    
+    -webkit-transform: translate(0,100%) rotate(-60deg);
+    -webkit-transform-origin: 0 0;
+    -moz-transform: translate(0,100%) rotate(-60deg);
+    -moz-transform-origin: 0 0;
+    -ms-transform: translate(0,100%) rotate(-60deg); 
+    -ms-transform-origin: 0 0;
+    -o-transform: translate(0,100%) rotate(-60deg); 
+    -o-transform-origin: 0 0;
+    transform: translate(0,100%) rotate(-60deg); 
+	transform-origin: 0 0;
+}
+/* This element stretches the parent to be square
+   by using the mechanics of vertical margins  */
+.colHeaderInner:after {
+	content: "";
+	display: block;
+	margin: -1.5em 0 100%;
+}
+table {
+    margin:0em 6em 2em 0;
+    font-family:Arial,sans-serif;
+}
+#selectDrugs, h5 {
+    font-family:Arial,sans-serif;
+    font-size:1em;
+    font-weight:600;
+}
+h5 {
+    margin:2px;
+}
+#selectDrugs li {
+    list-style: none;
+    margin: 2px;
+    padding: 3px;
+}
+#selectDrugs {
+    margin:0 0 2em 0;
+    padding:0;
+}
+thead th {
+    vertical-align: bottom;
+    padding-bottom: 0.5em;
+}
+tbody th, .tableDescription, .corner, #selectDrugs li, h5 {
+    background-color:#E1EBF7;
+}
+th {
+    text-align: left;
+    font-size:1em;
+    font-weight:600;
+    margin:0;
+    padding:2px;
+}
+th.tableDescription, h5 {
+    text-align: center;
+    padding: 1em;
+}
+td {
+    text-align:center;
+}
+.trueCell {
+    background-color:yellow;
+}
+#individualInfusions {
+    float:left;
+}
+#bolusDrugs {
+    float:left;
+}
+#titratableInfusions {
+    float:left;
+}

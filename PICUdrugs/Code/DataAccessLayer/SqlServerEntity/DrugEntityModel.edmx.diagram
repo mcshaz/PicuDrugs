@@ -1,0 +1,53 @@
+<?xml version="1.0" encoding="utf-8"?>
+<edmx:Edmx Version="2.0" xmlns:edmx="http://schemas.microsoft.com/ado/2008/10/edmx">
+ <!-- EF Designer content (DO NOT EDIT MANUALLY BELOW HERE) -->
+  <edmx:Designer xmlns="http://schemas.microsoft.com/ado/2008/10/edmx">
+    <!-- Diagram content (shape and connector positions) -->
+    <edmx:Diagrams>
+      <Diagram DiagramId="e23037b9d009424188e992cb8e097012" Name="Diagram1" ZoomLevel="88">
+        <EntityTypeShape EntityType="PICUdrugs.DAL.BolusDose" Width="1.5" PointX="9.75" PointY="4.25" IsExpanded="true" />
+        <EntityTypeShape EntityType="PICUdrugs.DAL.BolusDrug" Width="1.5" PointX="7.625" PointY="4.125" IsExpanded="true" />
+        <EntityTypeShape EntityType="PICUdrugs.DAL.BolusSortOrdering" Width="1.5" PointX="8.25" PointY="0.875" IsExpanded="true" />
+        <EntityTypeShape EntityType="PICUdrugs.DAL.DefibJoule" Width="1.5" PointX="3" PointY="3.625" IsExpanded="true" />
+        <EntityTypeShape EntityType="PICUdrugs.DAL.DefibModel" Width="1.5" PointX="0.75" PointY="1.625" IsExpanded="true" />
+        <EntityTypeShape EntityType="PICUdrugs.DAL.DilutionMethod" Width="1.5" PointX="7.125" PointY="10" IsExpanded="true" />
+        <EntityTypeShape EntityType="PICUdrugs.DAL.DoseCat" Width="1.5" PointX="9.625" PointY="13.25" IsExpanded="true" />
+        <EntityTypeShape EntityType="PICUdrugs.DAL.DrugAmpuleConcentration" Width="1.5" PointX="4.875" PointY="8" IsExpanded="true" />
+        <EntityTypeShape EntityType="PICUdrugs.DAL.DrugReferenceSource" Width="1.5" PointX="0.75" PointY="8" IsExpanded="true" />
+        <EntityTypeShape EntityType="PICUdrugs.DAL.DrugRoute" Width="1.5" PointX="0.75" PointY="4.75" IsExpanded="true" />
+        <EntityTypeShape EntityType="PICUdrugs.DAL.FixedTimeConcentration" Width="1.5" PointX="11.375" PointY="7.75" IsExpanded="true" />
+        <EntityTypeShape EntityType="PICUdrugs.DAL.FixedTimeDilution" Width="1.625" PointX="9" PointY="7.125" IsExpanded="true" />
+        <EntityTypeShape EntityType="PICUdrugs.DAL.InfusionDiluent" Width="1.5" PointX="2.75" PointY="12.25" IsExpanded="true" />
+        <EntityTypeShape EntityType="PICUdrugs.DAL.InfusionDrug" Width="1.5" PointX="3" PointY="6.75" IsExpanded="true" />
+        <EntityTypeShape EntityType="PICUdrugs.DAL.InfusionSortOrdering" Width="1.5" PointX="5.25" PointY="5" IsExpanded="true" />
+        <EntityTypeShape EntityType="PICUdrugs.DAL.SiUnit" Width="1.5" PointX="0.625" PointY="10.5" IsExpanded="true" />
+        <EntityTypeShape EntityType="PICUdrugs.DAL.VariableTimeConcentration" Width="1.5" PointX="7.125" PointY="12.875" IsExpanded="true" />
+        <EntityTypeShape EntityType="PICUdrugs.DAL.VariableTimeDilution" Width="1.5" PointX="5" PointY="10.75" IsExpanded="true" />
+        <EntityTypeShape EntityType="PICUdrugs.DAL.Ward" Width="1.5" PointX="3" PointY="0.875" IsExpanded="true" />
+        <EntityTypeShape EntityType="PICUdrugs.DAL.vw_VariableDurationInfusion" Width="1.5" PointX="12.25" PointY="1.25" IsExpanded="true" />
+        <AssociationConnector Association="PICUdrugs.DAL.FK_BolusDoses_BolusDrugs" ManuallyRouted="false" />
+        <AssociationConnector Association="PICUdrugs.DAL.FK_BolusSortOrdering_BolusDrugs" ManuallyRouted="false" />
+        <AssociationConnector Association="PICUdrugs.DAL.FK_BolusSortOrdering_Wards" ManuallyRouted="false" />
+        <AssociationConnector Association="PICUdrugs.DAL.FK_DefibJoules_DefibModel" ManuallyRouted="false" />
+        <AssociationConnector Association="PICUdrugs.DAL.FK_Wards_DefibModel" ManuallyRouted="false" />
+        <AssociationConnector Association="PICUdrugs.DAL.FK_FixedTimeDilutions_DilutionMethods" ManuallyRouted="false" />
+        <AssociationConnector Association="PICUdrugs.DAL.FK_InfusionDilutions_DilutionMethods" ManuallyRouted="false" />
+        <AssociationConnector Association="PICUdrugs.DAL.FK_FinalInfusionConcentrations_DoseCats" ManuallyRouted="false" />
+        <AssociationConnector Association="PICUdrugs.DAL.FK_DrugAmpuleConcentrations_InfusionDrugs" ManuallyRouted="false" />
+        <AssociationConnector Association="PICUdrugs.DAL.FK_InfusionDrugs_DrugReferences" ManuallyRouted="false" />
+        <AssociationConnector Association="PICUdrugs.DAL.FK_InfusionDrugs_DrugRoutes" ManuallyRouted="false" />
+        <AssociationConnector Association="PICUdrugs.DAL.FK_FixedTimeConcentrations_FixedTimeDilutions" ManuallyRouted="false" />
+        <AssociationConnector Association="PICUdrugs.DAL.FK_FixedTimeDilutions_InfusionDrugs" ManuallyRouted="false" />
+        <AssociationConnector Association="PICUdrugs.DAL.FK_InfusionDrugs_InfusionDiluents" ManuallyRouted="false" />
+        <AssociationConnector Association="PICUdrugs.DAL.FK_InfusionDilutions_InfusionDrugs" ManuallyRouted="false" />
+        <AssociationConnector Association="PICUdrugs.DAL.FK_InfusionDrugs_SiUnits" ManuallyRouted="false" />
+        <AssociationConnector Association="PICUdrugs.DAL.FK_InfusionSortOrdering_InfusionDrugs" ManuallyRouted="false" />
+        <AssociationConnector Association="PICUdrugs.DAL.FK_InfusionSortOrdering_Wards" ManuallyRouted="false" />
+        <AssociationConnector Association="PICUdrugs.DAL.FK_FinalInfusionConcentrations_InfusionDilutions" ManuallyRouted="false" />
+        <EntityTypeShape EntityType="PICUdrugs.DAL.CdcBmiForAge" Width="1.5" PointX="14.75" PointY="1.5" />
+        <EntityTypeShape EntityType="PICUdrugs.DAL.CdcLengthForAge" Width="1.5" PointX="14.625" PointY="4.5" />
+        <EntityTypeShape EntityType="PICUdrugs.DAL.CdcWeightForAge" Width="1.875" PointX="14.375" PointY="7.75" />
+      </Diagram>
+    </edmx:Diagrams>
+  </edmx:Designer>
+</edmx:Edmx>

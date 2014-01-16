@@ -1,0 +1,63 @@
+﻿
+body 
+{
+    background-color:White;
+    color:Black;
+    /* height:250mm; */
+    width:180mm;
+}
+h1
+{
+    font-family:Constantia, Serif;
+    font-size:22pt;
+    text-align:center;
+    text-decoration:underline;
+    clear:both;
+    color:Black;
+}
+.chartLabel
+{
+    font-family:Comic Sans MS;
+    font-size:12pt; 
+}
+.date
+{
+    font-family:Arial, Sans-Serif;
+    font-size:14pt; 
+}
+.weight
+{
+    font-family:Arial, Sans-Serif;
+    font-size:22pt;     
+}
+.centile     
+{
+    font-family:Comic Sans MS;
+    font-size:10pt; 
+}
+.patientInfoSticker
+{
+    clear:left;
+    float:left;
+    border:3px solid black;
+    height:28mm;
+    width:105mm
+}
+.attachSticker
+{
+    font-style:italic;
+}
+.verificationSignatures
+{
+    font-family:Arial, Sans-Serif;
+    font-size:8pt; 
+    border:2px solid black;
+    clear:none;
+    float:right;
+    height:28mm;
+    width:70mm;
+}
+#bolusInfusions 
+{
+    page-break-after:always
+}

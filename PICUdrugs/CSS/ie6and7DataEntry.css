@@ -1,0 +1,35 @@
+﻿#drugList li
+{
+    display: inline;
+    zoom: 1;
+}
+#ptDataEntry
+{
+    width:640px;
+}
+#drugForm {
+    width:600px;
+}
+#drugSelect
+{ 
+    position: absolute;
+}
+#listScroll {
+    height:500px;
+}
+.display-label, .editor-label, .minor-label {
+    zoom:1;
+    display: inline;
+    _height: 1em;
+}
+.display-field, .editor-field, .minor-field {
+    zoom: 1;
+    display: inline;
+    _height: 1em;
+}
+#leftCurve {
+    _margin-left:-1px;
+}
+#MainContent_Submit {
+    margin: 1em 0 0 0;
+}

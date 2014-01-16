@@ -1,0 +1,65 @@
+﻿<%@ Master Language="C#" AutoEventWireup="true" CodeBehind="Site.master.cs" Inherits="PICUdrugs.SiteMaster" %>
+
+<!DOCTYPE html>
+<html>
+<head runat="server">
+    <meta charset="UTF-8">
+    <asp:ContentPlaceHolder ID="HeadContent" runat="server" />
+    <link href="<%# ResolveUrl("~/CSS/navBars.css")%>" rel="stylesheet" type="text/css" />
+    <link href="<%# ResolveUrl("~/CSS/PICUdrugsGenericStyles.css")%>" rel="stylesheet" type="text/css" />
+    <!--[if lt IE 8]><link href="<%# ResolveUrl("~/CSS/ie6and7DataEntry.css")%>" rel="stylesheet" type="text/css"/><![endif]-->
+    <asp:ContentPlaceHolder runat="server" ID="masterStyles" />
+</head>
+<body>
+	<div id="topBanner">
+		<img id="ADHBlogo" src="//www.adhb.govt.nz/picu/images/DefaultImages/adhb_logo.gif" alt="Auckland District Health Board" width="183" height="98"/>
+		<div id="topCentre">
+			<ul id="topNav">
+				<li><a href="//www.adhb.govt.nz/picu/Search/newsearch.htm">Search</a></li>
+				<li><a href="//www.adhb.govt.nz/picu/contact_us.htm">Contact Us</a></li>
+				<li><a href="//www.adhb.govt.nz/picu/website_map.htm">Website Map</a></li>
+				<li><a href="//www.adhb.govt.nz/picu/Default.htm">Home Page</a></li>
+			</ul>
+			<img id="peopleImages" src="//www.adhb.govt.nz/picu/images/DefaultImages/peopleimages.gif" alt="Top" width="624" height="64"/>
+			<img id="underCurve" src="//www.adhb.govt.nz/picu/images/DefaultImages/curve_under.gif" alt="Bar" width="98" height="20"/>
+		</div>
+	</div>
+    <noscript>
+        <p>
+            Please note that you have JavaScript disabled. Some program features will not function, and important safety calculations will be ommited. It is strongly advised you enable JavaScript before continuing.
+        </p>
+    </noscript>
+     <form ID="mainForm" runat="server" class="mainForm">
+        <div id="leftBanner">
+		    <div id="cityview">
+                <asp:Menu ID="sideMenu" CssClass="sideMenu" runat="server" DataSourceID="SiteMapDataSource1" MaximumDynamicDisplayLevels="1" StaticDisplayLevels="2" />
+                <asp:SiteMapDataSource ID="SiteMapDataSource1" runat="server" />
+                <ul class="sideMenu login">
+                    <li>
+                    <asp:LoginStatus ID="LoginStatus1" runat="server" EnableTheming="False" 
+                            EnableViewState="False" CssClass="sideMenu" LogoutPageUrl="~/EnterPtData.aspx" />
+                    </li>
+                </ul>
+            </div>
+		    <img id="leftCurve" src="//www.adhb.govt.nz/picu/images/DefaultImages/home_tab.gif" alt="Left Bar" width="35" height="312"/>
+		    <ul id="govtLinks">
+			    <li><a href="http://health.govt.nz">Ministry of Health</a></li>
+			    <li><a href="http://newzealand.govt.nz" title="newzealand.govt.nz - connecting you to New Zealand central &amp; local government services">New Zealand Government</a></li>
+		    </ul>
+		    <a href="http://www.starship.org.nz/"><img ID="starship" alt="Starship Children's Health" src="//www.adhb.govt.nz/picu/images/DefaultImages/starship-childrens-logo-colour.jpg" width="157" height="105"/></a>
+		    <img id="leftBannerDivide" src="//www.adhb.govt.nz/picu/images/DefaultImages/horizontal_line.gif" alt="" height="3" width="157"/>
+		    <div id="copyright">© <a href="//www.adhb.govt.nz/copyright.htm">Copyright</a></div>
+		    <div id="published">Published: <asp:Label runat="server" ID="dateFileMod" /></div>
+	    </div>
+        <div id="mainContent">
+            <h1>Starship PICU</h1>
+            <asp:ContentPlaceHolder runat="server" ID="headings" />
+                <asp:ContentPlaceHolder ID="MainContent" runat="server"/>
+        </div>
+        <div class="footer">
+        </div>
+    </form>
+    <asp:ContentPlaceHolder runat="Server" ID="jqueryScripts" />
+    <asp:ContentPlaceHolder runat="server" ID="masterScripts" />
+</body>
+</html>

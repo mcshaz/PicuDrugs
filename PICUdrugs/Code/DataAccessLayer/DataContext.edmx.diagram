@@ -1,0 +1,56 @@
+<?xml version="1.0" encoding="utf-8"?>
+<edmx:Edmx Version="2.0" xmlns:edmx="http://schemas.microsoft.com/ado/2008/10/edmx">
+ <!-- EF Designer content (DO NOT EDIT MANUALLY BELOW HERE) -->
+  <edmx:Designer xmlns="http://schemas.microsoft.com/ado/2008/10/edmx">
+    <!-- Diagram content (shape and connector positions) -->
+    <edmx:Diagrams>
+      <Diagram DiagramId="283eeb72647746f68e40cd9fe0b3da27" Name="Diagram1" ZoomLevel="62">
+        <EntityTypeShape EntityType="PicuDrugsEntities.BolusDose" Width="1.5" PointX="19" PointY="4.375" IsExpanded="true" />
+        <EntityTypeShape EntityType="PicuDrugsEntities.BolusDrug" Width="1.5" PointX="16.75" PointY="4.125" IsExpanded="true" />
+        <EntityTypeShape EntityType="PicuDrugsEntities.BolusSortOrdering" Width="1.5" PointX="19" PointY="8.375" IsExpanded="true" />
+        <EntityTypeShape EntityType="PicuDrugsEntities.CdcBmiForAge" Width="1.5" PointX="7.75" PointY="11.75" IsExpanded="true" />
+        <EntityTypeShape EntityType="PicuDrugsEntities.CdcLengthForAge" Width="1.5" PointX="9.75" PointY="11.75" IsExpanded="true" />
+        <EntityTypeShape EntityType="PicuDrugsEntities.CdcWeightForAge" Width="1.5" PointX="11.75" PointY="11.75" IsExpanded="true" />
+        <EntityTypeShape EntityType="PicuDrugsEntities.DefibJoule" Width="1.5" PointX="16.75" PointY="11.625" IsExpanded="true" />
+        <EntityTypeShape EntityType="PicuDrugsEntities.DefibModel" Width="1.5" PointX="14.5" PointY="8.625" IsExpanded="true" />
+        <EntityTypeShape EntityType="PicuDrugsEntities.DilutionMethod" Width="1.5" PointX="0.75" PointY="2.375" IsExpanded="true" />
+        <EntityTypeShape EntityType="PicuDrugsEntities.DoseCat" Width="1.5" PointX="3" PointY="11.75" IsExpanded="true" />
+        <EntityTypeShape EntityType="PicuDrugsEntities.DrugAmpuleConcentration" Width="1.5" PointX="8.25" PointY="7.625" IsExpanded="true" />
+        <EntityTypeShape EntityType="PicuDrugsEntities.DrugReferenceSource" Width="1.5" PointX="10.5" PointY="9.5" IsExpanded="true" />
+        <EntityTypeShape EntityType="PicuDrugsEntities.DrugRoute" Width="1.5" PointX="7.125" PointY="1.125" IsExpanded="true" />
+        <EntityTypeShape EntityType="PicuDrugsEntities.FixedTimeConcentration" Width="1.5" PointX="5.25" PointY="12.5" IsExpanded="true" />
+        <EntityTypeShape EntityType="PicuDrugsEntities.FixedTimeDilution" Width="1.5" PointX="3" PointY="6.75" IsExpanded="true" />
+        <EntityTypeShape EntityType="PicuDrugsEntities.InfusionDiluent" Width="1.5" PointX="14.5" PointY="3.125" IsExpanded="true" />
+        <EntityTypeShape EntityType="PicuDrugsEntities.InfusionDrug" Width="1.5" PointX="6" PointY="6.375" IsExpanded="true" />
+        <EntityTypeShape EntityType="PicuDrugsEntities.InfusionSortOrdering" Width="1.5" PointX="8.25" PointY="4.5" IsExpanded="true" />
+        <EntityTypeShape EntityType="PicuDrugsEntities.SiPrefix" Width="1.5" PointX="0.75" PointY="7.625" IsExpanded="true" />
+        <EntityTypeShape EntityType="PicuDrugsEntities.SiUnit" Width="1.5" PointX="14.5" PointY="5.625" IsExpanded="true" />
+        <EntityTypeShape EntityType="PicuDrugsEntities.VariableTimeConcentration" Width="1.5" PointX="5.25" PointY="2.5" IsExpanded="true" />
+        <EntityTypeShape EntityType="PicuDrugsEntities.VariableTimeDilution" Width="1.5" PointX="3" PointY="1.625" IsExpanded="true" />
+        <EntityTypeShape EntityType="PicuDrugsEntities.Ward" Width="1.5" PointX="16.75" PointY="8.375" IsExpanded="true" />
+        <AssociationConnector Association="PicuDrugsEntities.FK_BolusDoses_BolusDrugs" ManuallyRouted="false" />
+        <AssociationConnector Association="PicuDrugsEntities.FK_BolusSortOrdering_BolusDrugs" ManuallyRouted="false" />
+        <AssociationConnector Association="PicuDrugsEntities.FK_BolusSortOrdering_Wards" ManuallyRouted="false" />
+        <AssociationConnector Association="PicuDrugsEntities.FK_DefibJoules_DefibModel" ManuallyRouted="false" />
+        <AssociationConnector Association="PicuDrugsEntities.FK_Wards_DefibModel" ManuallyRouted="false" />
+        <AssociationConnector Association="PicuDrugsEntities.FK_FixedTimeDilutions_DilutionMethods" ManuallyRouted="false" />
+        <AssociationConnector Association="PicuDrugsEntities.FK_InfusionDilutions_DilutionMethods" ManuallyRouted="false" />
+        <AssociationConnector Association="PicuDrugsEntities.FK_FinalInfusionConcentrations_DoseCats" ManuallyRouted="false" />
+        <AssociationConnector Association="PicuDrugsEntities.FK_DrugAmpuleConcentrations_InfusionDrugs" ManuallyRouted="false" />
+        <AssociationConnector Association="PicuDrugsEntities.FK_InfusionDrugs_DrugReferences" ManuallyRouted="false" />
+        <AssociationConnector Association="PicuDrugsEntities.FK_InfusionDrugs_DrugRoutes" ManuallyRouted="false" />
+        <AssociationConnector Association="PicuDrugsEntities.FK_FixedTimeConcentrations_FixedTimeDilutions" ManuallyRouted="false" />
+        <AssociationConnector Association="PicuDrugsEntities.FK_FixedTimeDilutions_InfusionDrugs" ManuallyRouted="false" />
+        <AssociationConnector Association="PicuDrugsEntities.FK_FixedTimeDilutions_SiPrefixes" ManuallyRouted="false" />
+        <AssociationConnector Association="PicuDrugsEntities.FK_InfusionDrugs_InfusionDiluents" ManuallyRouted="false" />
+        <AssociationConnector Association="PicuDrugsEntities.FK_InfusionDrugs_SiPrefixes" ManuallyRouted="false" />
+        <AssociationConnector Association="PicuDrugsEntities.FK_InfusionDrugs_SiUnits" ManuallyRouted="false" />
+        <AssociationConnector Association="PicuDrugsEntities.FK_InfusionSortOrdering_InfusionDrugs" ManuallyRouted="false" />
+        <AssociationConnector Association="PicuDrugsEntities.FK_InfusionSortOrdering_Wards" ManuallyRouted="false" />
+        <AssociationConnector Association="PicuDrugsEntities.FK_InfusionDilutions_SiPrefixes" ManuallyRouted="false" />
+        <AssociationConnector Association="PicuDrugsEntities.FK_FinalInfusionConcentrations_InfusionDilutions" ManuallyRouted="false" />
+        <AssociationConnector Association="PicuDrugsEntities.FK_VariableTimeDilutions_InfusionDrugs" />
+      </Diagram>
+    </edmx:Diagrams>
+  </edmx:Designer>
+</edmx:Edmx>

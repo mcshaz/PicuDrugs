@@ -1,0 +1,23 @@
+﻿<?xml version="1.0" encoding="utf-8" ?>
+<siteMap xmlns="http://schemas.microsoft.com/AspNet/SiteMap-File-1.0" >
+  <siteMapNode url="//www.adhb.govt.nz/picu/Default.htm" title="PICU Homepage" description="resources for families, health care professionals and staff" roles="*">
+    <siteMapNode url="//www.adhb.govt.nz/picu/GuidelinesAndProtocols.htm" title="Clinical Resources" description="recomended best practice guidelines and calculators" roles="*"/>
+    <siteMapNode url="~/EnterPtData.aspx" title="Drug Calculator" description="enter patient data to automatically generate calculated drug worksheets" />
+    <siteMapNode url="~/EnterPtAnthropometry.aspx" title="Anthropometry" description="enter patient age, weight and length to calculate centiles and BSA" />
+    <siteMapNode url="~/About.aspx" title="About" description="information regarding the PICU drug calculator">
+      <siteMapNode url="~/CurrentDrugList.aspx" title="Drug Lists" description="A list of all drugs available on the calculator"/>
+    </siteMapNode>
+    <siteMapNode title="Edit Drugs" description="edit Infusions and boluses" roles="drugAdmin">
+    <siteMapNode url="~/DrugAdmin/EditBolusDrugs.aspx" title="Resuscitation Drugs" description="edit resuscitation drugs" />
+    <siteMapNode url="~/DrugAdmin/EditInfusionDrugNames.aspx" title="Infusion Drugs" description="edit drugs used in Infusions"  />
+    <siteMapNode url="~/DrugAdmin/EditReferences.aspx" title="References" description="edit reference source details" />
+    <siteMapNode url="~/DrugAdmin/EditDefib.aspx" title="Defibs" description="edit defibrillator energy select"  />
+  </siteMapNode>
+  <siteMapNode title="Edit List Order" description="manage ordering of drug lists" url="~/WardAdmin/DepartmentListOrder.aspx" />
+  <siteMapNode title="Manage Users" description="add/Remove/modify users and Wards" roles="websiteAdmin">
+    <siteMapNode title="Add" description="Add user and manage departments" url="~/WebsiteAdmin/RegisterNewUser.aspx"/>
+    <siteMapNode title="Edit" description="Edit permissions for an existing user" url="~/WebsiteAdmin/ManageExistingUser.aspx" />
+  </siteMapNode>
+  <siteMapNode url="~/PersonalAccount/ChangePassword.aspx" title="Change Password" />
+  </siteMapNode>
+</siteMap>

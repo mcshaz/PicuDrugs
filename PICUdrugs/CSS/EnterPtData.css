@@ -1,0 +1,196 @@
+﻿.UCASE {
+    text-transform:uppercase;
+}
+#ptDataEntry
+{
+    border: 1px solid black;
+    margin: 1em;
+    padding:1em;
+    background-image:url("../Images/starship_aerial.jpg");
+    background-repeat:no-repeat;
+    background-position:right bottom;
+    background-color:#EBEEF0;
+    max-width: 50em;
+    min-width: 31em;
+}
+input, select
+{  
+    padding: 2px;     
+    margin:2px;     
+    vertical-align: bottom;     
+    position: relative;     
+    top: -1px;     
+    overflow: hidden;
+}
+input[type="submit"] {
+    background-color: #003399;
+    color: #FCC046;
+    font-size: 1em;
+    font-weight: bold;
+    margin: 1em 0 0 0;
+    padding: 0.2em;
+    -moz-border-radius:6px; /* Firefox */
+    -webkit-border-radius: 6px; /* Safari, Chrome */
+    -khtml-border-radius: 6px; /* KHTML */
+    border-radius: 6px; /* CSS3 */
+}
+.textBox
+{
+    font-size:1em;
+    border:solid 1px #aacfe4;
+    height:18px;
+}
+.unit 
+{
+    background-color: #EBEEF0;
+    font-style:normal;
+    line-height:2;
+}
+#MainContent_ptNHI
+{
+    width:5em;
+    text-align:center;
+}
+#MainContent_ptName {
+    width:18em;
+}
+#MainContent_ptWeight, #MainContent_ptAgeYrs, #MainContent_ptLength, #MainContent_WeeksGestation
+{
+    width:2.2em;
+    text-align:center;
+}
+#MainContent_ptAgeDays, #MainContent_ptAgeMonths
+{
+    width:1.5em;
+    text-align:center;
+}
+#MainContent_ptDOB
+{
+    width:6em;
+}
+#valSummaries ul 
+{
+    margin:0 2em;
+    padding:0;
+}
+.errorPoint
+{
+    color:Red;
+    font-size:16pt;
+    font-weight:bolder;
+}
+#drugForm
+{
+    min-width: 390px;
+    border:1em;
+    margin:1em;
+}
+.radioList {
+    border: 1px snow inset;
+    padding: 0 0.3em;
+}
+.radioList td {
+    padding-left: 1.4em;
+    text-indent: -1.4em;
+}
+#MainContent_weightGuessLbl
+{
+    display:inline-block;
+}
+#MainContent_centileText
+{
+    text-align:left;
+    width:11.6em;
+}
+.normalCentile {
+    top: -0.4em;
+    background-color:#EBEEF0;
+    color:Navy;
+    border-width:0;
+}
+#drugSelect
+{ 
+    display: none;   
+    background-color:#B0C4DE; /*LightSteelBlue */
+    left: 10%;
+    position: fixed;
+    top: 15%;
+    width: 80%;
+    height:70%;
+    border:5px ridge #FFFFFF;
+    padding:0;
+    margin:0;
+    z-index:2;
+}
+#listScroll
+{
+    border: 1px solid navy;
+    bottom: 0;
+    overflow: auto;
+    position: relative;
+    top: 2em;
+    margin:0;
+    width:100%;
+}
+#drugList
+{
+    border:none 0;
+    margin: 0.2em 0 0 0.5em;
+    padding:0;
+    list-style-type:none;
+}
+#drugList li
+{
+    display:inline-block;
+    width:14em;
+}
+.cancelDialog
+{
+    border:0 none;
+    text-decoration:underline;
+    background-color:inherit;
+    font: inherit;
+    line-height:inherit;
+    text-align:inherit;
+    vertical-align:inherit;
+    cursor:pointer;
+}
+#concDiv
+{
+    background-color: #FFFFFF;
+    display: none;
+    height: 100%;
+    position: absolute;
+    top: 0;
+    width: 100%;
+    z-index:3;
+}
+#concTable th, #concTable td
+{
+    text-align:center;
+    border:1px solid black;
+}
+table.tabData
+{
+    margin:0.5em;
+    border-collapse:collapse; 
+}
+.errorDescription li {
+    color:red;
+    font-weight:bold;
+    background-color:#F7F776;
+    list-style: disc outside none;
+}
+#selectDrug {
+    color: Navy;
+    font-style: italic;
+    cursor: pointer;
+    text-decoration:underline;
+}
+.homeWard {
+    background-color: yellow;
+}
+.notLive {
+    color: #003399;
+}
+
