@@ -1,8 +1,7 @@
 ﻿pic.extend("page", {
     baseAgeIntervals: function () {
         if (this.value != "") {
-            var currentAge = new pic.Construct.Age(pic.el.yrs.value, pic.el.months.value, pic.el.days.value);
-            currentAge.toBaseUnits();
+            var currentAge = new pic.construct.Age(pic.el.yrs.value, pic.el.months.value, pic.el.days.value);
             pic.el.yrs.value = currentAge.years;
             pic.el.months.value = currentAge.months;
             pic.el.days.value = currentAge.days;
@@ -32,10 +31,19 @@
     }
 });
 pic.extend('vals', {
-    validAge: function () {
+    validFullAge: function () {
         return !(pic.el.months.value.trim() === "" && (parseInt(pic.el.yrs.value) < 1 || pic.el.DOB.value.trim() === ""));
+    },
+    validAge: function () {
+        return !(pic.el.yrs.value.trim() === "" && pic.el.DOB.value.trim() === "");
+    },
+    dobOrFullAgeValClient: function (source, args) {
+        args.IsValid = pic.vals.validFullAge();
     },
     dobOrAgeValClient: function (source, args) {
         args.IsValid = pic.vals.validAge();
+    },
+    monthsValClient: function (source, args) {
+        args.IsValid = (pic.el.yrs.value.trim() !== "0" || pic.el.months.value.trim() !== "");
     }
 });

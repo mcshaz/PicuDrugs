@@ -2,10 +2,10 @@
     CodeBehind="EnterPtData.aspx.cs" Inherits="PICUdrugs.Pages.EnterPtData" %>
 
 <asp:Content ID="Content1" ContentPlaceHolderId="HeadContent" runat="server">
-    <link href="<%# ResolveUrl("~/CSS/EnterPtData.css")%>" rel="stylesheet" type="text/css"/>
+    <link href="<%# ResolveUrl("~/CSS/EnterPtData-0.2.css")%>" rel="stylesheet" type="text/css"/>
 </asp:Content>
 <asp:Content ID="Cotent2" ContentPlaceHolderId="headings" runat="server">
-    <h2>Drug Calculator</h2>
+    <h2>Drug Doses</h2>
 </asp:Content>
 <asp:Content ID="FormContent" ContentPlaceHolderId="MainContent" runat="server">
     <asp:ScriptManager ID="PICUScriptManager" runat="server" EnablePageMethods="true" EnableScriptGlobalization="true">
@@ -58,12 +58,13 @@
             <asp:RequiredFieldValidator ID="ptWeightRqdValidator" runat="server" ControlToValidate="ptWeight" CssClass="errorPoint"
                 ErrorMessage="You must enter a weight" Display="Dynamic">*</asp:RequiredFieldValidator>
             <asp:RangeValidator ID="ptWeightRngValidator" runat="server" CssClass="errorPoint"
-                ControlToValidate="ptWeight" ErrorMessage="Weight out of range" Display="Dynamic">*</asp:RangeValidator>
+                ControlToValidate="ptWeight" ErrorMessage="Weight must be between 0.3 & 400 kg" Display="Dynamic" MinimumValue="0.3" MaximumValue="400">*</asp:RangeValidator>
         </div>
         <div class ="editor-field">
             <asp:TextBox ID="ptWeight" runat="server" CssClass="textBox" type="number"/><span class="unit"> Kg</span>
             <input id="medianWeightBtn" type="button" value="Median Weight"/>
-            <asp:HiddenField runat="server" ID="centileValue" />
+            <asp:HiddenField runat="server" ID="upperCentileValue" />
+            <asp:HiddenField runat="server" ID="lowerCentileValue" />
             <asp:TextBox ID="centileText" runat="server" CssClass="normalCentile"></asp:TextBox>
         </div>
         <div class="minor-label">
@@ -87,12 +88,15 @@
             <label for="MainContent_ptAgeYrs">Age</label>
             <asp:RangeValidator ID="ptAgeRngValidator" runat="server" ControlToValidate="ptAgeYrs" CssClass="errorPoint"
                 ErrorMessage="Years out of range" ValidationGroup="age" Display="Dynamic">*</asp:RangeValidator>
+            <asp:CustomValidator ID="ptMonthsVal" runat="server" ControlToValidate="ptAgeMonths" ValidateEmptyText="true"
+                OnServerValidate="MonthsValServer" ClientValidationFunction="pic.vals.monthsValClient"  CssClass="errorPoint"
+                ErrorMessage="Please enter age in months" Display="Dynamic">*</asp:CustomValidator>
             <asp:RangeValidator ID="ptMonthRngValidator" runat="server" 
                 ControlToValidate="ptAgeMonths" ErrorMessage="Months out of range"  CssClass="errorPoint"
                 MaximumValue="72" MinimumValue="0" Type="Integer" ValidationGroup="age" Display="Dynamic">*</asp:RangeValidator>
-            <asp:CustomValidator ID="weightOrAgeValidator" runat="server"
+            <asp:CustomValidator ID="dobOrAgeValidator" runat="server"
                 OnServerValidate="DobOrAgeValServer" ClientValidationFunction="pic.vals.dobOrAgeValClient"  CssClass="errorPoint"
-                ErrorMessage="Please enter age (including months) or DOB" ValidationGroup="age" Display="Dynamic">*</asp:CustomValidator>
+                ErrorMessage="Please enter age or DOB" ValidationGroup="age" Display="Dynamic">*</asp:CustomValidator>
             <asp:RangeValidator ID="ptDaysRngValidator" runat="server" 
                 ControlToValidate="ptAgeDays" ErrorMessage="Days out of range"  CssClass="errorPoint"
                 MaximumValue="72" MinimumValue="0" Type="Integer" ValidationGroup="age" Display="Dynamic">*</asp:RangeValidator>
@@ -135,10 +139,10 @@
 
         <div id="valSummaries">
             <a id="Error_Summary"></a>
-            <asp:ValidationSummary ID="ValidationSummaryMain" runat="server" cssClass="errorDescription"/>
-            <asp:ValidationSummary ID="ValidationSummaryAge" runat="server" ValidationGroup="age" cssClass="errorDescription"/>
-            <asp:ValidationSummary ID="ValidationSummaryGender" runat="server" ValidationGroup="gender" cssClass="errorDescription"/>
-            <asp:ValidationSummary ID="ValidationSummaryCentile" runat="server" ValidationGroup="centile" cssClass="errorDescription"/>
+            <asp:ValidationSummary ID="ValidationSummaryMain" runat="server" cssClass="errorDescription" ShowSummary="true"/>
+            <asp:ValidationSummary ID="ValidationSummaryAge" runat="server" ValidationGroup="age" cssClass="errorDescription" ShowSummary="true"/>
+            <asp:ValidationSummary ID="ValidationSummaryGender" runat="server" ValidationGroup="gender" cssClass="errorDescription" ShowSummary="true"/>
+            <asp:ValidationSummary ID="ValidationSummaryCentile" runat="server" ValidationGroup="centile" cssClass="errorDescription" ShowSummary="true"/>
         </div>
     </fieldset>
     <div id="drugSelect">
@@ -152,7 +156,7 @@
 <asp:Content ID="MyScripts" ContentPlaceHolderId="masterScripts" runat="server">
     <script src="<%# ResolveUrl("~/Scripts/WtForAge.js")%>" type="text/javascript"></script>
     <script src="<%# ResolveUrl("~/Scripts/json2.min.js")%>" type="text/javascript"></script>
-    <script src="<%# ResolveUrl("~/Scripts/DobAgePageManagement.js")%>" type="text/javascript"></script>
-    <script src="<%# ResolveUrl("~/Scripts/EnterPtData.js")%>" type="text/javascript"></script>
+    <script src="<%# ResolveUrl("~/Scripts/DobAgePageManagement-0.2.js")%>" type="text/javascript"></script>
+    <script src="<%# ResolveUrl("~/Scripts/EnterPtData-0.2.js")%>" type="text/javascript"></script>
 </asp:Content>
 

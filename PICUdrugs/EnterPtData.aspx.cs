@@ -10,6 +10,7 @@ using System.Web.Script.Serialization;
 using PICUdrugs.Utils;
 using PICUdrugs.DAL;
 using PICUdrugs.BLL;
+using StatsForAge.DataSets;
 namespace PICUdrugs.Pages
 {
     public partial class EnterPtData : System.Web.UI.Page
@@ -17,7 +18,7 @@ namespace PICUdrugs.Pages
         public const double warnCentileUbound = 99;
         public const double warnCentileLbound = 1;
         public const double limitCentileUbound = 100 - 1e-7;
-        public const double limitCentileLbound = 1e-7;
+        public const double limitCentileLbound = 1e-10;
         //private const string timeRegEx = @"^(20|21|22|23|0\d|\d):([0-5]\d)\s*([aApP])[.m]*$";
         protected void Page_PreInit(object sender, EventArgs e)
         {
@@ -32,6 +33,7 @@ namespace PICUdrugs.Pages
             {
                 Page.ClientScript.RegisterStartupScript(csType, "controlNames", JSglobals(), false);
             }
+            StatsForAge.JavaScript.Include_UkWeightData(Page.ClientScript);
             wardList.DataBind();
             if (!Page.IsPostBack)
             {
@@ -39,8 +41,6 @@ namespace PICUdrugs.Pages
                 if (defaultWard != null) { wardList.SelectedValue = defaultWard.Value; }
                 //if (Request.UserHostName=="????????????") && PreviousPage
                 ptWeightRngValidator.Type = ValidationDataType.Double;
-                ptWeightRngValidator.MinimumValue = FieldConst.minWeight.ToString();
-                ptWeightRngValidator.MaximumValue = "200";
                 ptAgeRngValidator.Type = ValidationDataType.Integer;
                 ptAgeRngValidator.MinimumValue = FieldConst.minAge.ToString();
                 ptAgeRngValidator.MaximumValue = FieldConst.maxAge.ToString();
@@ -177,66 +177,45 @@ namespace PICUdrugs.Pages
             }
         }
         private string JSglobals() {
-            StringBuilder returnVal = new StringBuilder(1500);
-            returnVal.AppendFormat("<script src='{0}' type='text/javascript'></script><script type='text/javascript'>", ResolveUrl("~/Scripts/PICUdrugUtils-0.2.js"));
-            string radioId = genderRadio.ClientID;
-            returnVal.AppendLine("pic.el('male','" + radioId + "_0')");
-            returnVal.AppendLine("   .el('female','" + radioId + "_1')");
-            returnVal.AppendLine("   .el('yrs','" + ptAgeYrs.ClientID + "')");
-            returnVal.AppendLine("   .el('months','" + ptAgeMonths.ClientID + "')");
-            returnVal.AppendLine("   .el('days','" + ptAgeDays.ClientID + "')");
-            returnVal.AppendLine("   .el('DOB','" + ptDOB.ClientID + "')");
-            returnVal.AppendLine("   .el('WtOrAgeVal','" + weightOrAgeValidator.ClientID + "')");
-            returnVal.AppendLine("   .el('DOBvalidator','" + ptDOBRngValidator.ClientID + "')");
-            returnVal.AppendLine("   .el('weight','" + ptWeight.ClientID + "')");
-            returnVal.AppendLine("   .el('guessCB','" + weightEstimate.ClientID + "')");
-            returnVal.AppendLine("   .el('DOBval','" + ptDOBRngValidator.ClientID + "')");
-            returnVal.AppendLine("   .el('medianWeightBtn')");
-            returnVal.AppendLine("   .el('NHI','" + ptNHI.ClientID + "')");
-            returnVal.AppendLine("   .el('centileVal','" + centileValidator.ClientID + "')");
-            returnVal.AppendLine("   .el('wardList','" + wardList.ClientID + "')");
-            returnVal.AppendLine("   .el('drugJSON','" + drugJSON.ClientID + "')");
-            radioId = chartTypeRadio.ClientID;
-            returnVal.AppendLine("   .el('bolus','" + radioId + "_0')");
-            returnVal.AppendLine("   .el('list','" + radioId + "_1')");
-            returnVal.AppendLine("   .el('choose','" + radioId + "_2')");
-            returnVal.AppendLine("   .el('centileText','" + centileText.ClientID + "')");
-            returnVal.AppendLine("   .el('centileValue','" + centileValue.ClientID + "');");
-            returnVal.AppendLine("pic.el.chooseLbl=pic.el.choose.parentNode.getElementsByTagName('label')[0];");
-            returnVal.AppendLine("pic.el.centileValue.hardMin = " + limitCentileLbound + ";");
-            returnVal.AppendLine("pic.el.centileValue.softMin = " + warnCentileLbound + ";");
-            returnVal.AppendLine("pic.el.centileValue.softMax = " + warnCentileUbound + ";");
-            returnVal.AppendLine("pic.el.centileValue.hardMax = " + limitCentileUbound + ";");
-            returnVal.AppendLine("pic.el.centileValue.set = {};");
-            returnVal.AppendLine("pic.el.centileValue.set.age = new pic.Construct.Age(null, null, null);");
-            returnVal.AppendLine("pic.el.centileValue.set.weight = null;");
-            returnVal.AppendLine("pic.el.centileValue.set.isMale = null;");
-            returnVal.AppendLine("pic.el('drugDiv', 'drugSelect').el('concDiv').el('drugName', 'selectDrug').el('cancelConc').el('cancelDrug', 'cancelList').el('concTable').el('drugList').el('chosenDrug');");
-            returnVal.AppendLine("</script>");
-            return returnVal.ToString();
+            return "<script src='" + ResolveUrl("~/Scripts/PICUdrugUtils-0.3.js") + "' type='text/javascript'></script><script type='text/javascript'>" +
+                "pic.el('male','" + genderRadio.ClientID + "_0')" + 
+                   ".el('female','" + genderRadio.ClientID + "_1')" + 
+                   ".el('yrs','" + ptAgeYrs.ClientID + "')" + 
+                   ".el('months','" + ptAgeMonths.ClientID + "')" + 
+                   ".el('days','" + ptAgeDays.ClientID + "')" + 
+                   ".el('DOB','" + ptDOB.ClientID + "')" + 
+                   ".el('WtOrAgeVal','" + dobOrAgeValidator.ClientID + "')" + 
+                   ".el('DOBvalidator','" + ptDOBRngValidator.ClientID + "')" + 
+                   ".el('weight','" + ptWeight.ClientID + "')" + 
+                   ".el('guessCB','" + weightEstimate.ClientID + "')" + 
+                   ".el('DOBval','" + ptDOBRngValidator.ClientID + "')" + 
+                   ".el('medianWeightBtn')" + 
+                   ".el('NHI','" + ptNHI.ClientID + "')" + 
+                   ".el('centileVal','" + centileValidator.ClientID + "')" + 
+                   ".el('wardList','" + wardList.ClientID + "')" + 
+                   ".el('drugJSON','" + drugJSON.ClientID + "')" + 
+                   ".el('bolus','" + chartTypeRadio.ClientID + "_0')" + 
+                   ".el('list','" + chartTypeRadio.ClientID + "_1')" + 
+                   ".el('choose','" + chartTypeRadio.ClientID + "_2')" + 
+                   ".el('monthVal','" + ptMonthsVal.ClientID + "')" + 
+                   ".el('gestation','" + WeeksGestation.ClientID + "')" + 
+                   ".el('centileText','" + centileText.ClientID + "')" + 
+                   ".el('upperCentileValue','" + upperCentileValue.ClientID + "')" + 
+                   ".el('lowerCentileValue','" + lowerCentileValue.ClientID + "');" + 
+                "pic.el.chooseLbl=pic.el.choose.parentNode.getElementsByTagName('label')[0];" + 
+                "pic.centileValue = {};" + 
+                "pic.centileValue.hardMin = " + limitCentileLbound + ";" + 
+                "pic.centileValue.softMin = " + warnCentileLbound + ";" + 
+                "pic.centileValue.softMax = " + warnCentileUbound + ";" + 
+                "pic.centileValue.hardMax = " + limitCentileUbound + ";" + 
+                "pic.centileValue.set = {};" + 
+                "pic.centileValue.set.age = new pic.construct.Age(null, null, null);" + 
+                "pic.centileValue.set.weight = null;" + 
+                "pic.centileValue.set.isMale = null;" + 
+                "pic.el('drugDiv', 'drugSelect').el('concDiv').el('drugName', 'selectDrug').el('cancelConc').el('cancelDrug', 'cancelList').el('concTable').el('drugList').el('chosenDrug');" + 
+                "</script>";
         }
-        //[WebMethod]
-        public static double MedianWtAge(int ageYrs, int AgeMonths, int AgeDays, bool isMale)
-        {
-            ChildAge currentAge = new ChildAge(ageYrs, AgeMonths, AgeDays);
-            var wtForAge = StatisticalTables.GetWeightStats(currentAge, isMale);
-            return wtForAge.M;
-        }
-        //[WebMethod]
-        public static double ZWt4Age(double weight, int ageYrs, int AgeMonths, int AgeDays, bool isMale)
-        {
-            ChildAge currentAge = new ChildAge(ageYrs, AgeMonths, AgeDays);
-            var wtForAge = StatisticalTables.GetWeightStats(currentAge, isMale);
-            return wtForAge.ZfromX(weight);
-        }
-        public static BiGenderZWt4Age ZWt4Age(double weight, int ageYrs, int AgeMonths, int AgeDays)
-        {
-            var returnVal = new BiGenderZWt4Age();
-            ChildAge currentAge = new ChildAge(ageYrs, AgeMonths, AgeDays);
-            returnVal.MaleZ = StatisticalTables.GetWeightStats(currentAge, true).ZfromX(weight);
-            returnVal.FemaleZ = StatisticalTables.GetWeightStats(currentAge, false).ZfromX(weight);
-            return returnVal;
-        }
+
         [WebMethod]
         public static UserSelectedInfusion.SingleInfusion[] GetSingleInfusions()
         {
@@ -254,47 +233,70 @@ namespace PICUdrugs.Pages
         #region Validators
         protected void DobOrAgeValServer(object source, ServerValidateEventArgs args)
         {
-            args.IsValid = !(ptAgeMonths.Text.Trim() == "" && (ptAgeYrs.Text.Trim() == "0" || ptDOB.Text.Trim() == ""));
+            args.IsValid = !(ptAgeYrs.Text.Trim() == "" && ptDOB.Text.Trim() == "");
+        }
+        protected void MonthsValServer(object source, ServerValidateEventArgs args)
+        {
+            args.IsValid = (ptAgeYrs.Text.Trim() != "0" || ptAgeMonths.Text.Trim() != "");
         }
         protected void centileValidator_ServerValidate(object source, ServerValidateEventArgs args)
         {
             //belongs to validationgroup centile
-            if (!(ptWeightRqdValidator.IsValid && ptWeightRngValidator.IsValid && weightOrAgeValidator.IsValid && ptDOBRngValidator.IsValid
+            if (!(ptWeightRqdValidator.IsValid && ptWeightRngValidator.IsValid && dobOrAgeValidator.IsValid && ptMonthsVal.IsValid && ptDOBRngValidator.IsValid
                 && ptAgeRngValidator.IsValid && ptMonthRngValidator.IsValid && ptDaysRngValidator.IsValid))
             {
                 return;
             }
 
-            double centile;
-            if (!double.TryParse(centileValue.Value, out centile))
+            double upperCentile;
+            double lowerCentile;
+            bool centileOk = double.TryParse(upperCentileValue.Value, out upperCentile);
+            centileOk |= double.TryParse(lowerCentileValue.Value, out lowerCentile);
+
+            if (!centileOk)
             {
                 if (this.Age == null){ return; }
                 {
+                    var wtData = new UKWeightData();
+                    var wt = double.Parse(ptWeight.Text);
+                    int weeksGestation;
+                    if (!int.TryParse(WeeksGestation.Text, out weeksGestation)) 
+                    { 
+                        weeksGestation = 40; 
+                    }
+                    IntegerRange ageRange = Age.GetAgeRangeInDays();
                     if (this.IsMale.HasValue)
                     {
-                        var Z = ZWt4Age(double.Parse(ptWeight.Text), Age.Years, Age.Months, Age.Days, _isMale.Value);
-                        centile = StatisticalMethods.CumSnorm(Z)*100;
-                        centileValue.Value = centile.ToString();
-                        centileText.Text = StatisticalDataExtensions.CentileToString(centile, false);
+                        NumericRange centileRng = new NumericRange(
+                            wtData.CumSnormForAge(wt, ageRange.LowerBound, IsMale.Value, weeksGestation) * 100,
+                            wtData.CumSnormForAge(wt, ageRange.UpperBound, IsMale.Value, weeksGestation) * 100);
+                        upperCentile = centileRng.UpperBound;
+                        lowerCentile = centileRng.LowerBound;
+                        upperCentileValue.Value = upperCentile.ToString();
+                        lowerCentileValue.Value = lowerCentile.ToString();
+
+                        centileText.Text = centileRng.AsCentileString();
                     }
                     else //gender not set - get both genders, and check a female does not weigh more than the upper bound, or a male less than lower bound
                     {
-                        var bigenderZ = ZWt4Age(double.Parse(ptWeight.Text), Age.Years, Age.Months, Age.Days);
-                        var maleCentile = StatisticalMethods.CumSnorm(bigenderZ.MaleZ) * 100;
-                        var femaleCentile = StatisticalMethods.CumSnorm(bigenderZ.FemaleZ) * 100;
-                        args.IsValid = femaleCentile < limitCentileUbound && maleCentile > limitCentileLbound;
-                        var formatStr = (args.IsValid) ? "centiles \u2642{0}, \u2640{1}" : "centiles \u2642{0}, \u2640{1}";
-                        centileText.Text = string.Format(formatStr,
-                            StatisticalDataExtensions.CentileToString(maleCentile, false,""),
-                            StatisticalDataExtensions.CentileToString(femaleCentile, false,""));
-                        return;
+                        NumericRange maleCentile = new NumericRange
+                        ( wtData.CumSnormForAge(wt, ageRange.LowerBound, true, weeksGestation) * 100,
+                          wtData.CumSnormForAge(wt, ageRange.UpperBound, true, weeksGestation) * 100 );
+                        NumericRange femaleCentile = new NumericRange
+                        ( wtData.CumSnormForAge(wt, ageRange.LowerBound, false, weeksGestation) * 100,
+                          wtData.CumSnormForAge(wt, ageRange.UpperBound, false, weeksGestation) * 100 );
+                        centileText.Text = string.Format("\u2642{0}, \u2640{1}",
+                            maleCentile.AsCentileString(),
+                            femaleCentile.AsCentileString());
+                        upperCentile = maleCentile.UpperBound;
+                        lowerCentile = femaleCentile.LowerBound;
                     }
                 }
             }
-            args.IsValid = (centile < limitCentileUbound && centile > limitCentileLbound);
+            args.IsValid = (upperCentile < limitCentileUbound && lowerCentile > limitCentileLbound);
         }
         #endregion
-
+        
         protected void Submit_Click(object sender, EventArgs e)
         {
             if (chartTypeRadio.Text != "bolus") 

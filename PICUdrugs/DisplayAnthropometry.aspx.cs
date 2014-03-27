@@ -1,6 +1,8 @@
 ﻿using PICUdrugs.BLL;
 using PICUdrugs.DAL;
 using PICUdrugs.Utils;
+using StatsForAge;
+using StatsForAge.DataSets;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -18,70 +20,71 @@ namespace PICUdrugs
             {
                 Response.Redirect("EnterPtAnthropometry.aspx");
             }
-            StatisticalData weightData=null;
-            StatisticalData lengthData=null;
-            StatisticalData bmiData=null;
-            var ptDetails = PreviousPage.PatientAnthropometry();
+            
+            Anthropometry ptDetails = PreviousPage.PatientAnthropometry();
             age.Text = ptDetails.ChildAge.ToString();
-
-            if (ptDetails.ChildAge != null)
+            
+            if (ptDetails.ChildAge == null)
             {
-                weightData = StatisticalTables.GetWeightStats(ptDetails.ChildAge, ptDetails.IsMale);
+                age.Text = "No details entered";
             }
-            using (var statLookup = new StatisticalTables(ptDetails.ChildAge, ptDetails.IsMale))
+            else
             {
+                UKWeightData weightData = new UKWeightData();
+                var ageDays = (int)(ptDetails.ChildAge.GetAgeRangeInDays().MidRange+0.5);
+                LMS weightParams = weightData.LMSForAge(ageDays, ptDetails.IsMale, ptDetails.WeeksGestAgeAtBirth);
+                if (ptDetails.WeightKg != 0)
+                {
+                    weight.Text = ptDetails.WeightKg.ToString("#.#");
+                    weightCentile.Text = StatisticalDataExtensions.CentileToString(weightParams.Centile(ptDetails.WeightKg), true);
+                    if (ptDetails.LengthCm != 0)
+                    {
+                        UKBMIData bmiData = new UKBMIData();
+                        double bmiVal = ptDetails.Bmi();
+                        bmi.Text = bmiVal.ToString("#.#");
+
+                        if (bmiData.IsDataAvailable(ageDays, ptDetails.IsMale, ptDetails.WeeksGestAgeAtBirth))
+                        {
+                            bmiCentile.Text = StatisticalDataExtensions.CentileToString(
+                            bmiData.LMSForAge(ageDays, ptDetails.IsMale, ptDetails.WeeksGestAgeAtBirth).Centile(bmiVal), true);
+                        }
+                        else
+                        {
+                            BmiPlaceholder.Controls.Clear();
+                            BmiPlaceholder.Controls.Add(new LiteralControl("population data for BMI is not available within this age group"));
+                        }
+
+                        bsa.Text = ptDetails.Bsa().ToString("0.00");
+
+                        var yHat = ptDetails.eLbm();
+                        lbm.Text = yHat.Estimate.ToString(2);
+                        lbmReference.Text = yHat.ReferenceHtml;
+                    }
+                }
                 if (ptDetails.LengthCm != 0)
                 {
-                    lengthData = statLookup.GetLengthForAge();
-                    if (ptDetails.WeightKg != 0) { bmiData = statLookup.GetBmiForAge(); }
+                    length.Text = ptDetails.LengthCm.ToString("#.#");
+                    UKLengthData lengthData = new UKLengthData();
+                    double lengthZ = lengthData.ZForAge(ptDetails.LengthCm, ageDays, ptDetails.IsMale, ptDetails.WeeksGestAgeAtBirth);
+                    lengthCentile.Text = StatisticalDataExtensions.CentileToString(
+                        100*Stats.CumSnorm(lengthZ), true);
+
+                    weightByLength.Text = weightParams.XfromZscore(lengthZ).ToString(2);
                 }
             }
             if (ptDetails.WeightKg == 0)
             {
                 weightDetails.Visible = false;
             }
-            else
-            {
-                weight.Text = ptDetails.WeightKg.ToString("#.#");
-                weightCentile.Text = weightData.CentileString(ptDetails.WeightKg, true);
-            }
 
             if (ptDetails.LengthCm == 0)
             {
                 LengthDetails.Visible = false;
             }
-            else
-            {
-                length.Text = ptDetails.LengthCm.ToString("#.#");
-                var lengthZ = lengthData.ZfromX(ptDetails.LengthCm);
-                lengthCentile.Text = StatisticalDataExtensions.CentileToString(StatisticalMethods.CumSnorm(lengthZ) * 100, true);
-                weightByLength.Text = weightData.XfromZ(lengthZ).ToString(2);
-            }
 
             if (ptDetails.WeightKg == 0 || ptDetails.LengthCm == 0)
             {
                 HeightAndLengthDetails.Visible = false;
-            }
-            else
-            {
-                if (bmiData == null)
-                {
-                    BmiPlaceholder.Controls.Clear();
-                    BmiPlaceholder.Controls.Add(new LiteralControl("population data for BMI is not available within this age group"));
-                }
-                else
-                {
-                    var Bmi = ptDetails.Bmi();
-                    bmi.Text = Bmi.ToString("#.#");
-                    bmiCentile.Text = bmiData.CentileString(Bmi, true);
-                }
-
-                bsa.Text = ptDetails.Bsa().ToString("0.00");
-
-                var yHat = ptDetails.eLbm();
-                lbm.Text = yHat.Estimate.ToString(2);
-                //lbm.Text = (yHat.Estimate<20)?Math.Round(yHat.Estimate,1).ToString():Math.Round(yHat.Estimate).ToString();
-                lbmReference.Text = yHat.ReferenceHtml;
             }
         }
     }

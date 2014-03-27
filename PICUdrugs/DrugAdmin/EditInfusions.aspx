@@ -228,7 +228,7 @@
                                         SelectedValue='<%# Bind("SiPrefixVal") %>'>
                                     </asp:DropDownList>
                                     <asp:Label ID="unitLabel" runat="server"></asp:Label>
-                                    <asp:Label ID="IsPerKg" runat="server" CssClass="IsPerKg">/kg</asp:Label>
+                                    <span ID="isPerKg" class="IsPerKg">/kg</span>
                                         per 
                                 </span>
                                 <div class="radioVert">

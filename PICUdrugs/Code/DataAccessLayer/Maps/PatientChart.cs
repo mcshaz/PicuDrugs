@@ -57,7 +57,7 @@ namespace PICUdrugs.DAL
         }
         public IEnumerable<StandardInfusion> StandardInfusions()
         {
-            return new pVariableTimeInfusions(_db).GetRowData(_ptDetail.WardId, _ptDetail.WorkingWeight, _ptDetail.Age.TotalMonths)
+            return new pVariableTimeInfusions(_db).GetRowData(_ptDetail.WardId, _ptDetail.WorkingWeight, _ptDetail.Age.TotalMonthsEstimate)
                 .Select(dil => new StandardInfusion(
                     weight: _ptDetail.WorkingWeight,
                     Concentration: dil.Concentration,
@@ -104,7 +104,7 @@ namespace PICUdrugs.DAL
         public Ett ETT()
         {
             if (_ptDetail.Age == null) { return null; }
-            return PatientCalculations.ETT(_ptDetail.Age.TotalMonths, _ptDetail.WorkingWeight);
+            return PatientCalculations.ETT(_ptDetail.Age.TotalMonthsEstimate, _ptDetail.WorkingWeight);
         }
         private FixedTimeDilution GetDilution(int drugId)
         {
@@ -116,7 +116,7 @@ namespace PICUdrugs.DAL
                         .Include("InfusionDrug.InfusionDiluent")
                         .Include("InfusionDrug.DrugRoute")
                      where d.InfusionDrugId == drugId
-                         && d.AgeMinMonths <= _ptDetail.Age.TotalMonths && d.AgeMaxMonths >= _ptDetail.Age.TotalMonths
+                         && d.AgeMinMonths <= _ptDetail.Age.TotalMonthsEstimate && d.AgeMaxMonths >= _ptDetail.Age.TotalMonthsEstimate
                          && d.WeightMin < _ptDetail.WorkingWeight && d.WeightMax >= _ptDetail.WorkingWeight
                      select d).First();
         }

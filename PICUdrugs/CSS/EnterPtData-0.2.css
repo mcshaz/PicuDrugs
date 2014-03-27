@@ -54,14 +54,14 @@ input[type="submit"] {
 #MainContent_ptName {
     width:18em;
 }
-#MainContent_ptWeight, #MainContent_ptAgeYrs, #MainContent_ptLength, #MainContent_WeeksGestation
+#MainContent_ptWeight
 {
-    width:2.2em;
+    width:3.2em;
     text-align:center;
 }
-#MainContent_ptAgeDays, #MainContent_ptAgeMonths
+#MainContent_ptAgeDays, #MainContent_ptAgeMonths, #MainContent_ptAgeYrs, #MainContent_ptLength, #MainContent_WeeksGestation
 {
-    width:1.5em;
+    width:2.4em;
     text-align:center;
 }
 #MainContent_ptDOB
@@ -100,7 +100,7 @@ input[type="submit"] {
 #MainContent_centileText
 {
     text-align:left;
-    width:11.6em;
+    width:13em;
 }
 .normalCentile {
     top: -0.4em;
@@ -170,6 +170,9 @@ input[type="submit"] {
     text-align:center;
     border:1px solid black;
 }
+#MainContent_centileText {
+    width:16em;
+}
 table.tabData
 {
     margin:0.5em;
@@ -192,5 +195,10 @@ table.tabData
 }
 .notLive {
     color: #003399;
+}
+.validationError {
+    background-color:#F7D07B;
+    font-weight:bold;
+    border: solid 2px red;
 }
 

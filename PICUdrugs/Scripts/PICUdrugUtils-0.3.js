@@ -43,11 +43,70 @@
         }
     },
     vals: {
+        addErrorToControls:function(className) {
+            var i=0;
+            for (; i < Page_Validators.length; i++) {
+                (function () {
+                    var currentVal = Page_Validators[i];
+                    if (!currentVal.controltovalidate) { return; }
+                    var controlToValidate = document.getElementById(currentVal.controltovalidate),
+                        validators = controlToValidate.Validators;
+                    if (validators == null) { return; };
+                    pic.util.addEvent(currentVal, "DOMAttrModified propertychange", function (e) {
+                        // Exit early if IE because it throws this event lots more
+                        if (e.propertyName && e.propertyName != "isvalid") return;
+                        var j, 
+                            isValid = true;
+                        for (j = 0; j < validators.length; j++) {
+                            if (validators[j].isvalid !== true) {
+                                isValid = false;
+                                break;
+                            }
+                        };
+
+                        if (isValid) {
+                            pic.util.removeClass(controlToValidate, className);
+                        } else {
+                            pic.util.addClass(controlToValidate, className);
+                        }
+                    });
+                })();
+            }
+        },
+        validateGroup: function (valGroups) {
+            var i, currentGrp,
+                summariesToDisplay = [];
+            for (i = 0; i < valGroups.length; i++) {
+                if (!Page_ClientValidate(valGroups[i])) { //this will display the contents of the validator summary
+                    summariesToDisplay.push(valGroups[i]);
+                }
+            }
+
+            if (!summariesToDisplay.length) { return true; }
+
+            for (i = 0; i < Page_Validators.length; i++) {
+                currentGrp = Page_Validators[i].validationGroup || '';
+                if (summariesToDisplay.indexOf(currentGrp) > -1) {
+                    ValidatorValidate(Page_Validators[i]); //this will display the contents of the validator element
+                }
+            }
+            ValidatorUpdateIsValid();
+            pic.vals.showValidationSummaries(summariesToDisplay);
+            return false;
+        },
+        showValidationSummaries: function(summariesToDisplay) {
+            if (!Array.isArray(summariesToDisplay)) {summariesToDisplay = [summariesToDisplay];}
+            Page_ValidationSummaries.forEach(function(valSum) { //make relevant summaries visible
+                if (summariesToDisplay.indexOf(valSum.validationGroup || '') > -1) {
+                    valSum.style.display = "inline"; //"none"; "inline";
+                }
+            });
+        },
         validationManager: function () {
             // Manual client-side validation of Validator Groups 
             // an empty string('') is default - to validate controls without a validation group
             var valGroups = [''],
-                anchorName,
+                anchorName, errClassName,
                 returnObj = { //define methods
                     set: function (/*string argument list*/) {
                         valGroups = Array.prototype.slice.call(arguments);
@@ -74,32 +133,32 @@
                         anchorName = str;
                         return returnObj;
                     },
+                    setErrClassName: function (str) {
+                        errClassName = str;
+                        return returnObj;
+                    },
                     validate: function () {
-                        var i, currentGrp,
-                            summariesToDisplay = [];
-
-                        for (i = 0; i < valGroups.length; i++) {
-                            if (!Page_ClientValidate(valGroups[i])) { //this will display the contents of the validator summary
-                                summariesToDisplay.push(valGroups[i]);
+                        var returnVar = pic.vals.validateGroup(valGroups);
+                        if (!returnVar && anchorName) { window.location.hash = anchorName; }
+                        return returnVar;
+                    },
+                    validateElement: function (el) {
+                        var isvalid = true;
+                        el.Validators.forEach(function (val) {
+                            var grpName = val.validationGroup || '';
+                            if (val.controltovalidate == el.id && valGroups.indexOf(grpName) > -1) {
+                                ValidatorValidate(val, val.validateGroup);
+                                if (!val.isvalid) { isvalid = false;}
                             }
+                        });
+                        if (isvalid) {
+                            pic.util.removeClass(el, errClassName);
+                        } else {
+                            pic.util.addClass(el, errClassName);
                         }
-
-                        if (!summariesToDisplay.length) { return true; }
-
-                        for (i = 0; i < Page_Validators.length; i++) {
-                            currentGrp = Page_Validators[i].validationGroup || '';
-                            if (summariesToDisplay.indexOf(currentGrp) > -1) {
-                                ValidatorValidate(Page_Validators[i]); //this will display the contents of the validator element
-                            }
-                        }
-
-                        for (i = 0; i < Page_ValidationSummaries.length; i++) { //make relevant summaries visible
-                            if (summariesToDisplay.indexOf(Page_ValidationSummaries[i].validationGroup || '') > -1) {
-                                Page_ValidationSummaries[i].style.display = "inline"; //"none"; "inline";
-                            }
-                        }
-                        if (anchorName) { window.location.hash = anchorName; }
-                        return false;
+                        valGroups.forEach(function (grp) {
+                            ValidationSummaryOnSubmit(grp);
+                        });
                     }
                 };
             if (arguments.length > 0) {
@@ -109,23 +168,51 @@
         }
     }, //end of vals
     util: {
-        addEvent:function (elem, type, eventHandle) {
-            if (!elem) return;
-            if (elem.addEventListener) {
-                elem.addEventListener(type, eventHandle, false);
-            } else if (elem.attachEvent) {
-                elem.attachEvent("on" + type, eventHandle);
-            } else {
-                elem["on" + type] = eventHandle;
+        addEvent: function (elems, eventTypes, eventHandle) {
+            if (!elems) return;
+            var getTarget = function () {
+                var targ;
+                if (!e) { e = window.event; }
+                if (e.target) {
+                    targ = e.target;
+                } else if (e.srcElement) {
+                    targ = e.srcElement;
+                }
+                if (targ.nodeType == 3) { // defeat Safari bug
+                    targ = targ.parentNode;
+                }
+                return targ;
+            }, types = eventTypes.split(' ');
+            if (elems.nodeType || elems === window) { elems = [elems]; }
+            elems.forEach(function (elem) {
+                var injectContext = function () {
+                    eventHandle.apply(elem, arguments);
+                }
+                types.forEach(function (ty) {
+                    if (elem.addEventListener) {
+                        elem.addEventListener(ty, injectContext, false);
+                    } else if (elem.attachEvent) {
+                        elem.attachEvent("on" + ty, injectContext);
+                    } else {
+                        elem["on" + ty] = injectContext;
+                    }
+                });
+            });
+        },
+        addClass: function (el, newClass) {
+            if ((' ' + el.className + ' ').indexOf(' ' + newClass + ' ') === -1) {
+                el.className += ' ' + newClass;
             }
+        },
+        removeClass: function (el, rClass) {
+            el.className = el.className ? (" " + el.className + " ").replace(" " + rClass + " ", " ") : "";
         },
         ageFromDOB: function (ptDOB) {
             var now = new Date();
-            var returnVal = pic.Construct.Age(null, null, null);
-            returnVal.years = now.getFullYear() - ptDOB.getFullYear();
-            returnVal.months = now.getMonth() - ptDOB.getMonth();
-            returnVal.days = now.getDate() - ptDOB.getDate();
-            if (returnVal.months < 0) returnVal.months += 12;
+            var returnVal = new pic.construct.Age(now.getFullYear() - ptDOB.getFullYear(),
+                now.getMonth() - ptDOB.getMonth(),
+                now.getDate() - ptDOB.getDate());
+            if (returnVal.months < 0) { returnVal.months += 12; }
             if (returnVal.days < 0) {
                 var lastMonth = new Date(now);
                 lastMonth.setDate(0);
@@ -293,49 +380,96 @@
                 switch (mod100 % 10) {
                     case 1:
                         suffix = "st";
+                        break;
                     case 2:
                         suffix = "nd";
+                        break;
                     case 3:
                         suffix = "rd";
+                        break;
                     default:
                         suffix = "th";
+                        break;
                 }
                 return roundedVal +suffix;
             }
         }
     }, //end of math
-    Construct: {
-        Age: function (years, months, days) {
-            if (this instanceof pic.Construct.Age) {
-                this.years = parseInt(years);
-                if (isNaN(this.years)) this.years = "";
-                this.months = parseInt(months);
-                if (isNaN(this.months)) this.months = "";
-                this.days = parseInt(days);
-                if (isNaN(this.days)) this.days = "";
+    construct: {
+        NumericRange: function (min, max) {
+            min = parseFloat(min);
+            if (isNaN(min)) { min = null; }
+            if (min < 0) { throw new RangeError("min must be >=0"); }
+            if (arguments.length == 1) {
+                max = min;
             } else {
-                return new pic.Construct.Age(years, months, days);
+                max = parseFloat(max);
+                if (isNaN(max)) { max = null; }
+                if (max < min)
+                {
+                    this.max = min;
+                    this.min = max;
+                    return;
+                }
+            }
+            this.min = min;
+            this.max = max;
+        },
+        Age: function (years, months, days) {
+            this.years = parseInt(years);
+            if (isNaN(this.years)) { this.years = null; }
+            this.months = parseInt(months);
+            if (isNaN(this.months)) { this.months = null; }
+            this.days = parseInt(days);
+            if (isNaN(this.days)) { this.days = null; }
+            if (this.days > 28) {
+                var now = new Date(),
+                    countBack = new Date(now.getFullYear(), now.getMonth(), 0),
+                    daysInMonth = countBack.getDate();
+                while (this.days >= daysInMonth) {
+                    this.days -= daysInMonth;
+                    this.months++;
+                    countBack.setDate(0);
+                    daysInMonth = countBack.getDate();
+                }
+            }
+            if (this.months >= 12) {
+                this.years = this.years + parseInt(this.months / 12);
+                this.months = this.months % 12;
             }
         }
-    }//end of Construct
+    }//end of construct
 };
-pic.Construct.Age.prototype.toBaseUnits = function () {
-    if (this.days > 28) {
-        var now = new Date();
-        var countBack = new Date(now.getFullYear(), now.getMonth(), 0);
-        var DaysInMonth = countBack.getDate();
-        while (this.days >= DaysInMonth) {
-            this.days -= DaysInMonth;
-            this.months++;
-            countBack.setDate(0);
-            DaysInMonth = countBack.getDate();
-        }
+pic.construct.NumericRange.prototype.toString = function () {
+    if (min == max) { return min.toString(); }
+    return min + "-" + max;
+}
+pic.construct.NumericRange.prototype.midPoint = function () {
+    if (typeof (this.min) != 'number' || typeof (this.max) != 'number') { return null; }
+    return (this.min + this.max) / 2;
+}
+pic.construct.Age.prototype.asAgeDaysRange = function () {
+    if (typeof(this.years) != 'number') {return null;}
+    var lb,ub, today,
+        hasMths = typeof(this.months) == 'number',
+        hasDays = typeof(this.days) == 'number',
+        getTotalDays = function(yr,mth,dy){
+            return Math.round(yr * dateConst.daysPerYear + mth * dateConst.daysPerMonth + dy);
+        };
+    if (hasMths && hasDays) { lb = ub = getTotalDays(this.years, this.months, this.days); }
+    else if (hasMths) 
+    {
+        lb = getTotalDays(this.years, this.months, 0);
+        today = new Date();
+        ub = getTotalDays(this.years, this.months, new Date(today.getFullYear(), today.getMonth() + 1, 0).getDate());
     }
-    if (this.months >= 12) {
-        this.years = this.years + parseInt(this.months / 12);
-        this.months = this.months % 12;
+    else
+    {
+        lb = getTotalDays(this.years, 0, 0);
+        ub = Math.floor(lb + dateConst.daysPerYear - 1);
     }
-};
+    return new pic.construct.NumericRange(lb,ub);
+}
 //errors
 function DuplicatePropertyError(propertyName) {
     this.name = 'DuplicatePropertyError';
@@ -355,3 +489,59 @@ if (!Array.prototype.indexOf) {
         return -1;
     }
 }
+if (!Array.prototype.filter) {
+    Array.prototype.filter = function (fun /*, thisArg */) {
+        "use strict";
+
+        if (this === void 0 || this === null)
+            throw new TypeError();
+
+        var t = Object(this);
+        var len = t.length >>> 0;
+        if (typeof fun != "function")
+            throw new TypeError();
+
+        var res = [];
+        var thisArg = arguments.length >= 2 ? arguments[1] : void 0;
+        for (var i = 0; i < len; i++) {
+            if (i in t) {
+                var val = t[i];
+
+                // NOTE: Technically this should Object.defineProperty at
+                //       the next index, as push can be affected by
+                //       properties on Object.prototype and Array.prototype.
+                //       But that method's new, and collisions should be
+                //       rare, so use the more-compatible alternative.
+                if (fun.call(thisArg, val, i, t))
+                    res.push(val);
+            }
+        }
+
+        return res;
+    };
+}
+if (!Array.prototype.forEach) {
+    Array.prototype.forEach = function (fun /*, thisArg */) {
+        "use strict";
+
+        if (this === void 0 || this === null)
+            throw new TypeError();
+
+        var t = Object(this);
+        var len = t.length >>> 0;
+        if (typeof fun !== "function")
+            throw new TypeError();
+
+        var thisArg = arguments.length >= 2 ? arguments[1] : void 0;
+        for (var i = 0; i < len; i++) {
+            if (i in t)
+                fun.call(thisArg, t[i], i, t);
+        }
+    };
+}
+var oldScroll = window.scrollTo;
+window.scrollTo = function (x, y) {
+    if (x !== 0 || y !== 0) {
+        oldScroll(x, y);
+    }
+};

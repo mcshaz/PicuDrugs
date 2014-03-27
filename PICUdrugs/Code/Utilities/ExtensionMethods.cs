@@ -5,6 +5,7 @@ using System.Linq;
 using System.Web;
 using System.Web.Script.Serialization;
 using System.Text.RegularExpressions;
+using PICUdrugs.BLL;
 
 namespace PICUdrugs.Utils
 {
@@ -193,6 +194,16 @@ namespace PICUdrugs.Utils
             var pos = s.IndexOf('/');
             if (pos<2){return s;}
             return s.Substring(0,pos).Singularise() + s.Substring(pos, s.Length-pos);
+        }
+        public static string AsCentileString(this NumericRange rng, bool asHtml=false,string centileText = "centile")
+        {
+            double min = Math.Round(rng.LowerBound);
+            double max = Math.Round(rng.UpperBound);
+            if (min == max || max<=1) { return StatisticalDataExtensions.CentileToString(rng.LowerBound, asHtml,' ' + centileText); }
+            if (max >= 99) { return StatisticalDataExtensions.CentileToString(rng.UpperBound, asHtml, ' ' + centileText); }
+            string minStr = (min == 0) ? "<1" : min.ToString("0");
+            string maxStr = (max == 100) ? ">99" : max.ToString("0");
+            return centileText + ' ' + minStr + '-' + maxStr;
         }
         /*
         public static string ToValidPath(this string path)

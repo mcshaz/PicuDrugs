@@ -5,7 +5,7 @@
 <head runat="server">
     <meta charset="UTF-8">
     <asp:ContentPlaceHolder ID="HeadContent" runat="server" />
-    <link href="<%# ResolveUrl("~/CSS/navBars.css")%>" rel="stylesheet" type="text/css" />
+    <link href="<%# ResolveUrl("~/CSS/navBars-0.2.css")%>" rel="stylesheet" type="text/css" />
     <link href="<%# ResolveUrl("~/CSS/PICUdrugsGenericStyles.css")%>" rel="stylesheet" type="text/css" />
     <!--[if lt IE 8]><link href="<%# ResolveUrl("~/CSS/ie6and7DataEntry.css")%>" rel="stylesheet" type="text/css"/><![endif]-->
     <asp:ContentPlaceHolder runat="server" ID="masterStyles" />
@@ -26,7 +26,7 @@
 	</div>
     <noscript>
         <p>
-            Please note that you have JavaScript disabled. Some program features will not function, and important safety calculations will be ommited. It is strongly advised you enable JavaScript before continuing.
+            Please note that you have JavaScript disabled. Some program features will not function, and important safety calculations will be ommited. It is advised you enable JavaScript before continuing.
         </p>
     </noscript>
      <form ID="mainForm" runat="server" class="mainForm">
@@ -52,7 +52,7 @@
 		    <div id="published">Published: <asp:Label runat="server" ID="dateFileMod" /></div>
 	    </div>
         <div id="mainContent">
-            <h1>Starship PICU</h1>
+            <h1>NZ Hospitalised Children Calculators</h1>
             <asp:ContentPlaceHolder runat="server" ID="headings" />
                 <asp:ContentPlaceHolder ID="MainContent" runat="server"/>
         </div>

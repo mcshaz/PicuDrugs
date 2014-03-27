@@ -53,10 +53,12 @@ namespace PICUdrugs.Pages
         public Anthropometry PatientAnthropometry()
         {
             double wt;
-            double lngth;
+            double length;
+            double gestation;
             return new Anthropometry { 
                 WeightKg = double.TryParse(ptWeight.Text, out wt)?wt:0,
-                LengthCm = double.TryParse(ptLength.Text, out lngth)?lngth:0,
+                LengthCm = double.TryParse(ptLength.Text, out length)?length:0,
+                WeeksGestAgeAtBirth = double.TryParse(WeeksGestation.Text, out gestation)?gestation:40,
                 ChildAge = Age(),
                 IsMale = IsMale
             };
@@ -87,7 +89,7 @@ namespace PICUdrugs.Pages
         }
         private string JSglobals() {
             StringBuilder returnVal = new StringBuilder(1500);
-            returnVal.AppendFormat("<script src='{0}' type='text/javascript'></script><script  type='text/javascript'>", ResolveUrl("~/Scripts/PICUdrugUtils-0.2.js"));
+            returnVal.AppendFormat("<script src='{0}' type='text/javascript'></script><script  type='text/javascript'>", ResolveUrl("~/Scripts/PICUdrugUtils-0.3.js"));
             string radioId = genderRadio.ClientID;
             returnVal.AppendLine("pic.el('male','" + radioId + "_0')");
             returnVal.AppendLine("   .el('female','" + radioId + "_1')");

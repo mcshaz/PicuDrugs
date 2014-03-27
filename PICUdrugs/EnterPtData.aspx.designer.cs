@@ -121,13 +121,22 @@ namespace PICUdrugs.Pages {
         protected global::System.Web.UI.WebControls.TextBox ptWeight;
         
         /// <summary>
-        /// centileValue control.
+        /// upperCentileValue control.
         /// </summary>
         /// <remarks>
         /// Auto-generated field.
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
-        protected global::System.Web.UI.WebControls.HiddenField centileValue;
+        protected global::System.Web.UI.WebControls.HiddenField upperCentileValue;
+        
+        /// <summary>
+        /// lowerCentileValue control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::System.Web.UI.WebControls.HiddenField lowerCentileValue;
         
         /// <summary>
         /// centileText control.
@@ -175,6 +184,15 @@ namespace PICUdrugs.Pages {
         protected global::System.Web.UI.WebControls.RangeValidator ptAgeRngValidator;
         
         /// <summary>
+        /// ptMonthsVal control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::System.Web.UI.WebControls.CustomValidator ptMonthsVal;
+        
+        /// <summary>
         /// ptMonthRngValidator control.
         /// </summary>
         /// <remarks>
@@ -184,13 +202,13 @@ namespace PICUdrugs.Pages {
         protected global::System.Web.UI.WebControls.RangeValidator ptMonthRngValidator;
         
         /// <summary>
-        /// weightOrAgeValidator control.
+        /// dobOrAgeValidator control.
         /// </summary>
         /// <remarks>
         /// Auto-generated field.
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
-        protected global::System.Web.UI.WebControls.CustomValidator weightOrAgeValidator;
+        protected global::System.Web.UI.WebControls.CustomValidator dobOrAgeValidator;
         
         /// <summary>
         /// ptDaysRngValidator control.

@@ -31,7 +31,7 @@ namespace PICUdrugs.DAL
             }
             else
             {
-                returnVal = (ptAge.TotalMonths > MaxCdcAgeMonths) ? MaxCdcAgeMonths * 10 : (ptAge.TotalMonths * 10 + 5);
+                returnVal = (ptAge.TotalMonthsEstimate > MaxCdcAgeMonths) ? MaxCdcAgeMonths * 10 : (ptAge.TotalMonthsEstimate * 10 + 5);
             }
             return (isMale ? 10000 : 20000) + returnVal;
         }
@@ -64,7 +64,7 @@ namespace PICUdrugs.DAL
             }
             else
             {
-                lookupVal = (ptAge.TotalMonths >= MaxCdcAgeMonths) ? MaxCdcAgeMonths : ptAge.TotalMonths + 1;
+                lookupVal = (ptAge.TotalMonthsEstimate >= MaxCdcAgeMonths) ? MaxCdcAgeMonths : ptAge.TotalMonthsEstimate + 1;
             }
             return isMale ? MaleWtParams(lookupVal) : FemaleWtParams(lookupVal);
         }

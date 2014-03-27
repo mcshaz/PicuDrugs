@@ -184,15 +184,78 @@ namespace PICUdrugs.Utils
             return list[i + 1];  
         }
     }
+
+    public class IntegerRange
+    {
+        private int? _lowerBound;
+        public int LowerBound
+        {
+            get { return _lowerBound.Value; }
+            set
+            {
+                if (value < 0 || (_upperBound.HasValue && value > _upperBound.Value)) { throw new Exception("lowerBound must be 0 or greater and less than maxRate"); }
+                else { _lowerBound = value; }
+            }
+        }
+        private int? _upperBound;
+        public int UpperBound
+        {
+            get { return _upperBound.Value; }
+            set
+            {
+                if (value < 0 || (_lowerBound.HasValue && value < _lowerBound.Value)) {
+                    throw new Exception("upperBound must be greater than both 0 and minRate"); 
+                }
+                else { _upperBound = value; }
+            }
+        }
+        public double? MidRange
+        {
+            get
+            {
+                return ((double?)(_upperBound + _lowerBound)) / 2;
+            }
+        }
+        const string nullStr="?";
+        public override string ToString()
+        {
+            if (_upperBound == _lowerBound)
+            {
+                return _upperBound.ToString();
+            }
+            return (_lowerBound.HasValue?_lowerBound.ToString():nullStr) + '-' +
+                (_upperBound.HasValue?_upperBound.ToString():nullStr);
+            
+        }
+    }
+
     public class NumericRange
     {
+        public NumericRange() { }
+        public NumericRange(double val1, double val2)
+        {
+            if (val1 > val2) 
+            {
+                LowerBound = val2;
+                UpperBound = val1;
+            }
+            else
+            {
+                LowerBound = val1;
+                UpperBound = val2;
+            }
+        }
+        public NumericRange(double val)
+        {
+            UpperBound = LowerBound = val;
+        }
         private double? _lowerBound;
         public double LowerBound
         {
             get { return _lowerBound.Value; }
             set
             {
-                if (value < 0 || (_upperBound.HasValue && value > _upperBound.Value)) { throw new Exception("lowerBound must be 0 or greater and less than maxRate"); }
+                if (value < 0 || (_upperBound.HasValue && value > _upperBound.Value)) { throw new Exception("lowerBound must be 0 or greater and less than upperBound"); }
                 else { _lowerBound = value; }
             }
         }
@@ -203,7 +266,7 @@ namespace PICUdrugs.Utils
             set
             {
                 if (value < 0 || (_lowerBound.HasValue && value < _lowerBound.Value)) {
-                    throw new Exception("upperBound must be greater than both 0 and minRate"); 
+                    throw new Exception("upperBound must be greater than both 0 and lowerBound"); 
                 }
                 else { _upperBound = value; }
             }
@@ -222,19 +285,23 @@ namespace PICUdrugs.Utils
         public string ToString(int precision, Rounding rounding = Rounding.ToPrecision, string seperator = "–") //  + u200A hairwidth space ' '
         {
             if (!_lowerBound.HasValue) return "";
+            string lb;
+            string ub;
             if (rounding == Rounding.ToPrecision)
             {
 
-                if (!_upperBound.HasValue || _lowerBound.Value == _upperBound.Value) return _lowerBound.Value.ToPrecision(precision).ToString(); //.(fixedString);
-                return _lowerBound.Value.ToPrecision(precision).ToString() + seperator + _upperBound.Value.ToPrecision(precision).ToString();
+                lb = _lowerBound.Value.ToPrecision(precision).ToString(); //.(fixedString);
+                ub = (_lowerBound == _upperBound) ? lb : _upperBound.Value.ToPrecision(precision).ToString();
                 //return _lowerBound.Value.ToString(fixedString) + seperator + _upperBound.Value.ToString(fixedString);
             }
             else
             {
                 string fixedString = "0." + new string('0', precision);
-                if (!_upperBound.HasValue || _lowerBound.Value == _upperBound.Value) return _lowerBound.Value.ToString(fixedString);
-                return _lowerBound.Value.ToString(fixedString) + seperator + _upperBound.Value.ToString(fixedString);
+                lb = _lowerBound.Value.ToString(fixedString);
+                ub = (_lowerBound == _upperBound) ? lb : _upperBound.Value.ToString(fixedString);
             }
+            if (lb==ub) {return lb;}
+            return lb + seperator + ub;
             // return string.Format("{0:0.####} - {1:0.####}", _minRate, _maxRate);
         }
         public enum Rounding { FixedDecimalPlaces, ToPrecision }
@@ -248,88 +315,117 @@ namespace PICUdrugs.Utils
     }
     public class ChildAge
     {
-        private readonly int _years;
-        private readonly int _months;
-        private readonly int? _days;
-        private readonly DateTime? _dob;
-        public DateTime? Dob { get { return _dob; } }
-        public ChildAge(int years, int months, int? days)
+        public ChildAge(int years, int? months, int? days)
         {
             if (years < 0 || months < 0 || days < 0)
             {
                 throw new Exception("years, months and days must all be positive");
             }
-            _days = days;
-            _months = months;
-            _years = years;
-            if (_days.HasValue && _days > 28)
+            Days = days;
+            Months = months;
+            Years = years;
+            if (Days.HasValue && Days > 28)
             {
                 DateTime countBack = DateTime.Today.AddMonths(-1);
                 int DaysInMonth = DateTime.DaysInMonth(countBack.Year, countBack.Month);
-                while (_days.Value >= DaysInMonth)
+                while (Days.Value >= DaysInMonth)
                 {
-                    _days -= DaysInMonth;
-                    _months++;
+                    Days -= DaysInMonth;
+                    Months++;
                     countBack = countBack.AddMonths(-1);
                     DaysInMonth = DateTime.DaysInMonth(countBack.Year, countBack.Month);
                 }
             }
-            if (_months > 12)
+            if (Months > 12)
             {
-                _years = _years + (int)(_months / 12);
-                _months = _months % 12;
+                Years = Years + (int)(Months / 12);
+                Months = Months % 12;
             }
         }
-        public ChildAge(string years, string months, string days) : this(Convert.ToInt32("0" + years), Convert.ToInt32("0" + months), Convert.ToInt32("0" + days))
+        public ChildAge(string years, string months, string days) : this(Int32.Parse(years), ToNullableInt(months), ToNullableInt(days))
         {
             if (String.IsNullOrWhiteSpace(years) && String.IsNullOrWhiteSpace(months) && String.IsNullOrWhiteSpace(days))
             {
                 throw new Exception("years, months and days cannot be all null, empty or whitepace");
             }
         }
-        public ChildAge(DateTime DOB)
+        static int? ToNullableInt(string val)
+        {
+            return string.IsNullOrEmpty(val) ? (int?)null : Int32.Parse(val);
+        }
+        public ChildAge(DateTime dob)
         {
             DateTime now = DateTime.Today;
-            DateTime Bday = (DateTime)DOB;
-            if (Bday > now) throw new Exception("DOB must not be AFTER current system date");
-            _years = now.Year - Bday.Year;
-            _months = now.Month - Bday.Month;
-            _days = now.Day - Bday.Day;
-            if (_months < 0) _months += 12;
-            if (_days < 0)
+            Dob = dob.Date;
+            if (Dob > now) throw new Exception("DOB must not be AFTER current system date");
+            Years = now.Year - Dob.Value.Year;
+            Months = now.Month - Dob.Value.Month;
+            Days = now.Day - Dob.Value.Day;
+            if (Months < 0) Months += 12;
+            if (Days < 0)
             {
-                _days += DateTime.DaysInMonth(now.Year, now.AddMonths(-1).Month);
-                if (_months == 0)
+                Days += DateTime.DaysInMonth(now.Year, now.AddMonths(-1).Month);
+                if (Months == 0)
                 {
-                    _months = 11;
-                    _years--;
+                    Months = 11;
+                    Years--;
                 }
-                else { _months--; }
+                else { Months--; }
             }
-            if (Bday > now.AddYears(-_years)) _years--;
-            _dob = DOB;
+            if (Dob > now.AddYears(-Years)) Years--;
+            
         }
         public override string ToString()
         {
-            if (!_days.HasValue) return string.Format("{0} years {1} months", _years, _months);
-            return string.Format("{0} years {1} months {2} days", _years, _months, _days);
+            string formatstr;
+            if (!Months.HasValue) {formatstr = "{0} years";}
+            else if(!Days.HasValue) {formatstr = "{0} years {1} months";}
+            else { formatstr = "{0} years {1} months {2} days"; }
+            return string.Format(formatstr, Years, Months, Days);
         }
         public string ToShortString()
         {
-            return string.Format("{0} y {1} m", _years, _months);
+            return string.Format(Months.HasValue?"{0} y {1} m":"{0} y", Years, Months);
         }
-        public bool IsDays { get { return _days.HasValue; } } //??maybe better to simply return Nullable int instead of these 2 funtions
-        public int Days
+        public bool IsDays { get { return Days.HasValue; } } //??maybe better to simply return Nullable int instead of these 2 funtions
+        public int? Days{ get; private set; }
+        public int? Months { get; private set; }
+        public int Years { get; private set; }
+        public DateTime? Dob { get; private set; }
+        public int TotalMonthsEstimate { get { return (12 * Years) + Months ?? 6; } }
+        public int? TotalMonths { get { return (12 * Years) + Months; } }
+        const double DaysPerYear = 365.25;
+        const double DaysPerMonth = DaysPerYear / 12;
+        const double DaysPerHalfMonth = DaysPerYear / 24;
+
+        public IntegerRange GetAgeRangeInDays()
         {
-            get
+            IntegerRange returnVar = new IntegerRange();
+            if (Dob.HasValue) { returnVar.LowerBound = returnVar.UpperBound = (DateTime.Today - Dob.Value).Days; }
+            else if (Months.HasValue && Days.HasValue) { returnVar.LowerBound = returnVar.UpperBound = GetTotalDays(Years, Months, Days); }
+            else if (Months.HasValue) 
             {
-                if (_days.HasValue) return _days.Value;
-                throw new Exception("days property requested without first being set");
+                returnVar.LowerBound = GetTotalDays(Years, Months, 0);
+                DateTime today = DateTime.Today;
+                returnVar.UpperBound = GetTotalDays(Years, Months, DateTime.DaysInMonth(today.Year, today.Month));
             }
+            else
+            {
+                returnVar.LowerBound = GetTotalDays(Years, 0, 0);
+                returnVar.UpperBound = GetTotalDays(Years, 11, 31);
+            }
+            return returnVar;
         }
-        public int Months { get { return _months; } }
-        public int Years { get { return _years; } }
-        public int TotalMonths { get { return (12 * _years) + _months; } }
+        public int? GetAgeInDays()
+        {
+            return ((Dob.HasValue)
+                    ? (DateTime.Today - Dob.Value).Days
+                    : GetTotalDays(Years,Months,Days));
+        }
+        static int GetTotalDays(int years, int? months, int? days)
+        {
+            return (int)(years * DaysPerYear + months * DaysPerMonth + days);
+        }
     }
     public static class DnsInfo
     {

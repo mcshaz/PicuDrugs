@@ -2,7 +2,7 @@
     CodeBehind="EnterPtAnthropometry.aspx.cs" Inherits="PICUdrugs.Pages.EnterPtAnthropometry" %>
 
 <asp:Content ID="Content1" ContentPlaceHolderId="HeadContent" runat="server">
-    <link href="<%# ResolveUrl("~/CSS/EnterPtData.css")%>" rel="stylesheet" type="text/css"/>
+    <link href="<%# ResolveUrl("~/CSS/EnterPtData-0.2.css")%>" rel="stylesheet" type="text/css"/>
 </asp:Content>
 <asp:Content ID="Cotent2" ContentPlaceHolderId="headings" runat="server">
     <h2>Patient Height & Weight Data</h2>
@@ -16,7 +16,7 @@
         <div class="editor-label">
             <label for="MainContent_ptWeight">Weight</label>
             <asp:RangeValidator ID="ptWeightRngValidator" runat="server" CssClass="errorPoint"
-                ControlToValidate="ptWeight" ErrorMessage="Weight out of range"  Display="Dynamic">*</asp:RangeValidator>
+                ControlToValidate="ptWeight" ErrorMessage="Weight must be between 0.3 & 400 kg" Display="Dynamic" MinimumValue="0.3" MaximumValue="400">*</asp:RangeValidator>
         </div>
         <div class ="editor-field">
             <asp:TextBox ID="ptWeight" runat="server" CssClass="textBox"></asp:TextBox><span class="unit"> Kg</span>
@@ -43,7 +43,7 @@
                 ControlToValidate="ptAgeDays" ErrorMessage="Days out of range"  CssClass="errorPoint"
                 MaximumValue="72" MinimumValue="0" Type="Integer" Display="Dynamic">*</asp:RangeValidator>
             <asp:CustomValidator ID="DobOrAgeValidator" runat="server" 
-                OnServerValidate="DobOrAgeValServer" ClientValidationFunction="pic.vals.dobOrAgeValClient"  CssClass="errorPoint"
+                OnServerValidate="DobOrAgeValServer" ClientValidationFunction="pic.vals.dobOrFullAgeValClient"  CssClass="errorPoint"
                 ErrorMessage="Please enter age (including months) or DOB"  Display="Dynamic">*</asp:CustomValidator>
         </div>
         <div class ="editor-field">
@@ -78,6 +78,17 @@
         <div class="editor-field">
             <asp:TextBox ID="ptLength" runat="server" CssClass="textBox"></asp:TextBox><span class="unit"> Cm</span>
         </div>
+
+        <div class="editor-label">
+            <asp:Label ID="Label3" runat="server" >Gestation at Birth</asp:Label>
+            <asp:RangeValidator ID="GestationRangeValidator" ControlToValidate="WeeksGestation" runat="server"  CssClass="errorPoint"
+                 MinimumValue="23" MaximumValue="43" ValidationGroup="gender" Display="Dynamic">*</asp:RangeValidator>
+        </div>
+        <div class="editor-field">
+            <asp:TextBox runat="server" ID="WeeksGestation" Text="40" type="number" CssClass="textBox"/>
+            <span class="unit">Weeks</span>
+        </div>
+
         <div class="editor-label">
         </div>
         <asp:Button ID="Submit" runat="server" 
@@ -91,6 +102,6 @@
     </fieldset>
 </asp:Content>
 <asp:Content ID="MyScripts" ContentPlaceHolderId="masterScripts" runat="server">
-    <script src="<%# ResolveUrl("~/Scripts/DobAgePageManagement.js")%>" type="text/javascript"></script>
+    <script src="<%# ResolveUrl("~/Scripts/DobAgePageManagement-0.2.js")%>" type="text/javascript"></script>
     <script src="<%= ResolveUrl("Scripts/EnterAnthropometry.js")%>" type="text/javascript"></script>
 </asp:Content>

@@ -127,11 +127,11 @@ namespace PICUdrugs
             if (_jQueryScriptIncluded) { return; }
             if (IncludesCurrentBrowser(BrowserType.IeLegacy))
             {
-                CreateScript("//ajax.googleapis.com/ajax/libs/jquery/1.10.2/jquery.min.js", true);
+                CreateScript("//ajax.googleapis.com/ajax/libs/jquery/1.11.0/jquery.min.js", true);
             }
             else 
             {
-                CreateScript("//ajax.googleapis.com/ajax/libs/jquery/2.0.3/jquery.min.js", true);
+                CreateScript("//ajax.googleapis.com/ajax/libs/jquery/2.1.0/jquery.min.js", true);
             }
             _jQueryScriptIncluded = true;
         }
@@ -145,7 +145,7 @@ namespace PICUdrugs
             }
             else
             {
-                CreateScript("//ajax.googleapis.com/ajax/libs/jqueryui/1.10.3/jquery-ui.min.js", true);
+                CreateScript("//ajax.googleapis.com/ajax/libs/jqueryui/1.10.4/jquery-ui.min.js", true);
             }
             CreateStyle("~/CSS/jquery-ui-custom.css");
             _jQueryUIScriptIncluded = true;

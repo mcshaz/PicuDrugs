@@ -18,6 +18,7 @@ namespace PICUdrugs.BLL
         public bool IsMale { get; set; }
         public double WeightKg { get; set; }
         public double LengthCm { get; set; }
+        public double WeeksGestAgeAtBirth { get; set; }
         public double Bmi() { return WeightKg / (Math.Pow(LengthCm / 100, 2)); }
         public double Bsa() { return Math.Sqrt((LengthCm * WeightKg) / 3600); }
         private const string Peters = "Peters AM, Snelling HLR, Glass DM, Bird NJ. Estimate of lean body mass in children. <em>Br J Anaesth</em> 2011; <strong>106</strong>: 719-23";
