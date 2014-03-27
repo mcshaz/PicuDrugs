@@ -392,7 +392,13 @@ namespace PICUdrugs.Utils
         public int? Months { get; private set; }
         public int Years { get; private set; }
         public DateTime? Dob { get; private set; }
-        public int TotalMonthsEstimate { get { return (12 * Years) + Months ?? 6; } }
+        public int TotalMonthsEstimate 
+        { 
+            get 
+            { 
+                return (12 * Years) + (Months ?? 6); 
+            } 
+        }
         public int? TotalMonths { get { return (12 * Years) + Months; } }
         const double DaysPerYear = 365.25;
         const double DaysPerMonth = DaysPerYear / 12;

@@ -177,7 +177,7 @@ namespace PICUdrugs.Pages
             }
         }
         private string JSglobals() {
-            return "<script src='" + ResolveUrl("~/Scripts/PICUdrugUtils-0.3.js") + "' type='text/javascript'></script><script type='text/javascript'>" +
+            return "<script src='" + ResolveUrl("~/Scripts/PICUdrugUtils-0.4.js") + "' type='text/javascript'></script><script type='text/javascript'>" +
                 "pic.el('male','" + genderRadio.ClientID + "_0')" + 
                    ".el('female','" + genderRadio.ClientID + "_1')" + 
                    ".el('yrs','" + ptAgeYrs.ClientID + "')" + 

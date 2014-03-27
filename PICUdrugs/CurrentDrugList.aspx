@@ -39,7 +39,7 @@
     </div>
 </asp:Content>
 <asp:Content ID="MyScripts" ContentPlaceHolderId="masterScripts" runat="server">
-    <script type="text/javascript" src="<%# ResolveUrl("~/Scripts/PICUdrugUtils-0.3.js")%>"></script>
+    <script type="text/javascript" src="<%# ResolveUrl("~/Scripts/PICUdrugUtils-0.4.js")%>"></script>
     <script type="text/javascript">
         pic.util.addEvent(window, 'load', function () {
             var bolus = document.getElementById('bolusDrugs'),

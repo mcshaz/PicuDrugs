@@ -199,8 +199,8 @@ table.tabData
     color: #003399;
 }
 .validationError {
-    background-color:#F7D07B;
+    background-color:#F7F776;
     font-weight:bold;
-    border: solid 2px red;
+    border: solid 1px red;
 }
 

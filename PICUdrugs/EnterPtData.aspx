@@ -2,7 +2,7 @@
     CodeBehind="EnterPtData.aspx.cs" Inherits="PICUdrugs.Pages.EnterPtData" %>
 
 <asp:Content ID="Content1" ContentPlaceHolderId="HeadContent" runat="server">
-    <link href="<%# ResolveUrl("~/CSS/EnterPtData-0.2.css")%>" rel="stylesheet" type="text/css"/>
+    <link href="<%# ResolveUrl("~/CSS/EnterPtData-0.3.css")%>" rel="stylesheet" type="text/css"/>
 </asp:Content>
 <asp:Content ID="Cotent2" ContentPlaceHolderId="headings" runat="server">
     <h2>Drug Doses</h2>
@@ -157,6 +157,6 @@
     <script src="<%# ResolveUrl("~/Scripts/WtForAge.js")%>" type="text/javascript"></script>
     <script src="<%# ResolveUrl("~/Scripts/json2.min.js")%>" type="text/javascript"></script>
     <script src="<%# ResolveUrl("~/Scripts/DobAgePageManagement-0.2.js")%>" type="text/javascript"></script>
-    <script src="<%# ResolveUrl("~/Scripts/EnterPtData-0.2.js")%>" type="text/javascript"></script>
+    <script src="<%# ResolveUrl("~/Scripts/EnterPtData-0.3.js")%>" type="text/javascript"></script>
 </asp:Content>
 

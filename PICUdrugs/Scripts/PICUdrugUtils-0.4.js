@@ -73,7 +73,7 @@
                 })();
             }
         },
-        validateGroup: function (valGroups) {
+        validateGroup: function (valGroups, errorClassName) {
             var i, currentGrp,
                 summariesToDisplay = [];
             for (i = 0; i < valGroups.length; i++) {
@@ -88,6 +88,13 @@
                 currentGrp = Page_Validators[i].validationGroup || '';
                 if (summariesToDisplay.indexOf(currentGrp) > -1) {
                     ValidatorValidate(Page_Validators[i]); //this will display the contents of the validator element
+                    if (errorClassName && Page_Validators[i].controltovalidate) {
+                        if (Page_Validators[i].isvalid) {
+                            pic.util.removeClass(Page_Validators[i].controltovalidate, errorClassName);
+                        } else {
+                            pic.util.addClass(Page_Validators[i].controltovalidate, errorClassName);
+                        }
+                    }
                 }
             }
             ValidatorUpdateIsValid();
@@ -138,7 +145,7 @@
                         return returnObj;
                     },
                     validate: function () {
-                        var returnVar = pic.vals.validateGroup(valGroups);
+                        var returnVar = pic.vals.validateGroup(valGroups, errClassName);
                         if (!returnVar && anchorName) { window.location.hash = anchorName; }
                         return returnVar;
                     },
@@ -326,48 +333,6 @@
         }
     }, //end of util
     math: {
-        cumSnorm: function (Zscore) {
-            var ZAbs = Math.abs(Zscore),
-                returnVal,
-                build;
-            if (ZAbs > 37) {
-                return 0;
-            } else {
-                var Exponential = Math.exp(-Math.pow(ZAbs, 2) / 2);
-                if (ZAbs < 7.07106781186547) {
-                    build = 3.52624965998911E-02 * ZAbs + 0.700383064443688;
-                    build = build * ZAbs + 6.37396220353165;
-                    build = build * ZAbs + 33.912866078383;
-                    build = build * ZAbs + 112.079291497871;
-                    build = build * ZAbs + 221.213596169931;
-                    build = build * ZAbs + 220.206867912376;
-                    returnVal = Exponential * build;
-                    build = 8.83883476483184E-02 * ZAbs + 1.75566716318264;
-                    build = build * ZAbs + 16.064177579207;
-                    build = build * ZAbs + 86.7807322029461;
-                    build = build * ZAbs + 296.564248779674;
-                    build = build * ZAbs + 637.333633378831;
-                    build = build * ZAbs + 793.826512519948;
-                    build = build * ZAbs + 440.413735824752;
-                    returnVal = returnVal / build;
-                }
-                else {
-                    build = ZAbs + 0.65;
-                    build = ZAbs + 4 / build;
-                    build = ZAbs + 3 / build;
-                    build = ZAbs + 2 / build;
-                    build = ZAbs + 1 / build;
-                    returnVal = Exponential / build / 2.506628274631;
-                }
-            }
-            return (Zscore < 0) ? returnVal : 1 - returnVal;
-        },
-        zFromParams: function(xVal, params) {
-            if (params.L == 0) {
-                return Math.log(xVal / params.M) / params.S;
-            }
-            return (Math.pow(xVal / params.M, params.L) - 1) / (params.L * params.S);
-        },
         intWithSuffix: function (numericVal) {
             var suffix,
                 roundedVal = Math.round(numericVal),

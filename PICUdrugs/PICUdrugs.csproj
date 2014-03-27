@@ -211,7 +211,7 @@
     <Content Include="EnterPtAnthropometry.aspx" />
     <Content Include="CSS\BolusDrugs.css" />
     <Content Include="CSS\departmentListOrder.css" />
-    <Content Include="CSS\EnterPtData-0.2.css" />
+    <Content Include="CSS\EnterPtData-0.3.css" />
     <Content Include="CSS\ie6and7DataEntry.css" />
     <Content Include="CSS\InfusionCharts.css" />
     <Content Include="CSS\infusionDilution.css" />
@@ -277,7 +277,7 @@
     <Content Include="Scripts\masonry.min.js" />
     <Content Include="Scripts\MvcFoolproofValidation.min.js" />
     <Content Include="Scripts\orderManager.js" />
-    <Content Include="Scripts\PICUdrugUtils-0.3.js" />
+    <Content Include="Scripts\PICUdrugUtils-0.4.js" />
     <Content Include="Scripts\roleList.js" />
     <Content Include="Scripts\WardManagement.js" />
     <Content Include="Scripts\WtForAge.js" />
