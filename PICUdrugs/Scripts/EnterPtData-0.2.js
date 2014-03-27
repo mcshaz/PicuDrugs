@@ -1,5 +1,6 @@
 ﻿; (function () {
-    var wtData = uKWeightData();
+    var wtData = uKWeightData(),
+        centileAnswerThisSubmit;
     function asCentileString(centileRange) {
         if (centileRange instanceof NumericRange) {
             if(typeof centileRange.min == 'undefined') {
@@ -74,8 +75,12 @@
 
     pic.extend('vals', {
         centileValClient: function (source, args) {
-            if (pic.el.lowerCentileValue.value=="") {return;}
-            var centile = new pic.construct.NumericRange(pic.el.lowerCentileValue.value,pic.el.upperCentileValue.value),
+            if (pic.el.lowerCentileValue.value == "" || !args.IsValid) { return; }
+            if (centileAnswerThisSubmit===true || centileAnswerThisSubmit===false) {
+                args.IsValid = centileAnswerThisSubmit;
+                return;
+            }
+            var centile = new pic.construct.NumericRange(pic.el.lowerCentileValue.value, pic.el.upperCentileValue.value),
                 errMsg = function () {
                     var centileToUse = (centile.min>50)?centile.max:centile.min,
                         inverseCentile = Math.round(100 / (centileToUse > 50 ? (100 - centileToUse) : centileToUse)),
@@ -96,7 +101,7 @@
             }
             else if (centile.min <= pic.centileValue.softMin || centile.max >= pic.centileValue.softMax) {
                 var msg = errMsg();
-                args.IsValid = confirm(msg.text + " - are you SURE weight and age data are correct?");
+                args.IsValid = centileAnswerThisSubmit = confirm(msg.text + " - are you SURE weight and age data are correct?");
                 if (!args.IsValid) { source.errormessage = "Weight for age error: " + msg.html; }
             } else {
                 args.IsValid = true;
@@ -249,7 +254,6 @@
         pic.page.setCentileClass(new pic.construct.NumericRange(pic.el.lowerCentileValue.value, pic.el.upperCentileValue.value));
 
         pic.el.chooseLbl.appendChild(pic.el.drugName);
-        pic.el.centileText.disabled = true;
 
         ValidatorHookupControlID(pic.el.yrs.id, pic.el.WtOrAgeVal);
         ValidatorHookupControlID(pic.el.months.id, pic.el.WtOrAgeVal);
@@ -269,8 +273,8 @@
             setWt4Age.call(this);
         });
         pic.util.addEvent(document.getElementsByTagName('form')[0], 'submit', function (evt) {
+            centileAnswerThisSubmit = null;
             var Ok = pic.page.validateOnSubmit.validate(); // Page_IsValid &&
-            pic.el.centileText.disabled = !Ok;
             if (Ok) {
                 pic.util.setCookie("ward", pic.el.wardList.value, 260000); //~6 months in minutes
                 if (pic.el.bolus.checked) {

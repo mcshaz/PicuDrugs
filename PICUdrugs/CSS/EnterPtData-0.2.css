@@ -78,6 +78,8 @@ input[type="submit"] {
     color:Red;
     font-size:16pt;
     font-weight:bolder;
+    background-color:#EBEEF0;
+    border: none 0 #EBEEF0;
 }
 #drugForm
 {

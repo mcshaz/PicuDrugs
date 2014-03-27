@@ -65,7 +65,7 @@
             <input id="medianWeightBtn" type="button" value="Median Weight"/>
             <asp:HiddenField runat="server" ID="upperCentileValue" />
             <asp:HiddenField runat="server" ID="lowerCentileValue" />
-            <asp:TextBox ID="centileText" runat="server" CssClass="normalCentile"></asp:TextBox>
+            <asp:TextBox ID="centileText" runat="server" CssClass="normalCentile" ReadOnly="true"></asp:TextBox>
         </div>
         <div class="minor-label">
             <label id="weightEstimateLbl" for="MainContent_weightEstimate" >(estimated weight only)</label>
