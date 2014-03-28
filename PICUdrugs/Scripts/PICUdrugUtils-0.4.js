@@ -74,7 +74,7 @@
             }
         },
         validateGroup: function (valGroups, errorClassName) {
-            var i, currentGrp,
+            var i, currentGrp, validatedControls = {},
                 summariesToDisplay = [];
             for (i = 0; i < valGroups.length; i++) {
                 if (!Page_ClientValidate(valGroups[i])) { //this will display the contents of the validator summary
@@ -89,15 +89,20 @@
                 if (summariesToDisplay.indexOf(currentGrp) > -1) {
                     ValidatorValidate(Page_Validators[i]); //this will display the contents of the validator element
                     if (errorClassName && Page_Validators[i].controltovalidate) {
-                        if (Page_Validators[i].isvalid) {
-                            pic.util.removeClass(Page_Validators[i].controltovalidate, errorClassName);
-                        } else {
-                            pic.util.addClass(Page_Validators[i].controltovalidate, errorClassName);
-                        }
+                        validatedControls[Page_Validators[i].controltovalidate] = Page_Validators[i].isvalid && validatedControls[Page_Validators[i].controltovalidate] !== false;
                     }
                 }
             }
             ValidatorUpdateIsValid();
+            for (i in validatedControls) {
+                if (validatedControls.hasOwnProperty(i)) {
+                    if (validatedControls[i]) {
+                        pic.util.removeClass(document.getElementById(i), errorClassName);
+                    } else {
+                        pic.util.addClass(document.getElementById(i), errorClassName);
+                    }
+                }
+            }
             pic.vals.showValidationSummaries(summariesToDisplay);
             return false;
         },

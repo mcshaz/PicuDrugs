@@ -1,6 +1,8 @@
 ﻿; (function () {
     var wtData = uKWeightData(),
         centileAnswerThisSubmit;
+    
+    pic.el('male','MainContent_genderRadio_0').el('female','MainContent_genderRadio_1').el('yrs','MainContent_ptAgeYrs').el('months','MainContent_ptAgeMonths').el('days','MainContent_ptAgeDays').el('DOB','MainContent_ptDOB').el('WtOrAgeVal','MainContent_dobOrAgeValidator').el('DOBvalidator','MainContent_ptDOBRngValidator').el('weight','MainContent_ptWeight').el('guessCB','MainContent_weightEstimate').el('DOBval','MainContent_ptDOBRngValidator').el('medianWeightBtn').el('NHI','MainContent_ptNHI').el('centileVal','MainContent_centileValidator').el('wardList','MainContent_wardList').el('drugJSON','MainContent_drugJSON').el('bolus','MainContent_chartTypeRadio_0').el('list','MainContent_chartTypeRadio_1').el('choose','MainContent_chartTypeRadio_2').el('monthVal','MainContent_ptMonthsVal').el('gestation','MainContent_WeeksGestation').el('centileText','MainContent_centileText').el('upperCentileValue','MainContent_upperCentileValue').el('lowerCentileValue','MainContent_lowerCentileValue');pic.el.chooseLbl=pic.el.choose.parentNode.getElementsByTagName('label')[0];pic.centileValue = {};pic.centileValue.hardMin = 1E-10;pic.centileValue.softMin = 1;pic.centileValue.softMax = 99;pic.centileValue.hardMax = 99.9999999;pic.centileValue.set = {};pic.centileValue.set.age = new pic.construct.Age(null, null, null);pic.centileValue.set.weight = null;pic.centileValue.set.isMale = null;pic.el('drugDiv', 'drugSelect').el('concDiv').el('drugName', 'selectDrug').el('cancelConc').el('cancelDrug', 'cancelList').el('concTable').el('drugList').el('chosenDrug');
     function asCentileString(centileRange) {
         if (centileRange instanceof NumericRange) {
             if(typeof centileRange.min == 'undefined') {
@@ -296,7 +298,5 @@
             pic.page.displaySelectedDrug(pic.el.drugJSON);
         }
         if (typeof (Sys) !== 'undefined') Sys.Application.notifyScriptLoaded();
-
-        pic.vals.addErrorToControls("validationError");
     });
 })();

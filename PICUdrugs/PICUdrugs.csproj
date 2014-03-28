@@ -256,7 +256,7 @@
     <Content Include="Scripts\editInfusionDrugNames.js" />
     <Content Include="Scripts\DobAgePageManagement-0.2.js" />
     <Content Include="Scripts\EnterAnthropometry.js" />
-    <Content Include="Scripts\EnterPtData-0.2.js" />
+    <Content Include="Scripts\EnterPtData-0.3.js" />
     <Content Include="Scripts\jquery-1.10.1.js" />
     <Content Include="Scripts\jquery-1.10.1.min.js" />
     <Content Include="App.config">

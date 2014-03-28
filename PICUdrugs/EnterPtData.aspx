@@ -154,9 +154,9 @@
     </div>
 </asp:Content>
 <asp:Content ID="MyScripts" ContentPlaceHolderId="masterScripts" runat="server">
-    <script src="<%# ResolveUrl("~/Scripts/WtForAge.js")%>" type="text/javascript"></script>
-    <script src="<%# ResolveUrl("~/Scripts/json2.min.js")%>" type="text/javascript"></script>
-    <script src="<%# ResolveUrl("~/Scripts/DobAgePageManagement-0.2.js")%>" type="text/javascript"></script>
-    <script src="<%# ResolveUrl("~/Scripts/EnterPtData-0.3.js")%>" type="text/javascript"></script>
+    <script src="/Scripts/json2.min.js" type="text/javascript"></script>
+    <script src="/Scripts/PICUdrugUtils-0.4.js" type="text/javascript"></script>
+    <script src="/Scripts/DobAgePageManagement-0.2.js" type="text/javascript"></script>
+    <script src="/Scripts/EnterPtData-0.3.js" type="text/javascript"></script>
 </asp:Content>
 

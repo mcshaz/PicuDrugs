@@ -29,10 +29,6 @@ namespace PICUdrugs.Pages
         protected void Page_Load(object sender, EventArgs e)
         {
             Type csType = this.GetType();
-            if (!Page.ClientScript.IsStartupScriptRegistered(csType, "controlNames"))
-            {
-                Page.ClientScript.RegisterStartupScript(csType, "controlNames", JSglobals(), false);
-            }
             StatsForAge.JavaScript.Include_UkWeightData(Page.ClientScript);
             wardList.DataBind();
             if (!Page.IsPostBack)
