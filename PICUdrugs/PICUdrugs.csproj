@@ -262,6 +262,7 @@
     <Content Include="App.config">
       <SubType>Designer</SubType>
     </Content>
+    <Content Include="Administrators Guide to the Starship PICU Drug Calculator.pdf" />
     <None Include="Properties\PublishProfiles\WebDrive.pubxml" />
     <None Include="Scripts\jquery-2.0.3.intellisense.js" />
     <Content Include="Scripts\jquery-1.8.2.min.js" />

@@ -351,7 +351,12 @@ namespace PICUdrugs.Utils
         }
         static int? ToNullableInt(string val)
         {
-            return string.IsNullOrEmpty(val) ? (int?)null : Int32.Parse(val);
+            int result;
+            if (int.TryParse(val, out result))
+            {
+                return result;
+            }
+            return null;
         }
         public ChildAge(DateTime dob)
         {

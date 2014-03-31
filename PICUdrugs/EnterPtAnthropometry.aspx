@@ -5,7 +5,8 @@
     <link href="<%# ResolveUrl("~/CSS/EnterPtData-0.3.css")%>" rel="stylesheet" type="text/css"/>
 </asp:Content>
 <asp:Content ID="Cotent2" ContentPlaceHolderId="headings" runat="server">
-    <h2>Patient Height & Weight Data</h2>
+    <h2>Anthropometry</h2>
+    <p>Tools for calculating height, weight and BMI centiles, along with calculations to assist in estimating appropriate weight/lean body mass for drug calculations in obese patients.</p>
 </asp:Content>
 <asp:Content ID="FormContent" ContentPlaceHolderId="MainContent" runat="server">
     <asp:ScriptManager ID="PICUScriptManager" runat="server" EnablePageMethods="true" EnableScriptGlobalization="true">

@@ -28,8 +28,8 @@
        <ul class="inlineList">
             <li>Report a problem.</li>
             <li>Suggest any improvements or additions.</li>
-            <li>Set up a similar project for your own institution (the source code is available under a <a href="http://www.gnu.org/licences/gpl-3.0.txt">GNU General Public Licence, Version 3</a> on request).</li>
-            <li>(NZ DHBs only) Register as a department administrator, allowing you to choose which Infusions and resuscitation drugs to display in which order for your own institution.</li>
+            <li>Set up a similar project for your own institution - the source code is available under a <a href="http://www.gnu.org/licences/gpl-3.0.txt">GNU General Public Licence, Version 3</a> on <a href="https://github.com/mcshaz/PicuDrugs">GitHub</a>, with the centile calculation engine (in C# and JavaScript) available in as part of a seperate open source project (<a href="https://github.com/mcshaz/BlowTrial/tree/master/StatsForAge">BLOWtrial</a> - an RCT of BCG and oral polio vaccine in low birth weight infants). <a href="Administrators%20Guide%20to%20the%20Starship%20PICU%20Drug%20Calculator.pdf">Administrators' Instructions</a> are included to help you assertain if the project may be suitable.</li>
+            <li>Register as a department administrator, allowing you to choose which Infusions and resuscitation drugs to display in which order for your own institution.</li>
        </ul>
     <p>
         Thank you very much to those who assisted in this project, in particular Andrew Grady (software developer from healthAlliance), and Mark Ashcroft (software architect and Brent's neighbour).

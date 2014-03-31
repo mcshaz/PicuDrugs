@@ -6,6 +6,7 @@
     <siteMapNode url="~/EnterPtAnthropometry.aspx" title="Anthropometry" description="enter patient age, weight and length to calculate centiles and BSA" />
     <siteMapNode url="~/About.aspx" title="About" description="information regarding the PICU drug calculator">
       <siteMapNode url="~/CurrentDrugList.aspx" title="Drug Lists" description="A list of all drugs available on the calculator"/>
+      <siteMapNode url="~/Administrators Guide to the Starship PICU Drug Calculator.pdf" title="Administrators guide" description="A guide to how to create and modify infusions, or design a new list for a specific ward/department"/>
     </siteMapNode>
     <siteMapNode title="Edit Drugs" description="edit Infusions and boluses" roles="drugAdmin">
     <siteMapNode url="~/DrugAdmin/EditBolusDrugs.aspx" title="Resuscitation Drugs" description="edit resuscitation drugs" />
