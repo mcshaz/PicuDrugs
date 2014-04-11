@@ -5,8 +5,7 @@
     <link href="<%# ResolveUrl("~/CSS/EnterPtData-0.3.css")%>" rel="stylesheet" type="text/css"/>
 </asp:Content>
 <asp:Content ID="Cotent2" ContentPlaceHolderId="headings" runat="server">
-    <h2>Anthropometry</h2>
-    <p>Tools for calculating height, weight and BMI centiles, along with calculations to assist in estimating appropriate weight/lean body mass for drug calculations in obese patients.</p>
+    <h2>Tools for calculating height, weight and BMI centiles</h2>
 </asp:Content>
 <asp:Content ID="FormContent" ContentPlaceHolderId="MainContent" runat="server">
     <asp:ScriptManager ID="PICUScriptManager" runat="server" EnablePageMethods="true" EnableScriptGlobalization="true">
@@ -69,7 +68,7 @@
         </div>
 
         <div class="editor-label">
-            <asp:Label ID="Label1" runat="server" AssociatedControlId="ptLength">Length</asp:Label>
+            <asp:Label ID="Label1" runat="server" AssociatedControlId="ptLength">Height/Length*</asp:Label>
             <asp:RangeValidator ID="ptLengthRangeValidator" runat="server" CssClass="errorPoint"
                 ControlToValidate="ptLength" ErrorMessage="Length out of range"  Display="Dynamic" Type="Double" MinimumValue="30" MaximumValue="220">*</asp:RangeValidator>
             <asp:CustomValidator ID="LengthOrWeightValidator" runat="server" 
@@ -101,6 +100,7 @@
             <asp:ValidationSummary ID="ValidationSummaryMain" runat="server" cssClass="errorDescription"/>
         </div>
     </fieldset>
+    <p>*Height is required if using calculator to assist in estimating appropriate weight or lean body mass to use in drug calculations for obese patients.</p>
 </asp:Content>
 <asp:Content ID="MyScripts" ContentPlaceHolderId="masterScripts" runat="server">
     <script src="<%# ResolveUrl("~/Scripts/DobAgePageManagement-0.2.js")%>" type="text/javascript"></script>

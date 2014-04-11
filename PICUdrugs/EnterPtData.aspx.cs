@@ -229,7 +229,11 @@ namespace PICUdrugs.Pages
         #region Validators
         protected void DobOrAgeValServer(object source, ServerValidateEventArgs args)
         {
-            args.IsValid = !(ptAgeYrs.Text.Trim() == "" && ptDOB.Text.Trim() == "");
+            args.IsValid = HasDobOrAge();
+        }
+        bool HasDobOrAge()
+        {
+            return !(ptAgeYrs.Text.Trim() == "" && ptDOB.Text.Trim() == "");
         }
         protected void MonthsValServer(object source, ServerValidateEventArgs args)
         {
@@ -237,9 +241,7 @@ namespace PICUdrugs.Pages
         }
         protected void centileValidator_ServerValidate(object source, ServerValidateEventArgs args)
         {
-            //belongs to validationgroup centile
-            if (!(ptWeightRqdValidator.IsValid && ptWeightRngValidator.IsValid && dobOrAgeValidator.IsValid && ptMonthsVal.IsValid && ptDOBRngValidator.IsValid
-                && ptAgeRngValidator.IsValid && ptMonthRngValidator.IsValid && ptDaysRngValidator.IsValid))
+            if (!(Page.IsValid && HasDobOrAge()))
             {
                 return;
             }
@@ -301,6 +303,10 @@ namespace PICUdrugs.Pages
             }
             Page.Validate("centile");
             if (Page.IsValid) { Server.Transfer("~/PatientSpecificDrugChart.aspx", true); }
+            else 
+            { 
+                wardList.SelectedValue = Request.Form[wardList.UniqueID]; //feels like as hack - not sure why webpages doesn't do this
+            }
         }
 
         protected void wardList_DataBinding(object sender, EventArgs e)

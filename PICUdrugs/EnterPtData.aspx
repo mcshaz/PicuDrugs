@@ -77,7 +77,7 @@
         <div class="editor-label">
             <label  for="MainContent_ptDOB">DOB</label>
             <asp:RangeValidator ID="ptDOBRngValidator" runat="server"  CssClass="errorPoint"
-                ControlToValidate="ptDOB" ValidationGroup="age" Display="Dynamic">*</asp:RangeValidator>
+                ControlToValidate="ptDOB" Display="Dynamic">*</asp:RangeValidator>
             <div class="option-seperator">(or)</div>
         </div>
         <div class ="editor-field">
@@ -87,19 +87,19 @@
         <div class="editor-label">
             <label for="MainContent_ptAgeYrs">Age</label>
             <asp:RangeValidator ID="ptAgeRngValidator" runat="server" ControlToValidate="ptAgeYrs" CssClass="errorPoint"
-                ErrorMessage="Years out of range" ValidationGroup="age" Display="Dynamic">*</asp:RangeValidator>
+                ErrorMessage="Years out of range" Display="Dynamic">*</asp:RangeValidator>
             <asp:CustomValidator ID="ptMonthsVal" runat="server" ControlToValidate="ptAgeMonths" ValidateEmptyText="true"
                 OnServerValidate="MonthsValServer" ClientValidationFunction="pic.vals.monthsValClient"  CssClass="errorPoint"
                 ErrorMessage="Please enter age in months" Display="Dynamic">*</asp:CustomValidator>
             <asp:RangeValidator ID="ptMonthRngValidator" runat="server" 
                 ControlToValidate="ptAgeMonths" ErrorMessage="Months out of range"  CssClass="errorPoint"
-                MaximumValue="72" MinimumValue="0" Type="Integer" ValidationGroup="age" Display="Dynamic">*</asp:RangeValidator>
+                MaximumValue="72" MinimumValue="0" Type="Integer" Display="Dynamic">*</asp:RangeValidator>
             <asp:CustomValidator ID="dobOrAgeValidator" runat="server"
                 OnServerValidate="DobOrAgeValServer" ClientValidationFunction="pic.vals.dobOrAgeValClient"  CssClass="errorPoint"
                 ErrorMessage="Please enter age or DOB" ValidationGroup="age" Display="Dynamic">*</asp:CustomValidator>
             <asp:RangeValidator ID="ptDaysRngValidator" runat="server" 
                 ControlToValidate="ptAgeDays" ErrorMessage="Days out of range"  CssClass="errorPoint"
-                MaximumValue="72" MinimumValue="0" Type="Integer" ValidationGroup="age" Display="Dynamic">*</asp:RangeValidator>
+                MaximumValue="72" MinimumValue="0" Type="Integer" Display="Dynamic">*</asp:RangeValidator>
         </div>
         <div class ="editor-field">
             <asp:TextBox ID="ptAgeYrs" runat="server" CssClass="textBox" type="number"></asp:TextBox>
