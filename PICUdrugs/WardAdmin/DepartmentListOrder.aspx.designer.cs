@@ -10,7 +10,7 @@
 namespace PICUdrugs.WardAdmin {
     
     
-    public partial class departmentListOrder {
+    public partial class DepartmentListOrder {
         
         /// <summary>
         /// AntiforgeryToken control.

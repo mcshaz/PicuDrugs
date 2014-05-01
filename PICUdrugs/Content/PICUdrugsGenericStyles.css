@@ -1,0 +1,104 @@
+﻿.validationError, .DDValidator
+{
+    color:Red;
+}
+.editable, .edit, .insert
+{
+    background-color: #BBBBBB;
+}
+.alternateItem
+{
+    background-color:#E0FFFF;
+    color: #390E00;
+}
+.subTH
+{
+    Font-Size:0.7em;
+}
+.stdItem
+{
+    background-color: #FFFFFF;
+    color: #09063A;
+    border: 1px solid #BBBBBB;
+}
+#waitUpdating
+{
+    position:fixed;
+    top:50%;
+    left:50%;
+    margin-top:-16px;
+    margin-left:-64px;
+    height: 32px;
+    width: 128px;
+    background-repeat:no-repeat;
+    padding-left:40px;
+    line-height:32px;
+    background-image:url("PleaseWait.gif");
+}
+.preList
+{
+    margin-bottom:0;
+    padding-bottom:0;
+}
+.postList
+{
+    margin-top:0;
+    padding-top:0;
+}
+.inlineList
+{
+    margin-top:0;
+    margin-bottom:0;
+    padding-top:0;
+    padding-bottom:0;
+}
+.aspNetDisabled
+{
+    color:Gray;
+}
+.display-label, .editor-label, .minor-label {
+    clear: both;
+    display: inline-block;
+    height: auto;
+    text-align: right;
+    width: 25%;
+    vertical-align: middle;
+}
+.display-label, .editor-label {
+    font-weight: bold;
+    margin: 0.7em 1em 0 0;
+    position:relative;
+}
+.display-field, .editor-field, .minor-field {
+    display: inline-block;
+    /*margin: 0.8em 0 0;*/
+    vertical-align: middle;
+    width: 70%;
+}
+.display-field, .editor-field {
+    margin-top: 0.8em;
+}
+.minor-label, .option-seperator {
+    font-weight:lighter;
+    font-size:0.8em;
+    font-style:italic;
+    margin-right:1.4em;
+}
+.option-seperator {
+    right: -1em;
+    position: absolute;
+    top: 1.8em;
+    z-index:1;
+}
+fieldset {
+    display:inline;
+}
+.successNotification {
+    font-style:italic;
+    font-weight:500;
+    color:darkgreen;
+    /*border: 1px solid navy;*/
+}
+#resultSet {
+    min-width:25em;
+}

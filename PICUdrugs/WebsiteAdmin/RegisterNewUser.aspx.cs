@@ -51,6 +51,7 @@ namespace PICUdrugs.websiteAdmin
                     replacements.Add("<% UserName %>", newUser.UserName);
                     replacements.Add("<% Password %>", pwd);
                     replacements.Add("<% changePasswordUrl %>", ConvertRelativeUrlToAbsoluteUrl("~/personalAccount/ChangePassword.aspx") );
+                    replacements.Add("<% adminGuideUrl %>", ConvertRelativeUrlToAbsoluteUrl("~/Administrators%20Guide%20to%20the%20Starship%20PICU%20Drug%20Calculator.pdf"));
                     mail.BodyFileName = "~/App_Data/newUserConfirmation.txt";
                     //mail.From = Membership.GetUser().Email; use the web.config
                     mail.Subject = "Your new PICU drug calculator account";
@@ -107,7 +108,7 @@ namespace PICUdrugs.websiteAdmin
         private string ConvertRelativeUrlToAbsoluteUrl(string relativeUrl) {
             return string.Format("http{0}://{1}{2}",
                 (Request.IsSecureConnection) ? "s" : "", 
-                Request.Url.Host,
+                Request.Headers["Host"],
                 Page.ResolveUrl(relativeUrl));
         }
     }

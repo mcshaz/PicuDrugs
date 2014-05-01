@@ -1,8 +1,8 @@
 ﻿<%@ MasterType VirtualPath="~/Site.Master" %>
-<%@ Page Title="" Language="C#" MasterPageFile="~/Site.Master" AutoEventWireup="true" CodeBehind="DepartmentListOrder.aspx.cs" Inherits="PICUdrugs.WardAdmin.departmentListOrder" %>
+<%@ Page Title="" Language="C#" MasterPageFile="~/Site.Master" AutoEventWireup="true" CodeBehind="DepartmentListOrder.aspx.cs" Inherits="PICUdrugs.WardAdmin.DepartmentListOrder" %>
 <%@ Register Src="~/WardAdmin/WardManagement.ascx" TagPrefix="uc" TagName="WardManager" %>
 <asp:Content ID="Content1" ContentPlaceHolderId="HeadContent" runat="server">
-    <link href="<%# ResolveUrl("~/CSS/departmentListOrder.css")%>" rel="stylesheet" type="text/css" />
+    <link href="<%# ResolveUrl("~/Content/departmentListOrder.css")%>" rel="stylesheet" type="text/css" />
 </asp:Content>
 <asp:Content ID="Content3" ContentPlaceHolderId="headings" runat="server">
     <h2>Infusion List Order</h2>

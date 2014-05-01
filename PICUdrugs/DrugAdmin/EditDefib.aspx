@@ -1,7 +1,7 @@
 ﻿<%@ MasterType VirtualPath="~/Site.Master" %>
 <%@ Page Title="" Language="C#" MasterPageFile="~/Site.Master" AutoEventWireup="true" CodeBehind="EditDefib.aspx.cs" Inherits="PICUdrugs.drugAdmin.editDefib" %>
 <asp:Content ID="Content1" ContentPlaceHolderId="HeadContent" runat="server">
-    <link href="<%# ResolveUrl("~/CSS/WardManagement.css")%>" rel="stylesheet" type="text/css" />
+    <link href="<%# ResolveUrl("~/Content/WardManagement.css")%>" rel="stylesheet" type="text/css" />
 </asp:Content>
 <asp:Content ID="Content2" ContentPlaceHolderId="headings" runat="server">
     <h2>Edit Defibrillators</h2>

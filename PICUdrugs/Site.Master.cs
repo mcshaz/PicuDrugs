@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Diagnostics;
 using System.Linq;
+using System.Text;
 using System.Web;
 using System.Web.Security;
 using System.Web.UI;
@@ -147,7 +148,7 @@ namespace PICUdrugs
             {
                 CreateScript("//ajax.googleapis.com/ajax/libs/jqueryui/1.10.4/jquery-ui.min.js", true);
             }
-            CreateStyle("~/CSS/jquery-ui-custom.css");
+            CreateStyle("//ajax.googleapis.com/ajax/libs/jqueryui/1.10.4/themes/ui-lightness/jquery-ui.min.css");
             _jQueryUIScriptIncluded = true;
         }
         public System.Web.UI.HtmlControls.HtmlGenericControl CreateScript(string src)
@@ -170,10 +171,6 @@ namespace PICUdrugs
             ctrl.Attributes.Add("href", ResolveUrl(src));
             masterStyles.Controls.Add(ctrl);
             return ctrl;
-        }
-        protected bool ValidateRequest()
-        {
-            return (string)ViewState[AntiXsrfTokenKey] != _antiXsrfTokenValue || (string)ViewState[AntiXsrfUserNameKey] != (Context.User.Identity.Name ?? String.Empty);
         }
         [Flags]
         private enum BrowserType { Ie6 = 0x1, Ie7 = 0x2, Ie8 = 0x4, IeLegacy = 0x7, W3cCompliant = 0x8, All = 0x17 }

@@ -5,12 +5,12 @@ using System.Runtime.InteropServices;
 // General Information about an assembly is controlled through the following 
 // set of attributes. Change these attribute values to modify the information
 // associated with an assembly.
-[assembly: AssemblyTitle("PICUdrugs")]
+[assembly: AssemblyTitle("PICUdrugs2013")]
 [assembly: AssemblyDescription("")]
 [assembly: AssemblyConfiguration("")]
-[assembly: AssemblyCompany("Microsoft")]
-[assembly: AssemblyProduct("PICUdrugs")]
-[assembly: AssemblyCopyright("Copyright © Microsoft 2011")]
+[assembly: AssemblyCompany("")]
+[assembly: AssemblyProduct("PICUdrugs2013")]
+[assembly: AssemblyCopyright("Copyright ©  2014")]
 [assembly: AssemblyTrademark("")]
 [assembly: AssemblyCulture("")]
 
@@ -19,8 +19,8 @@ using System.Runtime.InteropServices;
 // COM, set the ComVisible attribute to true on that type.
 [assembly: ComVisible(false)]
 
-// The following GUId is for the Id of the typelib if this project is exposed to COM
-[assembly: Guid("fdf4779e-7681-4c90-b45e-a561bc6a139d")]
+// The following GUID is for the ID of the typelib if this project is exposed to COM
+[assembly: Guid("1be12402-c4da-4694-8030-8ae67b0e815f")]
 
 // Version information for an assembly consists of the following four values:
 //

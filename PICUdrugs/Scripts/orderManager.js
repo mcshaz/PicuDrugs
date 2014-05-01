@@ -9,7 +9,6 @@
         $(this).nextAll().slideToggle();
     });
     if ($submitBtns.length) {
-        $updateProgress = $('#updatingOrderProgress');
         $lists.each(function () {
             var $this = $(this),
                 $boundingDiv = $this.closest('div.orderGroup'),
@@ -115,7 +114,7 @@ function sendSortingUpdate(e) {
             var fullDetails = '(' + result.status + " : " + result.statusText + ')'
             alert("Unable to update:" + fullDetails);
             $waitUpdate.remove();
-            $updateProgress.addClass('errorUpdating').text('Update failed:' + Date().toString() + ' ' + fullDetails);
+            $('#updatingOrderProgress').addClass('errorUpdating').text('Update failed:' + Date().toString() + ' ' + fullDetails);
         }
     });
 }

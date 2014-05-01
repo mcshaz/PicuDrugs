@@ -2,7 +2,7 @@
     CodeBehind="EnterPtData.aspx.cs" Inherits="PICUdrugs.Pages.EnterPtData" %>
 
 <asp:Content ID="Content1" ContentPlaceHolderId="HeadContent" runat="server">
-    <link href="<%# ResolveUrl("~/CSS/EnterPtData-0.3.css")%>" rel="stylesheet" type="text/css"/>
+    <link href="<%# ResolveUrl("~/Content/EnterPtData-0.3.css")%>" rel="stylesheet" type="text/css"/>
 </asp:Content>
 <asp:Content ID="Cotent2" ContentPlaceHolderId="headings" runat="server">
     <h2>Drug Doses</h2>

@@ -23,15 +23,21 @@ namespace PICUdrugs.websiteAdmin
         }
         protected void Page_PreRender(object sender, EventArgs e)
         {
-            var selectedUser = UserList.Text;
-            currentRoleList.userName = selectedUser;
-            unlockUserButton.Enabled = Membership.GetUser(selectedUser).IsLockedOut;
-            DeleteUserButton.Enabled = Page.User.Identity.Name.ToLower() != selectedUser.ToLower(); // running logical comparison here + Remove, as selectedUser may change after Remove
+            if (!Page.IsPostBack)
+            {
+                currentRoleList.userName = UserList.Text;
+                SetEmail(Email, SelectedUser.Email);
+                unlockUserButton.Enabled = SelectedUser.IsLockedOut;
+                DeleteUserButton.Enabled = Page.User.Identity.Name.ToLower() != UserList.Text.ToLower(); // running logical comparison here + Remove, as selectedUser may change after Remove
+            }
         }
+
         protected void UserList_SelectedIndexChanged(object sender, EventArgs e)
         {
             currentRoleList.userName = UserList.Text;
+            SetEmail(Email, SelectedUser.Email);
         }
+
         protected void DeleteClick(object sender, EventArgs e)
         {
             var DeleteItem = UserList.SelectedItem;
@@ -53,6 +59,21 @@ namespace PICUdrugs.websiteAdmin
             {
                 currentRoleList.setRoles(UserList.Text);
                 successNotification.Visible = true;
+            }
+        }
+
+        static void SetEmail(HyperLink a, string email)
+        {
+            a.Text = email;
+            a.NavigateUrl = "mailto:" + email;
+        }
+
+        MembershipUser _selectedUser;
+        MembershipUser SelectedUser
+        {
+            get
+            {
+                return _selectedUser ?? (_selectedUser = Membership.GetUser(UserList.Text));
             }
         }
     }

@@ -54,6 +54,7 @@ namespace PICUdrugs.websiteAdmin
                 }
             }
         }
+        /*
         public bool AutoPostBack
         {
             set
@@ -69,6 +70,7 @@ namespace PICUdrugs.websiteAdmin
                 return Role2Control.First().AutoPostBack;
             }
         }
+        */
         public bool CausesValidation
         {
             set

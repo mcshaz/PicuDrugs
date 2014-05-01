@@ -1,7 +1,7 @@
 ﻿<%@ Page Title="" Language="C#" MasterPageFile="~/Site.Master" AutoEventWireup="true" CodeBehind="CurrentDrugList.aspx.cs" Inherits="PICUdrugs.CurrentDrugList" %>
 <asp:Content ID="Content2" ContentPlaceHolderID="HeadContent" runat="server">
-        <link href="<%# ResolveUrl("~/CSS/CurrentDrugList.css")%>" rel="stylesheet" type="text/css"/>
-        <!--[if lt IE 9]><link href="<%# ResolveUrl("~/CSS/nonCss3CurrentDrugs.css")%>" rel="stylesheet" type="text/css"/><![endif]-->
+        <link href="<%# ResolveUrl("~/Content/CurrentDrugList.css")%>" rel="stylesheet" type="text/css"/>
+        <!--[if lt IE 9]><link href="<%# ResolveUrl("~/Content/nonCss3CurrentDrugs.css")%>" rel="stylesheet" type="text/css"/><![endif]-->
 </asp:Content>
 <asp:Content ID="Content3" ContentPlaceHolderID="headings" runat="server">
 </asp:Content>

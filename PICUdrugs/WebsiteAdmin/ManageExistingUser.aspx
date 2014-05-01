@@ -13,23 +13,27 @@
         <asp:Literal runat="server" ID="successNotification" Text="User successfully updated." Visible="false" ViewStateMode="Disabled"/>
     </div>
     <fieldset>
-    <p>
-         <b>Select a User:</b>
-         <asp:DropDownList ID="UserList" runat="server" AutoPostBack="True"
-              DataTextField="UserName" DataValueField="UserName" OnSelectedIndexChanged="UserList_SelectedIndexChanged">
-         </asp:DropDownList>
-         <asp:LinkButton ID="unlockUserButton" runat="server" OnClick="unlockClick" Text="Unlock" 
-             CausesValidation="false" />
-         <asp:LinkButton ID="DeleteUserButton" runat="server" OnClick="DeleteClick" Text="Remove" 
-             CausesValidation="false" OnClientClick='return confirm("Are you sure you want to Remove this user?");' />
-    </p>
-    <p>
-         <uc:RoleList runat="server" ID="currentRoleList" AutoPostBack="false"
-            ValidationGroup="ManageUserVal"/>
-    </p>
-    <p>
-        <asp:Button runat="server" ID="Submit" Text="Update" OnClick="Submit_Click" ValidationGroup="ManageUserVal" />
-    </p>
-</fieldset>        
+        <legend />
+        <p>
+             <b>Select a User:</b>
+             <asp:DropDownList ID="UserList" runat="server" AutoPostBack="True"
+                  DataTextField="UserName" DataValueField="UserName" OnSelectedIndexChanged="UserList_SelectedIndexChanged">
+             </asp:DropDownList>
+             <asp:LinkButton ID="unlockUserButton" runat="server" OnClick="unlockClick" Text="Unlock" 
+                 CausesValidation="false" />
+             <asp:LinkButton ID="DeleteUserButton" runat="server" OnClick="DeleteClick" Text="Remove" 
+                 CausesValidation="false" OnClientClick='return confirm("Are you sure you want to Remove this user?");' />
+        </p>
+        <p>
+            <asp:Hyperlink runat="server" ID="Email" />
+        </p>
+        <p>
+             <uc:RoleList runat="server" ID="currentRoleList"
+                ValidationGroup="ManageUserVal"/>
+        </p>
+        <p>
+            <asp:Button runat="server" ID="Submit" Text="Update" OnClick="Submit_Click" ValidationGroup="ManageUserVal" />
+        </p>
+    </fieldset>        
 
 </asp:Content>

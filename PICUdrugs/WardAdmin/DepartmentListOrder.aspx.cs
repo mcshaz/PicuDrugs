@@ -14,13 +14,15 @@ using System.Web.Helpers;
 
 namespace PICUdrugs.WardAdmin
 {
-    public partial class departmentListOrder : System.Web.UI.Page
+    public partial class DepartmentListOrder : System.Web.UI.Page
     {
         private static string _validationTokenName = "__RequestVerificationToken";
+        private static string _templateSourceDirectory;
         protected void Page_Load(object sender, EventArgs e)
         {
             Master.AddJQueryUi();
-            AntiforgeryToken.Text = AntiForgery.GetHtml().ToHtmlString(); 
+            AntiforgeryToken.Text = AntiForgery.GetHtml().ToHtmlString();
+            if (_templateSourceDirectory == null) { _templateSourceDirectory = Page.AppRelativeTemplateSourceDirectory; }
         }
         protected void Page_PreRenderComplete(object sender, EventArgs e)
         {

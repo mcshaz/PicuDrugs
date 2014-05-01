@@ -1,10 +1,8 @@
-﻿<p>Hello</p>
+﻿<p>Welcome</p>
 <br>
 <p>You have been granted access to the Starship PICU drug calculator.</p>
-<br>
 <p>To log in to the site, please follow the link:</p>
 <p><a href='<% changePasswordUrl %>'><% changePasswordUrl %></a></p>
-<br>
 <p>And login with the following details:</p>
 <p><em>User name:</em></p>
 <p><strong><% UserName %></strong></p>
@@ -12,9 +10,7 @@
 <p><strong><% Password %></strong></p>
 <br>
 <p>After logging on, you will be able to change your password.</p>
-<br>
+<p>For details on how to use the calculator, please see the <a href='<% adminGuideUrl %>'>Administrators Guide</a></p>
 <p>Thank you for your part in helping optimise the calculator.</p>
-<br>
 <p>Regards</p>
-<br>
 <p>The PICU team.</p>

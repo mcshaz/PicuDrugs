@@ -3,7 +3,7 @@
     Inherits="PICUdrugs.drugAdmin.editInfusions" ViewStateMode="Inherit" %>
 <asp:Content ID="Content1" ContentPlaceHolderId="HeadContent" runat="server">
     
-    <link href="<%# ResolveUrl("~/CSS/InfusionDilution.css")%>" rel="stylesheet" type="text/css" />
+    <link href="<%# ResolveUrl("~/Content/InfusionDilution.css")%>" rel="stylesheet" type="text/css" />
 </asp:Content>
 <asp:Content ID="Content3" ContentPlaceHolderId="headings" runat="server">
     <h2>Edit Infusions for:</h2>

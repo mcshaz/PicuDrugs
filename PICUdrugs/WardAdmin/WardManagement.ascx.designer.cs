@@ -58,13 +58,13 @@ namespace PICUdrugs.websiteAdmin {
         protected global::System.Web.UI.HtmlControls.HtmlGenericControl hiddenDetails;
         
         /// <summary>
-        /// dptDetailView control.
+        /// DptDetailView control.
         /// </summary>
         /// <remarks>
         /// Auto-generated field.
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
-        protected global::System.Web.UI.WebControls.DetailsView dptDetailView;
+        protected global::System.Web.UI.WebControls.DetailsView DptDetailView;
         
         /// <summary>
         /// WardValSummary control.

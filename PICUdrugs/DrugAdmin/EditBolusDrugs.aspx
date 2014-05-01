@@ -1,7 +1,7 @@
 ﻿<%@ MasterType VirtualPath="~/Site.Master" %>
 <%@ Page Title="Edit Bolus Drugs" Language="C#" MasterPageFile="~/Site.Master" AutoEventWireup="true" CodeBehind="EditBolusDrugs.aspx.cs" Inherits="PICUdrugs.drugAdmin.editBolusDrugs" %>
 <asp:Content ID="Content1" ContentPlaceHolderId="HeadContent" runat="server">
-    <link href="<%# ResolveUrl("~/CSS/BolusDrugs.css")%>" rel="stylesheet" type="text/css" />
+    <link href="<%# ResolveUrl("~/Content/BolusDrugs.css")%>" rel="stylesheet" type="text/css" />
 </asp:Content>
 <asp:Content ID="Content2" ContentPlaceHolderId="headings" runat="server">
     <h2>Edit Bolus Drugs</h2>
