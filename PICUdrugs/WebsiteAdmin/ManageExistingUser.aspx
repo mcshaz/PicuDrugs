@@ -12,20 +12,21 @@
     <div class="successNotification">
         <asp:Literal runat="server" ID="successNotification" Text="User successfully updated." Visible="false" ViewStateMode="Disabled"/>
     </div>
-    <fieldset>
-        <legend />
         <p>
              <b>Select a User:</b>
              <asp:DropDownList ID="UserList" runat="server" AutoPostBack="True"
                   DataTextField="UserName" DataValueField="UserName" OnSelectedIndexChanged="UserList_SelectedIndexChanged">
              </asp:DropDownList>
-             <asp:LinkButton ID="unlockUserButton" runat="server" OnClick="unlockClick" Text="Unlock" 
-                 CausesValidation="false" />
-             <asp:LinkButton ID="DeleteUserButton" runat="server" OnClick="DeleteClick" Text="Remove" 
-                 CausesValidation="false" OnClientClick='return confirm("Are you sure you want to Remove this user?");' />
         </p>
-        <p>
+    <fieldset>
+        <legend >
             <asp:Hyperlink runat="server" ID="Email" />
+        </legend>
+        <p>
+            <asp:LinkButton ID="unlockUserButton" runat="server" OnClick="unlockClick" Text="Unlock" 
+                CausesValidation="false" />
+            <asp:LinkButton ID="DeleteUserButton" runat="server" OnClick="DeleteClick" Text="Remove" 
+                CausesValidation="false" OnClientClick='return confirm("Are you sure you want to Remove this user?");' />
         </p>
         <p>
              <uc:RoleList runat="server" ID="currentRoleList"

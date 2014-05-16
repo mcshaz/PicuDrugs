@@ -17,8 +17,8 @@ namespace PICUdrugs.websiteAdmin
         protected void Page_Init(object sender, EventArgs e)
         {
             DptDetailView.EnableDynamicData(typeof(Ward));
-            DptDropDownList.SelectedIndexChanged += DptDropDownList_SelectedIndexChanged;
         }
+
         protected void Page_Load(object sender, EventArgs e)
         {
             //ensure jquery available
@@ -77,10 +77,6 @@ namespace PICUdrugs.websiteAdmin
             }
         }
 
-        protected void DptListChanged(object sender, EventArgs e)
-        {
-            this.OnChanged(EventArgs.Empty);
-        }
         /// <summary>
         /// Static key of all the event handlers
         /// </summary>
@@ -89,33 +85,6 @@ namespace PICUdrugs.websiteAdmin
         /// This is the event where event handlers are collected into a evntHandlerList
         /// Page parser parses them from declarative syntax or you add them incode
         /// </summary>
-        public event EventHandler WardIndexChanged
-        {
-            add
-            {
-                Events.AddHandler(EventChange, value);
-                DptDropDownList.SelectedIndexChanged += new EventHandler(DptListChanged);
-            }
-            remove
-            {
-                Events.RemoveHandler(EventChange, value);
-                DptDropDownList.SelectedIndexChanged -= new EventHandler(DptListChanged);
-            }
-        }
-        private bool _changeHandled;
-        /// <summary>
-        /// This Description is used to raise change event. Do not *confuse* with aspx's OnChanged="method_name" syntax
-        /// </summary>
-        /// <param name="e"></param>
-        protected virtual void OnChanged(EventArgs e)
-        {
-            if (!_changeHandled)
-            {
-                EventHandler handler = Events[EventChange] as EventHandler;
-                if (handler != null) handler(this, e);
-                _changeHandled = true;
-            }
-        }
 
         protected void DptDetailViewPreRender(object sender, EventArgs e)
         {
@@ -156,12 +125,25 @@ namespace PICUdrugs.websiteAdmin
             }
         }
 
+        public EventHandler WardIndexChanged;
+
         protected void DptDropDownList_SelectedIndexChanged(object sender, EventArgs e)
         {
             if (DptDetailView.CurrentMode != DetailsViewMode.ReadOnly)
             {
                 DptDetailView.ChangeMode(DetailsViewMode.ReadOnly);
             };
+            if (WardIndexChanged != null)
+            {
+                WardIndexChanged(sender, e);
+            }
+        }
+
+        protected void DptDetailView_ItemCommand(object sender, DetailsViewCommandEventArgs e)
+        {
+            System.Diagnostics.Debug.WriteLine(e.CommandName);
+            System.Diagnostics.Debug.WriteLine(e.CommandSource);
+            System.Diagnostics.Debug.WriteLine(e.CommandArgument);
         }
     }
 }

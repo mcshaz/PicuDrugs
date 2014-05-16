@@ -160,21 +160,6 @@ namespace PICUdrugs.DAL
         [Range(0, 100000, ErrorMessage = "Dose per kg must be between 0 and 100 000 [units of measure]")]
         public int MaxDosePerKg { get; set; }
     }
-    [MetadataType(typeof(WardMetaData))]
-    public partial class Ward
-    {
-    }
-    public class WardMetaData
-    {
-        [StringLength(50, MinimumLength = 3)]
-        [Required]
-        [Display(Name = "Ward Name")]
-        public string Fullname { get; set; }
-        [StringLength(10, MinimumLength = 2)]
-        [Required]
-        [Display(Name = "Ward Abbreviation")]
-        public string Abbrev { get; set; }
-    }
     [MetadataType(typeof(DefibModelMetaData))]
     public partial class DefibModel
     {

@@ -30,9 +30,9 @@ namespace PICUdrugs.websiteAdmin
             {
                 MembershipCreateStatus createStatus;
                 string pwd = Membership.GeneratePassword(9, 2);
-                MembershipUser newUser = Membership.CreateUser(username: UserName.Text,
+                MembershipUser newUser = Membership.CreateUser(username: UserName.Text.Trim(),
                                                                password: pwd,
-                                                               email: Email.Text,
+                                                               email: Email.Text.Trim(),
                                                                passwordQuestion: null,
                                                                passwordAnswer: null,
                                                                isApproved: true,

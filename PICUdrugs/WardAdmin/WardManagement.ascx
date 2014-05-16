@@ -10,9 +10,9 @@
  </asp:ObjectDataSource>
 
  <asp:ObjectDataSource ID="SelectedDptObjDataSrc" runat="server"
-    SelectMethod="GetDepartmentByWardId" TypeName="PICUdrugs.BLL.WardBL"
+    SelectMethod="GetDepartmentByWardId" TypeName="PICUdrugs.BLL.WardBL"  OnDeleted="General_CRUD"
     DataObjectTypeName="PICUdrugs.DAL.Ward" DeleteMethod="DeleteWard" InsertMethod="InsertWard" UpdateMethod="UpdateWard"
-    ConflictDetection="CompareAllValues" OldValuesParameterFormatString="orig{0}" OnInserted="General_CRUD"  OnUpdated="General_CRUD" OnDeleted="General_CRUD">
+    ConflictDetection="CompareAllValues" OldValuesParameterFormatString="orig{0}" OnInserted="General_CRUD"  OnUpdated="General_CRUD" >
      <SelectParameters>
          <asp:ControlParameter ControlId="DptDropDownList" Name="dptId" PropertyName="SelectedValue" Type="Int32" />
      </SelectParameters>
@@ -21,16 +21,16 @@
 <div class="modelDetails">
     <div class="selectedDdl">
         Department: 
-        <asp:DropDownList ID="DptDropDownList" runat="server"
+        <asp:DropDownList ID="DptDropDownList" runat="server" ViewStateMode="Enabled"
             DataSourceID="allDpts" DataTextField="abbrev" OnDataBound="DptDropDownList_DataBound" OnPreRender="DptDropDownList_PreRender"
-            DataValueField="WardId" AutoPostBack="true" />
+            DataValueField="WardId" AutoPostBack="true" OnSelectedIndexChanged="DptDropDownList_SelectedIndexChanged" />
     </div>
     <div class="crudOps">
         <span class="displayDetails">Details</span>
         <div runat="server" id="hiddenDetails" enableviewstate="false">
             <div class="dptDetails selectedMenuItem">
                     <asp:DetailsView ID="DptDetailView" runat="server" DataSourceID="SelectedDptObjDataSrc" GridLines="None" OnPreRender="DptDetailViewPreRender"
-                       AutoGenerateRows="False" DataKeyNames="WardId">
+                       AutoGenerateRows="False" DataKeyNames="WardId" OnItemCommand="DptDetailView_ItemCommand">
                         <Fields>
                             <asp:DynamicField DataField="Fullname" HeaderText="Name" HeaderStyle-CssClass="detailLabel" ValidationGroup="wardDetails"/>
                             <asp:DynamicField DataField="Abbrev" HeaderText="Abbreviation" HeaderStyle-CssClass="detailLabel" ValidationGroup="wardDetails"/>
@@ -64,7 +64,8 @@
                             </asp:TemplateField> 
                             <asp:DynamicField DataField="PaddingInCm" HeaderText="Bolus Drug Padding (cm)" HeaderStyle-CssClass="detailLabel" ValidationGroup="wardDetails" />
                             <asp:CheckBoxField DataField="IsLive" HeaderText="Is Live" HeaderStyle-CssClass="detailLabel"/>
-                            <asp:CommandField ButtonType="Link" ValidationGroup="wardDetails" CausesValidation="true" />
+                            <asp:CommandField ButtonType="Link" ValidationGroup="wardDetails" CausesValidation="true" 
+                                ShowCancelButton="true" ShowDeleteButton="true" ShowEditButton="true" ShowInsertButton="true" />
                         </Fields>
                     </asp:DetailsView>
                     <asp:ValidationSummary runat="server" ID="WardValSummary" CssClass="validationError" EnableClientScript="true" Enabled="true" 

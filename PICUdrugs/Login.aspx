@@ -10,7 +10,7 @@
     <p>
         Please enter your username and password.
     </p>
-    <asp:Login ID="LoginUser" runat="server" EnableViewState="false" RenderOuterTable="false">
+    <asp:Login ID="LoginUser" runat="server" EnableViewState="false" RenderOuterTable="false" OnLoggedIn="LoginUser_LoggedIn">
         <LayoutTemplate>
             <span class="validationError">
                 <asp:Literal ID="FailureText" runat="server"></asp:Literal>

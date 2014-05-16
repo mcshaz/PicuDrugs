@@ -12,5 +12,14 @@ namespace PICUdrugs.Pages
         protected void Page_Load(object sender, EventArgs e)
         {
         }
+
+        protected void LoginUser_LoggedIn(object sender, EventArgs e)
+        {
+            string returnUrl = System.Web.Security.FormsAuthentication.GetRedirectUrl(LoginUser.UserName, LoginUser.RememberMeSet);
+            if (returnUrl.EndsWith("ChangePasswordSuccess.aspx") || returnUrl.EndsWith("PasswordRecovery.aspx"))
+            {
+                Response.Redirect("/EnterPtData.aspx");
+            }
+        }
     }
 }

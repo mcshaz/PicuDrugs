@@ -33,12 +33,13 @@ namespace PICUdrugs.BLL
                 throw;
             }
         }
-        public void UpdateWard(Ward Dpt, Ward origDpt)
+        public Ward UpdateWard(Ward ward, Ward origWard)
         {
             try
             {
-                ValidateUniqueName(Dpt);
-                _WardRepository.UpdateDepartment(Dpt, origDpt);
+                ValidateUniqueName(ward);
+                _WardRepository.UpdateDepartment(ward, origWard);
+                return ward;
             }
             catch (Exception)
             {
