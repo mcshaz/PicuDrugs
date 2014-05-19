@@ -265,6 +265,7 @@
     <Content Include="Scripts\editFixedTimeInfusions.js" />
     <Content Include="Scripts\editInfusion.js" />
     <Content Include="Scripts\editInfusionDrugNames.js" />
+    <Content Include="Scripts\emailGridUtilities.js" />
     <Content Include="Scripts\EnterAnthropometry.js" />
     <Content Include="Scripts\EnterPtData-0.3.js" />
     <Content Include="Scripts\jquery-1.11.0.min.js" />
@@ -288,6 +289,7 @@
     <Content Include="Web.config">
       <SubType>Designer</SubType>
     </Content>
+    <Content Include="WebsiteAdmin\EmailMembers.aspx" />
     <Content Include="WebsiteAdmin\ManageExistingUser.aspx" />
     <Content Include="WebsiteAdmin\RegisterNewUser.aspx" />
     <Content Include="WebsiteAdmin\RoleList.ascx" />
@@ -515,6 +517,7 @@
     <Compile Include="Site.Master.designer.cs">
       <DependentUpon>Site.Master</DependentUpon>
     </Compile>
+    <Compile Include="ViewModels\UserData.cs" />
     <Compile Include="WardAdmin\DepartmentListOrder.aspx.cs">
       <DependentUpon>DepartmentListOrder.aspx</DependentUpon>
       <SubType>ASPXCodeBehind</SubType>
@@ -528,6 +531,13 @@
     </Compile>
     <Compile Include="WardAdmin\WardManagement.ascx.designer.cs">
       <DependentUpon>WardManagement.ascx</DependentUpon>
+    </Compile>
+    <Compile Include="WebsiteAdmin\EmailMembers.aspx.cs">
+      <DependentUpon>EmailMembers.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="WebsiteAdmin\EmailMembers.aspx.designer.cs">
+      <DependentUpon>EmailMembers.aspx</DependentUpon>
     </Compile>
     <Compile Include="WebsiteAdmin\ManageExistingUser.aspx.cs">
       <DependentUpon>ManageExistingUser.aspx</DependentUpon>

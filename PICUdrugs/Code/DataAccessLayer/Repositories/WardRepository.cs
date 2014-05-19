@@ -12,6 +12,11 @@ namespace PICUdrugs.DAL
         {
             return _db.Wards.ToList();
         }
+        public IDictionary<int, string> GetDepartmentNames()
+        {
+            return (from w in _db.Wards
+                    select new { id = w.WardId, name = w.Fullname }).ToDictionary(key => key.id, value => value.name);
+        }
         public void InsertDepartment(Ward dpt)
         {
             try

@@ -18,6 +18,7 @@
   <siteMapNode title="Manage Users" description="add/Remove/modify users and Wards" roles="websiteAdmin">
     <siteMapNode title="Add" description="Add user and manage departments" url="~/WebsiteAdmin/RegisterNewUser.aspx"/>
     <siteMapNode title="Edit" description="Edit permissions for an existing user" url="~/WebsiteAdmin/ManageExistingUser.aspx" />
+    <siteMapNode title="Email" description="View all users +/- email" url="~/WebsiteAdmin/EmailMembers.aspx" />
   </siteMapNode>
   <siteMapNode url="~/PersonalAccount/ChangePassword.aspx" title="Change Password" />
   </siteMapNode>
