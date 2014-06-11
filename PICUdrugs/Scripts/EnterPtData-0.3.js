@@ -158,7 +158,7 @@
                 if (pic.el.months.value == "") {
                     pic.el.months.value = (pic.el.days.value == "") ? 6 : 0;
                 }
-                if (pic.el.days.value == "") { pic.el.days.value = 0; }
+                if (pic.el.days.value == "") { pic.el.days.value = "0"; }
                 totalDays = new pic.construct.Age(pic.el.yrs.value, pic.el.months.value, pic.el.days.value).asAgeDaysRange().midPoint();
                 median = wtData.lMSForAge(totalDays, pic.el.male.checked, parseInt(pic.el.gestation.value)).m;
                 pic.el.weight.value = Math.round(median);

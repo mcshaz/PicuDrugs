@@ -3,9 +3,10 @@
         $submitBtns = $('input').filter('[id^=submit]'),
         $bolusList,
         submitRegX = /included/i,
-        infusionRegX = /infusion/i;
+        infusionRegX = /infusion/i,
+        $cloneBolusBtn = $("#MainContent_cloneBolus");
     zebra($lists);
-    $(".clickHandle").on('click', function () {
+    $(".clickHandle").on('click', function (e) {
         $(this).nextAll().slideToggle();
     });
     if ($submitBtns.length) {
@@ -27,7 +28,7 @@
                 $submitBtn.on('click', { $list: $this, isInfusionList: isInfusion }, sendSortingUpdate);
                 if (!isInfusion) { $bolusList = $this; }
             }
-        })
+        });
         $("#addBolusHeader").on("click", function () {
             var $inpt = $("#bolusHeader"),
                 txt = $inpt.val();
@@ -46,6 +47,22 @@
             }
         });
     }
+    $cloneBolusBtn.on("click", function (e) {
+        e.stopPropagation();
+        ajaxShowWait();
+        $.ajax({
+            type: "POST",
+            url: document.URL + '/CloneWardBoluses',
+            data: JSON.stringify({ cloneFromId: $cloneBolusBtn.data("cloneFrom"), cloneToId: $cloneBolusBtn.data("cloneTo") }),
+            contentType: "application/json; charset=utf-8",
+            dataType: "json",
+            success: function () {
+                ajaxSuccess();
+                $cloneBolusBtn.prop("disabled", true);
+            },
+            error: ajaxError
+        });
+    })
 });
 //list sorting
 function zebra($which) {
@@ -87,34 +104,59 @@ function buildSortingArray($list, toInt, maxInfusions) {
         return el.getAttribute("data-id");
     })
 }
+function GetAntiForgeryToken() {
+    var tokenField = $("input[type='hidden'][name$='RequestVerificationToken']");
+    if (tokenField.length == 0) { return null; }
+    else {
+        return {
+            name: tokenField[0].name,
+            value: tokenField[0].value
+        };
+    }
+};
+$.ajaxPrefilter(function (options, localOptions, jqXHR) {
+    var token;
+    if (options.type.toLowerCase() !== 'get') {
+        token = GetAntiForgeryToken();
+        if (!token.name) { throw new ReferenceError("Cannot find antiforgery token"); }
+        /*
+        if (options.data.indexOf(token.name) === -1) {
+            options.data = options.data + '&' + token.name + '=' + token.value;
+        }
+        */
+        jqXHR.setRequestHeader(token.name, token.value);
+    }
+});
 function sendSortingUpdate(e) {
     var sortOrder = buildSortingArray(e.data.$list, e.data.isInfusionList, e.data.isInfusionList ? 17 : 19),
         wardIntVal = parseInt($('select').filter('[id$=DptDropDownList]:first').val()),
         $updateOutcome = $(this).siblings('.updateStatus:first'),
-        $waitUpdate,
-        that = this,
-        tokenField = $("input[name$='RequestVerificationToken']")[0],
-        tokenObject = {};
-    if (!sortOrder || isNaN(wardIntVal) || !tokenField) { return false; }
-    $waitUpdate = $('<div id="waitUpdating">Please wait updating...</div>').appendTo('Body');
-    tokenObject[tokenField.name] = tokenField.value
+        that = this;
+    if (!sortOrder || isNaN(wardIntVal)) { return false; }
+    ajaxShowWait();
     $.ajax({
         type: "POST",
         url: document.URL + (e.data.isInfusionList ? '/UpdateInfusionOrder' : '/UpdateBolusOrder'),
         data: JSON.stringify({ wardId: wardIntVal, drugIdlist: sortOrder }),
-        headers: tokenObject ,
         contentType: "application/json; charset=utf-8",
         dataType: "json",
         success: function () {
-            $waitUpdate.remove();
+            ajaxSuccess();
             that.disabled = true;
-            $updateOutcome.removeClass('errorUpdating').text('Successfully updated:' + Date().toString());
         },
-        error: function (result) {
-            var fullDetails = '(' + result.status + " : " + result.statusText + ')'
-            alert("Unable to update:" + fullDetails);
-            $waitUpdate.remove();
-            $('#updatingOrderProgress').addClass('errorUpdating').text('Update failed:' + Date().toString() + ' ' + fullDetails);
-        }
+        error: ajaxError
     });
+};
+function ajaxShowWait() {
+    $('<div id="waitUpdating">Please wait updating...</div>').appendTo('Body');
+}
+function ajaxSuccess() {
+    $("#waitUpdating").remove();
+    $updateOutcome.removeClass('errorUpdating').text('Successfully updated:' + Date().toString());
+};
+function ajaxError(result) {
+    var fullDetails = '(' + result.status + " : " + result.statusText + ')'
+    alert("Unable to update:" + fullDetails);
+    $("#waitUpdating").remove();
+    $('#updatingOrderProgress').addClass('errorUpdating').text('Update failed:' + Date().toString() + ' ' + fullDetails);
 }

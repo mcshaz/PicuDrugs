@@ -22,7 +22,7 @@
     <div class="selectedDdl">
         Department: 
         <asp:DropDownList ID="DptDropDownList" runat="server" ViewStateMode="Enabled"
-            DataSourceID="allDpts" DataTextField="abbrev" OnDataBound="DptDropDownList_DataBound" OnPreRender="DptDropDownList_PreRender"
+            DataSourceID="allDpts" DataTextField="abbrev" OnPreRender="DptDropDownList_PreRender"
             DataValueField="WardId" AutoPostBack="true" OnSelectedIndexChanged="DptDropDownList_SelectedIndexChanged" />
     </div>
     <div class="crudOps">
@@ -54,11 +54,11 @@
 			                        <%#Eval("BolusChartHeader")%>
 		                        </ItemTemplate>
 		                        <InsertItemTemplate>
-			                        <asp:TextBox ID="BolusChartHeader" TextMode="MultiLine" ValidationGroup="wardDetails"
+			                        <asp:TextBox ID="BolusChartHeader" TextMode="MultiLine" ValidationGroup="wardDetails" CssClass="rich"
 				                        Text='<%# Bind("BolusChartHeader") %>' runat="server"/>
 		                        </InsertItemTemplate>
 		                        <EditItemTemplate>
-			                        <asp:TextBox ID="BolusChartHeader" TextMode="MultiLine" ValidationGroup="wardDetails"
+			                        <asp:TextBox ID="BolusChartHeader" TextMode="MultiLine" ValidationGroup="wardDetails" CssClass="rich"
 				                        Text='<%# Bind("BolusChartHeader") %>' runat="server"/>
 		                        </EditItemTemplate>
                             </asp:TemplateField> 

@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Web;
 using PICUdrugs.DAL;
+using Westwind.Web.Utilities;
 namespace PICUdrugs.BLL
 {
     public class WardBL : IDisposable
@@ -22,6 +23,7 @@ namespace PICUdrugs.BLL
         }
         public Ward InsertWard(Ward dpt)
         {
+            CleanHtml(dpt);
             try
             {
                 ValidateUniqueName(dpt);
@@ -35,6 +37,7 @@ namespace PICUdrugs.BLL
         }
         public Ward UpdateWard(Ward ward, Ward origWard)
         {
+            CleanHtml(ward);
             try
             {
                 ValidateUniqueName(ward);
@@ -53,6 +56,11 @@ namespace PICUdrugs.BLL
         public IEnumerable<Ward> GetDepartments()
         {
             return _WardRepository.GetDepartments();
+        }
+        private static void CleanHtml(Ward dpt)
+        {
+            if ((new string[] { dpt.Fullname, dpt.Abbrev }).Any(w=>w.Contains('<') || w.Contains("&#"))) { throw new HttpRequestValidationException(); }
+            dpt.BolusChartHeader = HtmlSanitizer.SanitizeHtml(dpt.BolusChartHeader);
         }
         private void ValidateUniqueName(Ward dpt)
         {

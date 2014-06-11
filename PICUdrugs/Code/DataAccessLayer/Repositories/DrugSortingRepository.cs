@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Data.SqlClient;
 using System.Linq;
 using System.Web;
 
@@ -42,6 +43,25 @@ namespace PICUdrugs.DAL
             {
                 throw;
             }
+        }
+        public bool AnySortOrder(int wardId)
+        {
+            return _db.InfusionSortOrderings.Any(i => i.WardId == wardId);
+        }
+        public void CloneWard(int fromWardId, int toWardId)
+        {
+            var fromParam = new SqlParameter("@fromWardId",fromWardId);
+            var toParam = new SqlParameter("@toWardId", toWardId);
+            _db.Database.ExecuteSqlCommand(
+                @"INSERT INTO [PicuDrugData].[dbo].[InfusionSortOrdering]
+                    ([WardId]
+                    ,[InfusionDrugId]
+                    ,[SortOrder])
+                SELECT @toWardId
+                    ,[InfusionDrugId]
+                    ,[SortOrder]
+                FROM [PicuDrugData].[dbo].[InfusionSortOrdering]
+                WHERE [WardId]=@fromWardId", toParam, fromParam);
         }
         public void DeleteSortOrder(InfusionSortOrdering infSort)
         {
@@ -125,6 +145,27 @@ namespace PICUdrugs.DAL
             {
                 throw;
             }
+        }
+        public bool AnySortOrder(int wardId)
+        {
+            return _db.BolusSortOrdering.Any(b => b.WardId == wardId);
+        }
+        public void CloneWard(int fromWardId, int toWardId)
+        {
+            var fromParam = new SqlParameter("@fromWardId", fromWardId);
+            var toParam = new SqlParameter("@toWardId", toWardId);
+            _db.Database.ExecuteSqlCommand(
+                @"INSERT INTO [PicuDrugData].[dbo].[BolusSortOrdering]
+                    ([WardId]
+                    ,[BolusDrugId]
+                    ,[SortOrder]
+                    ,[SectionHeader])
+                SELECT @toWardId
+                    ,[BolusDrugId]
+                    ,[SortOrder]
+                    ,[SectionHeader]
+                FROM [PicuDrugData].[dbo].[BolusSortOrdering]
+                WHERE [WardId]=@fromWardId", toParam, fromParam);
         }
         public void InsertSortOrder(int WardId, string[] bolusIDs)
         {

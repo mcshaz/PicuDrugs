@@ -387,11 +387,11 @@
         },
         Age: function (years, months, days) {
             this.years = parseInt(years);
-            if (isNaN(this.years)) { this.years = null; }
+            if (isNaN(this.years)) { this.years = ""; }
             this.months = parseInt(months);
-            if (isNaN(this.months)) { this.months = null; }
+            if (isNaN(this.months)) { this.months = ""; }
             this.days = parseInt(days);
-            if (isNaN(this.days)) { this.days = null; }
+            if (isNaN(this.days)) { this.days = ""; }
             if (this.days > 28) {
                 var now = new Date(),
                     countBack = new Date(now.getFullYear(), now.getMonth(), 0),

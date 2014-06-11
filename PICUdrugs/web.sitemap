@@ -9,17 +9,17 @@
       <siteMapNode url="~/Administrators Guide to the Starship PICU Drug Calculator.pdf" title="Administrators guide" description="A guide to how to create and modify infusions, or design a new list for a specific ward/department"/>
     </siteMapNode>
     <siteMapNode title="Edit Drugs" description="edit Infusions and boluses" roles="drugAdmin">
-    <siteMapNode url="~/DrugAdmin/EditBolusDrugs.aspx" title="Resuscitation Drugs" description="edit resuscitation drugs" />
-    <siteMapNode url="~/DrugAdmin/EditInfusionDrugNames.aspx" title="Infusion Drugs" description="edit drugs used in Infusions"  />
-    <siteMapNode url="~/DrugAdmin/EditReferences.aspx" title="References" description="edit reference source details" />
-    <siteMapNode url="~/DrugAdmin/EditDefib.aspx" title="Defibs" description="edit defibrillator energy select"  />
-  </siteMapNode>
-  <siteMapNode title="Edit List Order" description="manage ordering of drug lists" url="~/WardAdmin/DepartmentListOrder.aspx" />
-  <siteMapNode title="Manage Users" description="add/Remove/modify users and Wards" roles="websiteAdmin">
-    <siteMapNode title="Add" description="Add user and manage departments" url="~/WebsiteAdmin/RegisterNewUser.aspx"/>
-    <siteMapNode title="Edit" description="Edit permissions for an existing user" url="~/WebsiteAdmin/ManageExistingUser.aspx" />
-    <siteMapNode title="Email" description="View all users +/- email" url="~/WebsiteAdmin/EmailMembers.aspx" />
-  </siteMapNode>
-  <siteMapNode url="~/PersonalAccount/ChangePassword.aspx" title="Change Password" />
+      <siteMapNode url="~/DrugAdmin/EditBolusDrugs.aspx" title="Resuscitation Drugs" description="edit resuscitation drugs" />
+      <siteMapNode url="~/DrugAdmin/EditInfusionDrugNames.aspx" title="Infusion Drugs" description="edit drugs used in Infusions"  />
+      <siteMapNode url="~/DrugAdmin/EditReferences.aspx" title="References" description="edit reference source details" />
+      <siteMapNode url="~/DrugAdmin/EditDefib.aspx" title="Defibs" description="edit defibrillator energy select"  />
+    </siteMapNode>
+    <siteMapNode title="Edit List Order" description="manage ordering of drug lists" url="~/WardAdmin/DepartmentListOrder.aspx" />
+    <siteMapNode title="Manage Users" description="add/Remove/modify users and Wards" roles="websiteAdmin">
+      <siteMapNode title="Add" description="Add user and manage departments" url="~/WebsiteAdmin/RegisterNewUser.aspx"/>
+      <siteMapNode title="Edit" description="Edit permissions for an existing user" url="~/WebsiteAdmin/ManageExistingUser.aspx" />
+    </siteMapNode>
+    <siteMapNode url="~/PersonalAccount/ChangePassword.aspx" title="Change Password" />
+    <siteMapNode title="All Users" description="View all users +/- email" url="~/PersonalAccount/EmailMembers.aspx" />
   </siteMapNode>
 </siteMap>

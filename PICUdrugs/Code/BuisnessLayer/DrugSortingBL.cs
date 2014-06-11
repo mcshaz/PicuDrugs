@@ -23,14 +23,23 @@ namespace PICUdrugs.BLL
         {
             this.infSortRepository = infSortRepository;
         }
-        public void SetNewSortOrdering(int WardId, int[] newOrder)
+        public void SetNewSortOrdering(int wardId, int[] newOrder)
         {
-            infSortRepository.DeleteSortOrder(WardId);
-            infSortRepository.InsertSortOrder(WardId, newOrder);
+            infSortRepository.DeleteSortOrder(wardId);
+            infSortRepository.InsertSortOrder(wardId, newOrder);
         }
-        public void DeleteAllOrderingforWard(int WardId)
+        public void DeleteAllOrderingforWard(int wardId)
         {
-            infSortRepository.DeleteSortOrder(WardId);
+            infSortRepository.DeleteSortOrder(wardId);
+        }
+        public void CloneWard(int fromWardId, int toWardId, bool allowOverwrite = false)
+        {
+            if (fromWardId == toWardId) { return; }
+            if (!allowOverwrite && infSortRepository.AnySortOrder(toWardId))
+            {
+                throw new InvalidOperationException("attempt to overwrite ward which already contains infusions");
+            }
+            infSortRepository.CloneWard(fromWardId, toWardId);
         }
         public IEnumerable<SortingDrugItem> GetAllVariableInfusions(int WardId)
         {
@@ -96,6 +105,19 @@ namespace PICUdrugs.BLL
         public void DeleteAllOrderingforWard(int WardId)
         {
             bolusSortRepository.DeleteSortOrder(WardId);
+        }
+        public bool AnyBoluses(int wardId)
+        {
+            return bolusSortRepository.AnySortOrder(wardId);
+        }
+        public void CloneWard(int fromWardId, int toWardId, bool allowOverwrite = false)
+        {
+            if (fromWardId == toWardId) { return; }
+            if (!allowOverwrite && bolusSortRepository.AnySortOrder(toWardId))
+            {
+                throw new InvalidOperationException("attempt to overwrite ward which already contains boluses");
+            }
+            bolusSortRepository.CloneWard(fromWardId, toWardId);
         }
         private bool disposedValue = false;
         protected virtual void Dispose(bool disposing)

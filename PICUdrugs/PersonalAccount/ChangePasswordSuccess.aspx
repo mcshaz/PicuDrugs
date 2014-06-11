@@ -7,7 +7,20 @@
     <h2>
         Change Password
     </h2>
-    <p>
+    <h4>
         Your password has been changed successfully.
-    </p>
+    </h4>
+    <div>
+        If this is your first time logging in, please:
+        <ul>
+            <li>
+                Note the new menu items now displaying to the left of the page.
+            </li> 
+            <li>
+                Read the
+                <asp:HyperLink runat="server" NavigateUrl="~/Administrators Guide to the Starship PICU Drug Calculator.pdf" Text="Administrator's guide" />
+                if you haven't already.
+            </li>
+        </ul>
+    </div>
 </asp:Content>

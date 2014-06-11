@@ -25,7 +25,7 @@ namespace PICUdrugs.websiteAdmin
         {
             if (!Page.IsPostBack)
             {
-                currentRoleList.userName = UserList.Text;
+                currentRoleList.UserName = UserList.Text;
                 SetEmail(Email, SelectedUser.Email);
                 unlockUserButton.Enabled = SelectedUser.IsLockedOut;
                 DeleteUserButton.Enabled = Page.User.Identity.Name.ToLower() != UserList.Text.ToLower(); // running logical comparison here + Remove, as selectedUser may change after Remove
@@ -34,7 +34,7 @@ namespace PICUdrugs.websiteAdmin
 
         protected void UserList_SelectedIndexChanged(object sender, EventArgs e)
         {
-            currentRoleList.userName = UserList.Text;
+            currentRoleList.UserName = UserList.Text;
             SetEmail(Email, SelectedUser.Email);
         }
 

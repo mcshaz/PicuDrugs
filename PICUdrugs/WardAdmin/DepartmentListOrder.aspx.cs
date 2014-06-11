@@ -38,19 +38,32 @@ namespace PICUdrugs.WardAdmin
                 submitBolusOps.Visible = false;
             }
             //BolusDrugs
-            BolusSortingBL bolusBL = new BolusSortingBL();
-            var boluses = bolusBL.GetAllDrugs(selectedWard).ToLookup(b => b.SortOrder != null);
-            bolusSortOrderLV.DataSource = boluses[true].OrderBy(b => b.SortOrder);
-            bolusSortOrderLV.DataBind();
-            remainingBolusLV.DataSource = boluses[false].OrderBy(b=>b.DrugName);
-            remainingBolusLV.DataBind();
+            using (BolusSortingBL bolusBL = new BolusSortingBL())
+            {
+                var boluses = bolusBL.GetAllDrugs(selectedWard).ToLookup(b => b.SortOrder != null);
+                bolusSortOrderLV.DataSource = boluses[true].OrderBy(b => b.SortOrder);
+                bolusSortOrderLV.DataBind();
+                remainingBolusLV.DataSource = boluses[false].OrderBy(b=>b.DrugName);
+                remainingBolusLV.DataBind();
+                if (selectedWard != WardList.CurrentUser.HomeWardId && WardList.CurrentUser.HomeWardId.HasValue && !bolusBL.AnyBoluses(WardList.CurrentUser.HomeWardId.Value))
+                {
+                    cloneBolus.Attributes.Add("data-clone-from", selectedWard.ToString());
+                    cloneBolus.Attributes.Add("data-clone-to", WardList.CurrentUser.HomeWardId.ToString());
+                }
+                else
+                {
+                    cloneBolus.Visible = false;
+                }
+            }
             //InfusionDrugs
-            InfusionSortingBL ISBL = new InfusionSortingBL();
-            var Infusions = ISBL.GetAllVariableInfusions(selectedWard).ToLookup(b => b.SortOrder != null);
-            InfusionSortOrderLV.DataSource = Infusions[true].OrderBy(b => b.SortOrder);
-            InfusionSortOrderLV.DataBind();
-            remainingInfusionsLV.DataSource = Infusions[false].OrderBy(b=>b.DrugName);
-            remainingInfusionsLV.DataBind();
+            using (InfusionSortingBL ISBL = new InfusionSortingBL())
+            {
+                var Infusions = ISBL.GetAllVariableInfusions(selectedWard).ToLookup(b => b.SortOrder != null);
+                InfusionSortOrderLV.DataSource = Infusions[true].OrderBy(b => b.SortOrder);
+                InfusionSortOrderLV.DataBind();
+                remainingInfusionsLV.DataSource = Infusions[false].OrderBy(b=>b.DrugName);
+                remainingInfusionsLV.DataBind();
+            }
         }
         private static Boolean CanModifyWard(int wardId)
         {
@@ -91,9 +104,8 @@ namespace PICUdrugs.WardAdmin
         public static void UpdateBolusOrder(int wardId, string[] drugIdlist)
         {
             ValidateAjaxRequest(wardId);
-            try
+            using (BolusSortingBL bolusBL = new BolusSortingBL())
             {
-                BolusSortingBL bolusBL = new BolusSortingBL();
                 if (drugIdlist.Length == 0)
                 {
                     bolusBL.DeleteAllOrderingforWard(wardId);
@@ -103,12 +115,16 @@ namespace PICUdrugs.WardAdmin
                     bolusBL.SetNewSortOrdering(wardId, drugIdlist);
                 }
             }
-            catch (Exception)
+        }
+        [WebMethod]
+        public static void CloneWardBoluses(int cloneFromId, int cloneToId)
+        {
+            ValidateAjaxRequest(cloneToId);
+            using (BolusSortingBL bolusBL = new BolusSortingBL())
             {
-                throw;
+                bolusBL.CloneWard(cloneFromId, cloneToId);
             }
         }
-
         protected void bolusLV_itemDataBound(object sender, ListViewItemEventArgs e)
         {
             var dataItem = (ListViewDataItem)e.Item;

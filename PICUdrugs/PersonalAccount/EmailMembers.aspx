@@ -5,13 +5,13 @@
 <asp:Content ID="Content4" ContentPlaceHolderID="MainContent" runat="server">
     <asp:GridView ID="MembershipList" runat="server" AutoGenerateColumns = "false">
         <Columns>
-            <asp:HyperLinkField DataNavigateUrlFields="Email" DataTextField="UserName" HeaderText="User" />
-            <asp:CheckboxField DataField ="IsWardAdmin" HeaderText="Ward"/>
-            <asp:CheckboxField DataField ="IsSiteAdmin" HeaderText="Site"/>
-            <asp:CheckboxField DataField ="IsDrugAdmin" HeaderText="Drug"/>
-            <asp:BoundField DataField ="Created" HeaderText="Created" DataFormatString="{0:d}" />
+            <asp:Boundfield DataField="UserName" HeaderText="User" />
+            <asp:CheckboxField DataField ="IsWardAdmin" HeaderText="Ward Admin"/>
+            <asp:CheckboxField DataField ="IsSiteAdmin" HeaderText="User Admin"/>
+            <asp:CheckboxField DataField ="IsDrugAdmin" HeaderText="Drug Admin"/>
+            <asp:BoundField DataField ="Created" HeaderText="Created" DataFormatString="{0:dd-MMM-yyyy}" />
             <asp:BoundField DataField ="Centre" HeaderText ="Centre"/>
-            <asp:TemplateField HeaderText="Include" >
+            <asp:TemplateField HeaderText="To" >
                 <ItemTemplate>
                     <input id="emailCB" type="checkbox" class="emailTo" value='<%# Bind("Email") %>' runat="server" />
                 </ItemTemplate>
@@ -21,7 +21,7 @@
     <label>
         <input type="checkbox" id="selectAll" /> Select All
     </label>
-    <input type="button" id ="emailSelected" value="Email" />
+    <input type="button" id ="emailSelected" value="Create Email" />
 </asp:Content>
 <asp:Content ID="MyScripts" ContentPlaceHolderId="masterScripts" runat="server">
     <script src="<%# ResolveUrl("~/Scripts/emailGridUtilities.js")%>" type="text/javascript"></script>

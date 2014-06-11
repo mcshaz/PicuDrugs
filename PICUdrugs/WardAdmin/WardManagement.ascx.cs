@@ -23,7 +23,7 @@ namespace PICUdrugs.websiteAdmin
         {
             //ensure jquery available
             SiteMaster containingMaster = Page.Master as SiteMaster;
-            containingMaster.AddJQuery();
+            containingMaster.AddTinyMce();
 
             //add css
             containingMaster.CreateStyle("~/Content/WardManagement.css");
@@ -69,7 +69,7 @@ namespace PICUdrugs.websiteAdmin
             }
         }
         UserWardDetails _currentUser;
-        UserWardDetails CurrentUser
+        internal UserWardDetails CurrentUser
         {
             get
             {
@@ -101,16 +101,9 @@ namespace PICUdrugs.websiteAdmin
                 if (val=="") {return -1;}
                 return int.Parse(val); 
             }
-            set { DptDropDownList.Text = value.ToString(); }
-        }
-
-        protected void DptDropDownList_DataBound(object sender, EventArgs e)
-        {
-            //handle permissions
-
-            if (!Page.IsPostBack && CurrentUser.HomeWardId.HasValue)
-            {
-                DptDropDownList.SelectedValue = CurrentUser.HomeWardId.Value.ToString();
+            set 
+            { 
+                DptDropDownList.Text = value.ToString(); 
             }
         }
 
@@ -126,6 +119,32 @@ namespace PICUdrugs.websiteAdmin
         }
 
         public EventHandler WardIndexChanged;
+
+        public bool DefaultToCurrentUserWard 
+        { 
+            set
+            {
+                if (!Page.IsPostBack)
+                {
+                    if (value)
+                    {
+                        DptDropDownList.DataBound += SetCurrentUserWard;
+                    }
+                    else
+                    {
+                        DptDropDownList.DataBound -= SetCurrentUserWard;
+                    }
+                }
+            }
+        }
+
+        void SetCurrentUserWard(object sender, EventArgs e)
+        {
+            if (CurrentUser.HomeWardId.HasValue)
+            {
+                DptDropDownList.SelectedValue = CurrentUser.HomeWardId.Value.ToString();
+            }
+        }
 
         protected void DptDropDownList_SelectedIndexChanged(object sender, EventArgs e)
         {

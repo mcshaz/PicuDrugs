@@ -18,7 +18,7 @@ namespace PICUdrugs.DAL
         public bool IsLive {get; set;}
         [Display(Name="Padding (cm)"),Range(0,2, ErrorMessage="Padding must be between 0 and 2cm")]
         public double PaddingInCm { get; set; }
-        [StringLength(50, MinimumLength = 3)]
+        [StringLength(512, MinimumLength = 3)]
         public string BolusChartHeader { get; set; }
     
         public virtual ICollection<BolusSortOrdering> BolusSortOrderings { get; set; }

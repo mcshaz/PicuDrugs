@@ -89,7 +89,7 @@ li.bolusSubHeader {
     margin: 0 2em 1em 0;
     display: inline-block;
 }
-input[type=button] {
+.submitOrder {
     margin: 1em;
 }
 .dragInstruction {

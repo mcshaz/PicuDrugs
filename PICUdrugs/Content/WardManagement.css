@@ -17,6 +17,7 @@ span.displayDetails
 .dptDetails {
     position:absolute;
     border:solid 1px #000000;
+    width:100%
 }
 .dptDetails td {
     padding:3px;
@@ -32,4 +33,7 @@ span.displayDetails
     font-size:0.9em;
     font-style:oblique;
     color:#001155;
+}
+#MainContent_WardList_DptDetailView {
+    width:100%;
 }

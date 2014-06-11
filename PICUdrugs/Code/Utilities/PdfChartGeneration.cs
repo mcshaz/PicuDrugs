@@ -36,8 +36,11 @@ using PICUdrugs.DAL;
 using PICUdrugs.Utils;
 using System;
 using System.Collections.Generic;
+using System.IO;
 using System.Linq;
+using System.Text.RegularExpressions;
 using System.Web;
+using System.Xml;
 
 namespace PICUdrugs.Code.Utilities
 {
@@ -111,6 +114,16 @@ namespace PICUdrugs.Code.Utilities
             style = doc.Styles[StyleNames.Heading1];
             style.ParagraphFormat.Alignment = ParagraphAlignment.Center;
             style.Font.Size = 22;
+            style.Font.Name = "Constantia";
+
+            style = doc.Styles[StyleNames.Heading2];
+            style.ParagraphFormat.Alignment = ParagraphAlignment.Center;
+            style.Font.Size = 20;
+            style.Font.Name = "Constantia";
+
+            style = doc.Styles[StyleNames.Heading3];
+            style.ParagraphFormat.Alignment = ParagraphAlignment.Left;
+            style.Font.Size = 16;
             style.Font.Name = "Constantia";
 
             //subheader rather than a header so that title does not appear in index
@@ -236,8 +249,7 @@ namespace PICUdrugs.Code.Utilities
         {
             // Each MigraDoc document needs at least one section.
             if (string.IsNullOrEmpty(header)) {header = "Emergency Prescription Chart";}
-            string joiner = header[0] == '\n' ? string.Empty : " ";
-            section.AddParagraph(dptName + joiner + header, "Heading1");
+            AddParaFromHtml(section, header);
             
             //define header style
             Style rowHeader = section.Document.AddStyle("RowHeader","Normal");
@@ -371,7 +383,7 @@ namespace PICUdrugs.Code.Utilities
         }
         private static void CreateStandardInfusionTable(Section section, string dpt, IEnumerable<StandardInfusion> standardInfusions)
         {
-            section.AddParagraph(dpt + "\nCommon Infusions", "Heading1");
+            section.AddParagraph(dpt + "\nCommon Infusions", StyleNames.Heading1);
             Document doc = section.Document;
 
             var tbl = section.AddTable();
@@ -582,6 +594,126 @@ namespace PICUdrugs.Code.Utilities
             para.AddFormattedText("Finish at", TextFormat.Bold);
             para = row.Cells[1].AddParagraph("\tstart time+" + singleDrug.InfusionData.Last().StopTimeStr(false));
             para.Format.Font.Color = (alternateBknd) ? white : lightGrey;
+        }
+        static string[] UsedHtmlTags = new string[] { "strong", "em", "span", "div", "p", "h1", "h2", "h3", "h4", "h5" };
+        static void AddParaFromHtml(Section section,string html)
+        {
+            Paragraph para = null;
+            XmlReader reader = XmlReader.Create(new StringReader(html));
+            Stack<Font> fontStack = new Stack<Font>();
+            fontStack.Push(section.Document.Styles[StyleNames.Normal].Font);
+            reader.Read();
+            while (!reader.EOF) //load loop
+            {
+                Font usedFont=null;
+                switch (reader.NodeType)
+                {
+                    case XmlNodeType.EndElement:
+                        if (UsedHtmlTags.Contains(reader.Name))
+                        {
+                            fontStack.Pop();
+                        }
+                        reader.Read();
+                        continue;
+                    case XmlNodeType.Comment:
+                        if (reader.Value.Trim()=="pagebreak")
+                        {
+                            section.AddPageBreak();
+                        }
+                        reader.Read();
+                        continue;
+                    case XmlNodeType.Element:
+                        if (reader.IsEmptyElement)
+                        {
+                            switch (reader.Name)
+                            {
+                               case "br":
+                                    para.AddLineBreak();
+                                    break;
+                               //case PageBreak
+                            }
+                            reader.Read();
+                            continue;
+                        }
+                        switch (reader.Name)
+                        {
+                            case "strong":
+                                usedFont = fontStack.Peek().Clone();
+                                usedFont.Bold = true;
+                                fontStack.Push(usedFont);
+                                break;
+                            case "em":
+                                usedFont = fontStack.Peek().Clone();
+                                usedFont.Italic = true;
+                                fontStack.Push(usedFont);
+                                break;
+                            case "h1":
+                            case "h2":
+                            case "h3":
+                            case "h4":
+                            case "h5":
+                            case "h6":
+                                para = section.AddParagraph("","Heading" + reader.Name[1]);
+                                usedFont = para.Format.Font;
+                                goto case "_attr";
+                            case "p":
+                            case "div": //?whether this should create paragraph
+                                para = section.AddParagraph("", StyleNames.Normal);
+                                usedFont = para.Format.Font;
+                                goto case "_attr";
+                            case "span":
+                                usedFont = fontStack.Peek();
+                                goto case "_attr";
+                            case "_attr":
+                                string attr = reader.GetAttribute("style");
+                                if (attr!=null)
+                                {
+                                    usedFont = usedFont.Clone();
+                                    UpdateStyleFromAttributes(reader.GetAttribute("style"), usedFont);
+                                }
+                                fontStack.Push(usedFont);
+                                
+                                break;
+                        }
+                        break;
+                    case XmlNodeType.Text:
+                        usedFont = fontStack.Peek();
+                        break;
+                }
+                string contents = reader.ReadString();
+                para.AddFormattedText(contents, usedFont);
+            }
+        }
+        static void UpdateStyleFromAttributes(string styleString, Font usedFont)
+        {
+            foreach (string styleAtr in styleString.Split(';'))
+            {
+                int i = styleAtr.IndexOf(':');
+                if (i == -1) { continue; }
+                string val = styleAtr.Substring(i + 1).Trim();
+                switch (styleAtr.Substring(0, i).Trim())
+                {
+                    case "color":
+                        //if (val[0] == '#') { val = "0xFF" + val.Substring(1); }
+                        usedFont.Color = new Color(Convert.ToByte(val.Substring(1, 2), 16),
+                            Convert.ToByte(val.Substring(3, 2), 16),
+                            Convert.ToByte(val.Substring(5, 2), 16));
+                        break;
+                    case "font-size":
+                        int pt = val.EndsWith("pt") ? int.Parse(val.Substring(0, val.Length - 2)) : 12 * int.Parse(val);
+                        usedFont.Size = Unit.FromPoint(pt);
+                        break;
+                    case "font-family":
+                        usedFont.Name = val;
+                        break;
+                    case "text-decoration":
+                        if (val == "underline")
+                        {
+                            usedFont.Underline = Underline.Single;
+                        }
+                        break;
+                }
+            }
         }
         #region testing tools
         /// <summary>

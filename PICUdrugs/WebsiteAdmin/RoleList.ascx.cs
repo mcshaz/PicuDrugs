@@ -30,7 +30,7 @@ namespace PICUdrugs.websiteAdmin
             //add javascript file
             containingMaster.CreateScript("~/Scripts/roleList.js");
         }
-        public string userName
+        public string UserName
         {
             set
             {
@@ -41,10 +41,10 @@ namespace PICUdrugs.websiteAdmin
                     cb.Checked = selectedUsersRoles.Contains(cb.ID);
                     if (cb.ID == "wardAdmin" && cb.Checked)
                     {
-                        UserProfile currentUser = UserProfile.GetUserProfile(value);
-                        if (currentUser.WardId.HasValue)
+                        UserProfile selectedUser = UserProfile.GetUserProfile(value);
+                        if (selectedUser.WardId.HasValue)
                         {
-                            WardList.SelectedWardId = currentUser.WardId.Value;
+                            WardList.SelectedWardId = selectedUser.WardId.Value;
                         }
                         else
                         {

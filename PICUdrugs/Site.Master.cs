@@ -121,8 +121,18 @@ namespace PICUdrugs
             masterScripts.DataBind();
             //sideMenu.StaticSelectedStyle.CssClass = "activeMenuItem";
         }
+        private bool _jHtmlAreaIncluded;
         private bool _jQueryScriptIncluded;
         private bool _jQueryUIScriptIncluded;
+        public void AddTinyMce()
+        {
+            if (_jHtmlAreaIncluded) { return; }
+            CreateScript("/Scripts/tinymce/tinymce.min.js", false);
+            //CreateScript("/Scripts/jHtmlArea.ColorPickerMenu-0.8.min.js", false);
+            //CreateStyle("/Content/jHtmlArea/jHtmlArea.css");
+            //CreateStyle("/Content/jHtmlArea/ColorPickerMenu.css");
+            _jHtmlAreaIncluded = true;
+        }
         public void AddJQuery()
         {
             if (_jQueryScriptIncluded) { return; }
