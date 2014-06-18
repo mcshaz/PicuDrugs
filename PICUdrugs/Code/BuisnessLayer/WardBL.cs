@@ -3,7 +3,8 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Web;
 using PICUdrugs.DAL;
-using Westwind.Web.Utilities;
+using PICUdrugs.Html.Utilities;
+using PICUdrugs.Code.Utilities;
 namespace PICUdrugs.BLL
 {
     public class WardBL : IDisposable
@@ -23,9 +24,9 @@ namespace PICUdrugs.BLL
         }
         public Ward InsertWard(Ward dpt)
         {
-            CleanHtml(dpt);
             try
             {
+                CleanHtml(dpt);
                 ValidateUniqueName(dpt);
                 _WardRepository.InsertDepartment(dpt);
                 return dpt; // to use in afterupdate
@@ -37,9 +38,9 @@ namespace PICUdrugs.BLL
         }
         public Ward UpdateWard(Ward ward, Ward origWard)
         {
-            CleanHtml(ward);
             try
             {
+                CleanHtml(ward);
                 ValidateUniqueName(ward);
                 _WardRepository.UpdateDepartment(ward, origWard);
                 return ward;
@@ -57,10 +58,22 @@ namespace PICUdrugs.BLL
         {
             return _WardRepository.GetDepartments();
         }
+        public int[] GetDepartmentIds()
+        {
+            return _WardRepository.GetDepartmentIds();
+        }
         private static void CleanHtml(Ward dpt)
         {
             if ((new string[] { dpt.Fullname, dpt.Abbrev }).Any(w=>w.Contains('<') || w.Contains("&#"))) { throw new HttpRequestValidationException(); }
             dpt.BolusChartHeader = HtmlSanitizer.SanitizeHtml(dpt.BolusChartHeader);
+            Exception testBolus = CreatePDFReport.TestHtml(dpt.BolusChartHeader);
+            if (testBolus != null) { throw new HtmlParsingException(testBolus); }
+            if (!string.IsNullOrEmpty(dpt.InfusionChartHeader))
+            {
+                dpt.InfusionChartHeader = HtmlSanitizer.SanitizeHtml(dpt.InfusionChartHeader);
+                Exception testInfusion = CreatePDFReport.TestHtml(dpt.InfusionChartHeader);
+                if (testBolus != null) { throw new HtmlParsingException(testInfusion); }
+            }
         }
         private void ValidateUniqueName(Ward dpt)
         {

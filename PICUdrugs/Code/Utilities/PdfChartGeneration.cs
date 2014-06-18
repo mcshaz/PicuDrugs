@@ -36,6 +36,7 @@ using PICUdrugs.DAL;
 using PICUdrugs.Utils;
 using System;
 using System.Collections.Generic;
+using System.Globalization;
 using System.IO;
 using System.Linq;
 using System.Text.RegularExpressions;
@@ -46,7 +47,18 @@ namespace PICUdrugs.Code.Utilities
 {
     public static class CreatePDFReport
     {
-        public const string hostUrl = "http://www.adhb.govt.nz/picuDrugs";
+        static CreatePDFReport()
+        { 
+            BlockEls = new HashSet<string>(new string[] { "div", "p", "h1", "h2", "h3", "h4", "h5", "h6" });
+            UsedHtmlTags = new HashSet<string>(new string[]{ "strong", "em", "span"});
+            UsedHtmlTags.UnionWith(BlockEls);
+            ThinWidth = new Unit(0.5);
+            MediumWidth = ThinWidth * 2;
+            HtmlUnits = new string[] { "px", "em", "pt" };
+            HtmlWidths = new string[] { "thin", "medium", "thick" };
+            StyleSeperator = new char[] { ';' };
+        }
+        public const string hostUrl = "http://www.paediatricdrugs.net/";
         public static PdfDocument CreatePdf(PatientDrugChartDetails patient, SelectedChart chartType, UserSelectedInfusion.SelectedInfusion drug=null, string url = hostUrl )
         {
             //return testHyperlinks();
@@ -74,7 +86,7 @@ namespace PICUdrugs.Code.Utilities
                 if (bolusList.Any())
                 {
                     dpt = InfusionData.GetWard();
-                    CreateBolusTable(section, dpt.Fullname, dpt.BolusChartHeader, bolusList, InfusionData.ETT(), dpt.PaddingInCm);
+                    CreateBolusTable(section, dpt.BolusChartHeader, bolusList, InfusionData.ETT(), dpt.PaddingInCm);
                 }
             }
             if (chartType == SelectedChart.bolusPlusInfusion)
@@ -83,7 +95,7 @@ namespace PICUdrugs.Code.Utilities
                 if (stdInf.Any())
                 {
                     section = doc.AddSection();
-                    CreateStandardInfusionTable(section, (dpt ?? InfusionData.GetWard()).Fullname, stdInf);
+                    CreateStandardInfusionTable(section, (dpt ?? InfusionData.GetWard()).InfusionChartHeader, stdInf);
                 }
             } 
             else if (chartType == SelectedChart.singleInfusion)
@@ -92,6 +104,21 @@ namespace PICUdrugs.Code.Utilities
             }
 
             return doc;
+        }
+        public static Exception TestHtml(string html)
+        {
+            var doc = new Document();
+            DefineStyles(doc);
+            SetupBolusClasses(doc);
+            try
+            {
+                AddParaFromHtml(doc.AddSection(), html);
+            }
+            catch(Exception ex)
+            {
+                return ex;
+            }
+            return null;
         }
         private static void DefineStyles(Document doc)
         {
@@ -235,40 +262,35 @@ namespace PICUdrugs.Code.Utilities
             para.Style = sign.Name;
 
             para = section.Footers.Primary.AddParagraph();
+            para.Format.AddTabStop(usableWidth/2, TabAlignment.Center);
             para.Format.AddTabStop(usableWidth, TabAlignment.Right);
             para.Format.Font.Size = 9;
-            para.AddText(String.Format("{0}\t", DateTime.Now.ToLongDateString()));
+            para.AddText("Page ");
+            para.AddPageField();
+            para.AddText(" of ");
+            para.AddNumPagesField();
+            para.AddTab();
             var hl = para.AddHyperlink(Url, HyperlinkType.Url);
             //a.AddFormattedText(Url, TextFormat.Underline);
-            hl.AddText(Url);
+            hl.AddText(Url + '\t');
+            para.AddText(DateTime.Today.ToString("d MMM yyyy"));
+
             return section;
         }
-        const int NewLineCharLimit = 32;
-        //currently 1cm per row via 0.05 cm top and bottom padding all cells, + 0.1cm top & bottom in rows which do not have route specified
-        private static void CreateBolusTable(Section section, string dptName,string header,IEnumerable<BolusDrugListItem> bolusList, Ett ett = null, double defaultPaddingCm=0)
+        static Table CreateBolusTable(Section section, double defaultPaddingCm)
         {
-            // Each MigraDoc document needs at least one section.
-            if (string.IsNullOrEmpty(header)) {header = "Emergency Prescription Chart";}
-            AddParaFromHtml(section, header);
-            
-            //define header style
-            Style rowHeader = section.Document.AddStyle("RowHeader","Normal");
-            rowHeader.ParagraphFormat.Alignment = ParagraphAlignment.Left;
-            rowHeader.Font.Bold = true;
-            rowHeader.Font.Size=14;
-
             // Create the item table
             var tbl = section.AddTable();
             tbl.Style = "Table";
             tbl.Borders.Color = Colors.Black;
-            tbl.Borders.Width = 0.25;
+            tbl.Borders.Width = ThinWidth;
             //table.Borders.Left.Width = 0.5;
             //table.Borders.Right.Width = 0.5;
             tbl.Rows.LeftIndent = 0;
             tbl.Rows.VerticalAlignment = VerticalAlignment.Center;
-            Unit extraPad = Unit.FromCentimeter(defaultPaddingCm);
-            tbl.BottomPadding = tbl.TopPadding = Unit.FromCentimeter(0.05);
             
+            tbl.BottomPadding = tbl.TopPadding = Unit.FromCentimeter(0.05);
+
             // Before you can add a row, you must define the columns
             Column column = tbl.AddColumn(Unit.FromCentimeter(7));
             column.Format.Alignment = ParagraphAlignment.Right;
@@ -295,42 +317,89 @@ namespace PICUdrugs.Code.Utilities
             //row.Cells[1].Format.Alignment = ParagraphAlignment.Left;
             //row.Cells[1].MergeRight = 3;
             Paragraph para = row.Cells[2].AddParagraph();
-            para.AddFormattedText("Notes",TextFormat.Underline);
+            para.AddFormattedText("Notes", TextFormat.Underline);
             para.AddLineBreak();
             para.AddText("Dose Calculation");
-            foreach (BolusDrugListItem bolus in bolusList)
+            return tbl;
+        }
+        private static void SetupBolusClasses(Document doc)
+        {
+            Style currentStyle = doc.AddStyle("RowHeader", "Normal");
+            currentStyle.ParagraphFormat.Alignment = ParagraphAlignment.Left;
+            currentStyle.Font.Bold = true;
+            currentStyle.Font.Size = 14;
+
+            currentStyle = doc.AddStyle("concentration", "Normal");
+            currentStyle.Font.Size = 11;
+
+            currentStyle = doc.AddStyle("route", "Normal");
+            currentStyle.Font.Italic = true;
+        }
+        //const int NewLineCharLimit = 32;
+        //currently 1cm per row via 0.05 cm top and bottom padding all cells, + 0.1cm top & bottom in rows which do not have route specified
+        private static void CreateBolusTable(Section section, string header,IEnumerable<BolusDrugListItem> bolusList, Ett ett = null, double defaultPaddingCm=0)
+        {
+            // Each MigraDoc document needs at least one section.
+            AddParaFromHtml(section, header);
+            
+            //define header style
+            SetupBolusClasses(section.Document);
+
+            Unit extraPad = Unit.FromCentimeter(defaultPaddingCm);
+
+            Table tbl = CreateBolusTable(section, defaultPaddingCm);
+
+            Row row = null;
+
+            Func<bool,Paragraph> CreateNewHeaderPara = new Func<bool,Paragraph>(isNewPageRequest =>
+            {
+                if (isNewPageRequest)
+                {
+                    section.AddPageBreak();
+                    AddParaFromHtml(section, header);
+                    tbl = CreateBolusTable(section, defaultPaddingCm);                   
+                }
+                row = tbl.AddRow();
+                row.Cells[0].MergeRight = 2;
+                var para = row.Cells[0].AddParagraph();
+                para.Format.Alignment = ParagraphAlignment.Left;
+                return para;
+            });
+            Func<bool, Paragraph> CreateNewStdPara = new Func<bool, Paragraph>(isNewPageRequest =>
             {
                 row = tbl.AddRow();
+                return row.Cells[0].AddParagraph();
+            });
+
+            foreach (BolusDrugListItem bolus in bolusList)
+            {
+                
                 if (bolus.IsHeader)
                 {
-                    row.Cells[0].MergeRight = 2;
-                    para = row.Cells[0].AddParagraph(bolus.RowTitle);
-                    para.Style = rowHeader.Name;
-                }
-                else
-                {
-                    var drugPara = row.Cells[0].AddParagraph(bolus.RowTitle);
-                    int drugParaLength;
-                    if (!string.IsNullOrEmpty(bolus.AmpuleConcentration))
+                    if (ett != null && bolus.RowTitle == PICUdrugs.BLL.BolusSortingBL.ETTsize)
                     {
-                        drugParaLength = bolus.RowTitle.Length + bolus.AmpuleConcentration.Length;
-                        if (drugParaLength > NewLineCharLimit) 
-                        { 
-                            drugPara.AddLineBreak(); 
-                            drugParaLength = bolus.AmpuleConcentration.Length;
-                        }
-                        else 
-                        { 
-                            drugPara.AddSpace(1);
-                            drugParaLength += 1;
-                        }
-                        var fmt = drugPara.AddFormattedText(string.Format("({0})",bolus.AmpuleConcentration));
-                        fmt.Font.Size = 11; //1 point less 
+                        row = tbl.AddRow();
+                        var para = row.Cells[0].AddParagraph("ETT");
+                        para.Format.SpaceBefore = para.Format.SpaceAfter = extraPad;
+                        var fmt = para.AddFormattedText("(internal diameter)", TextFormat.Italic);
+                        fmt.Size = 9;
+                        para = row.Cells[1].AddParagraph();
+                        if (ett.InternalDiameter.HasValue) { para.AddText(ett.InternalDiameter.Value.ToString("0.0")); }
+                        fmt = para.AddFormattedText(String.Format(" ({0}) mm", ett.InternalDiameterRange.ToString(1, NumericRange.Rounding.FixedDecimalPlaces)));
+                        if (!String.IsNullOrEmpty(ett.Note)) { fmt.AddText("\n" + ett.Note); }
+                        fmt.Size = 10;
+                        row.Cells[2].AddParagraph(String.Format("{0} cm @ lips\n{1} cm @ nose", ett.LengthAtLip, ett.LengthAtNose));
                     }
                     else
                     {
-                        drugParaLength = bolus.RowTitle.Length;
+                        AddParaFromHtml(section, bolus.RowTitle, CreateNewHeaderPara);
                     }
+                    //para.Style = rowHeader.Name;
+                }
+                else
+                {
+                    AddParaFromHtml(section, bolus.RowTitle, CreateNewStdPara);
+                    //ampule concentration: fmt.Font.Size = 11; //1 point less 
                     Paragraph adminPara = row.Cells[1].AddParagraph(String.Format("{0} {1}", bolus.BolusVolume.AsDrawingUpVolume(), bolus.AdministrationUnits));
                     adminPara.Format.SpaceBefore = adminPara.Format.SpaceAfter = extraPad;
                     Paragraph notePara;
@@ -354,36 +423,15 @@ namespace PICUdrugs.Code.Utilities
                         notePara.AddFormattedText(doseTotal, TextFormat.Bold);
                         notePara.AddText(string.Format("\nmax {0} {1}", bolus.AdultMax, bolus.MaxDoseUnits));
                     }
-                    if (bolus.Route!=null)
-                    {
-                        string prefix = (drugParaLength + bolus.Route.Length + 3 <= NewLineCharLimit) ? " - " : "\n";
-                        drugPara.AddFormattedText(prefix + bolus.Route, TextFormat.Italic);
-                    }
                 }
             }
 
             //now add ETT info if present
-            if (ett != null)
-            {
-                row = tbl.AddRow();
-                para = row.Cells[0].AddParagraph("ETT");
-                para.Format.SpaceBefore = para.Format.SpaceAfter = extraPad;
-                var fmt = para.AddFormattedText("(internal diameter)",TextFormat.Italic);
-                fmt.Size = 9;
-                para = row.Cells[1].AddParagraph();
-                if (ett.InternalDiameter.HasValue){para.AddText(ett.InternalDiameter.Value.ToString("0.0"));}
-                fmt = para.AddFormattedText(String.Format(" ({0}) mm",ett.InternalDiameterRange.ToString(1,NumericRange.Rounding.FixedDecimalPlaces)));
-                if (!String.IsNullOrEmpty(ett.Note)) {fmt.AddText("\n" +ett.Note);}
-                fmt.Size = 10;
-                row.Cells[2].AddParagraph(String.Format("{0} cm @ lips\n{1} cm @ nose",ett.LengthAtLip, ett.LengthAtNose));
-            }
-            
-            
             //tbl.SetEdge(0, 0, 6, 2, Edge.Box, BorderStyle.Single, 0.75, Color.Empty);
         }
-        private static void CreateStandardInfusionTable(Section section, string dpt, IEnumerable<StandardInfusion> standardInfusions)
+        private static void CreateStandardInfusionTable(Section section, string header, IEnumerable<StandardInfusion> standardInfusions)
         {
-            section.AddParagraph(dpt + "\nCommon Infusions", StyleNames.Heading1);
+            AddParaFromHtml(section, header);
             Document doc = section.Document;
 
             var tbl = section.AddTable();
@@ -401,7 +449,7 @@ namespace PICUdrugs.Code.Utilities
                 Style = BorderStyle.Single,
                 Color = new Color(b,b,b),
                 Visible = true,
-                Width = Unit.FromPoint(1)
+                Width = MediumWidth
             };
             Style concDetail = doc.Styles.AddStyle("concDetail", "Normal");
             concDetail.ParagraphFormat.AddTabStop(Unit.FromCentimeter(17.9), TabAlignment.Right);
@@ -412,7 +460,7 @@ namespace PICUdrugs.Code.Utilities
                 Style = BorderStyle.Single,
                 Color = new Color(b,b,b),
                 Visible = true,
-                Width = Unit.FromPoint(1)
+                Width = MediumWidth
             };
             string currentDrug = String.Empty;
             bool alternateBknd = false;
@@ -595,30 +643,64 @@ namespace PICUdrugs.Code.Utilities
             para = row.Cells[1].AddParagraph("\tstart time+" + singleDrug.InfusionData.Last().StopTimeStr(false));
             para.Format.Font.Color = (alternateBknd) ? white : lightGrey;
         }
-        static string[] UsedHtmlTags = new string[] { "strong", "em", "span", "div", "p", "h1", "h2", "h3", "h4", "h5" };
-        static void AddParaFromHtml(Section section,string html)
+        static HashSet<string> BlockEls;
+        static HashSet<string> UsedHtmlTags ;
+        static void AddParaFromHtml(Section section, string html)
+        {
+            AddParaFromHtml(section, html, isNewPageRequest=>{
+                if (isNewPageRequest) { section.AddPageBreak(); }
+                return section.AddParagraph();
+            });
+        }
+        /// <summary>
+        /// 
+        /// </summary>
+        /// <param name="section"></param>
+        /// <param name="html"></param>
+        /// <param name="createNewParagraph">a function which returns a new paragraph to create text within. the bool param is whether the request is for a newpage</param>
+        static void AddParaFromHtml(Section section, string html, Func<bool, Paragraph> createNewParagraph)
         {
             Paragraph para = null;
-            XmlReader reader = XmlReader.Create(new StringReader(html));
+            XmlReader reader = XmlReader.Create(new StringReader("<body>"+html+"</body>"));
             Stack<Font> fontStack = new Stack<Font>();
             fontStack.Push(section.Document.Styles[StyleNames.Normal].Font);
+            Font currentFont = null;
+            //To use this, would need to figure how to merge style and format
+            //Stack<ParagraphFormat> paragraphStack = new Stack<ParagraphFormat>();
+            //ParagraphFormat currentParaFormat = null;
             reader.Read();
+            
+            bool isFirstParagraphOfNewPage = false;
             while (!reader.EOF) //load loop
             {
-                Font usedFont=null;
                 switch (reader.NodeType)
                 {
+                    case XmlNodeType.Whitespace:
+                        if (currentFont != null && para !=null)
+                        {
+                            para.AddFormattedText(" ", currentFont);
+                        }
+                        reader.Read();
+                        continue;
                     case XmlNodeType.EndElement:
                         if (UsedHtmlTags.Contains(reader.Name))
                         {
                             fontStack.Pop();
+                            /*
+                            if (BlockEls.Contains(reader.Name))
+                            {
+                                paragraphStack.Pop();
+                            }
+                            */
                         }
                         reader.Read();
                         continue;
                     case XmlNodeType.Comment:
                         if (reader.Value.Trim()=="pagebreak")
                         {
-                            section.AddPageBreak();
+                            para = createNewParagraph(true);
+                            isFirstParagraphOfNewPage = true;
+                            currentFont = null;
                         }
                         reader.Read();
                         continue;
@@ -637,15 +719,18 @@ namespace PICUdrugs.Code.Utilities
                         }
                         switch (reader.Name)
                         {
+                            case "body":
+                                reader.Read();
+                                continue;
                             case "strong":
-                                usedFont = fontStack.Peek().Clone();
-                                usedFont.Bold = true;
-                                fontStack.Push(usedFont);
+                                currentFont = fontStack.Peek().Clone();
+                                currentFont.Bold = true;
+                                fontStack.Push(currentFont);
                                 break;
                             case "em":
-                                usedFont = fontStack.Peek().Clone();
-                                usedFont.Italic = true;
-                                fontStack.Push(usedFont);
+                                currentFont = fontStack.Peek().Clone();
+                                currentFont.Italic = true;
+                                fontStack.Push(currentFont);
                                 break;
                             case "h1":
                             case "h2":
@@ -653,66 +738,190 @@ namespace PICUdrugs.Code.Utilities
                             case "h4":
                             case "h5":
                             case "h6":
-                                para = section.AddParagraph("","Heading" + reader.Name[1]);
-                                usedFont = para.Format.Font;
+                                if (!isFirstParagraphOfNewPage)
+                                {
+                                    para = createNewParagraph(false);
+                                    currentFont = para.Format.Font;
+                                }
+                                string attr = reader.GetAttribute("class");
+                                para.Style = string.IsNullOrEmpty(attr)?"Heading" + reader.Name[1]:attr;
                                 goto case "_attr";
                             case "p":
-                            case "div": //?whether this should create paragraph
-                                para = section.AddParagraph("", StyleNames.Normal);
-                                usedFont = para.Format.Font;
+                            case "div":
+                                if (!isFirstParagraphOfNewPage)
+                                {
+                                    para = createNewParagraph(false);
+                                }
+                                currentFont = para.Format.Font;
+                                attr = reader.GetAttribute("class");
+                                if (!string.IsNullOrEmpty(attr))
+                                {
+                                    para.Style = attr;
+                                }
                                 goto case "_attr";
                             case "span":
-                                usedFont = fontStack.Peek();
+                                attr = reader.GetAttribute("class");
+                                currentFont = string.IsNullOrEmpty(attr)?fontStack.Peek():section.Document.Styles[attr].Font;
                                 goto case "_attr";
                             case "_attr":
-                                string attr = reader.GetAttribute("style");
+                                attr = reader.GetAttribute("style");
                                 if (attr!=null)
                                 {
-                                    usedFont = usedFont.Clone();
-                                    UpdateStyleFromAttributes(reader.GetAttribute("style"), usedFont);
+                                    var styleProps = attr.Split(StyleSeperator, StringSplitOptions.RemoveEmptyEntries).Map(s=>new CssStyleProperty(s));
+                                    currentFont = currentFont.Clone();
+                                    UpdateFontFromStyle(styleProps, currentFont);
+                                    if (BlockEls.Contains(reader.Name))
+                                    {
+                                        UpdateFormatFromStyle(styleProps, para.Format);
+                                    }
                                 }
-                                fontStack.Push(usedFont);
-                                
+                                fontStack.Push(currentFont);
                                 break;
                         }
                         break;
+                        /*
                     case XmlNodeType.Text:
-                        usedFont = fontStack.Peek();
+                        currentFont = fontStack.Peek();
                         break;
+                         * */
                 }
                 string contents = reader.ReadString();
-                para.AddFormattedText(contents, usedFont);
+                if (contents != "")
+                {
+                    if (para == null) //1st run through - if html does not begin with block element
+                    {
+                        para = createNewParagraph(false);
+                        currentFont = para.Format.Font;
+                    }
+                    else
+                    {
+                        isFirstParagraphOfNewPage = false;
+                    }
+                    para.AddFormattedText(contents, currentFont);
+                }
             }
         }
-        static void UpdateStyleFromAttributes(string styleString, Font usedFont)
+        static void UpdateFormatFromStyle(CssStyleProperty[] styleProperties, ParagraphFormat format)
         {
-            foreach (string styleAtr in styleString.Split(';'))
+            foreach (var prop in styleProperties)
             {
-                int i = styleAtr.IndexOf(':');
-                if (i == -1) { continue; }
-                string val = styleAtr.Substring(i + 1).Trim();
-                switch (styleAtr.Substring(0, i).Trim())
+                switch (prop.Name)
                 {
-                    case "color":
-                        //if (val[0] == '#') { val = "0xFF" + val.Substring(1); }
-                        usedFont.Color = new Color(Convert.ToByte(val.Substring(1, 2), 16),
-                            Convert.ToByte(val.Substring(3, 2), 16),
-                            Convert.ToByte(val.Substring(5, 2), 16));
-                        break;
-                    case "font-size":
-                        int pt = val.EndsWith("pt") ? int.Parse(val.Substring(0, val.Length - 2)) : 12 * int.Parse(val);
-                        usedFont.Size = Unit.FromPoint(pt);
-                        break;
-                    case "font-family":
-                        usedFont.Name = val;
-                        break;
-                    case "text-decoration":
-                        if (val == "underline")
+                    case "border":
+                        string[] borderAttr = prop.Value.Split(new[] { ' ' }, StringSplitOptions.RemoveEmptyEntries);
+                        int widthIndx = borderAttr.FindIndex(a => HtmlUnits.Any(u => a.EndsWith(u)));
+                        if (widthIndx == -1)
                         {
-                            usedFont.Underline = Underline.Single;
+                            int multiplierIndex = HtmlWidths.FindIndex(w => borderAttr.Contains(w));
+                            format.Borders.Width = ThinWidth * (multiplierIndex + 1);
+                            widthIndx = Array.IndexOf(borderAttr, HtmlWidths[multiplierIndex]); // reset to the 
+                        }
+                        else
+                        {
+                            format.Borders.Width = ParseHtmlUnit(borderAttr[widthIndx]);
+                        }
+                        int colourIndx = borderAttr.FindIndex(a => a[0] == '#');
+                        int styleIndx = (new int[] { 1, 2, 3 }).First(indx => indx != widthIndx && indx != colourIndx);
+                        format.Borders.Color = ParseColorString(borderAttr[colourIndx]);
+                        format.Borders.Visible = !(borderAttr[styleIndx] == "none" || borderAttr[styleIndx] == "hidden");
+                        break;
+                    case "margin-top":
+                        format.SpaceBefore = ParseHtmlUnit(prop.Value);
+                        break;
+                    case "margin-bottom":
+                        format.SpaceAfter = ParseHtmlUnit(prop.Value);
+                        break;
+                    case "padding-left":
+                        format.LeftIndent = ParseHtmlUnit(prop.Value);
+                        break;
+                    case "line-height":
+                        //intentionally ignoring complex differences in inheritance between css values in % or unitless
+                        int lastChar = prop.Value.Length - 1;
+                        format.LineSpacingRule = LineSpacingRule.Multiple;
+                        format.LineSpacing = (prop.Value[lastChar] == '%') ? (double.Parse(prop.Value.Substring(0, lastChar)) / 100) : double.Parse(prop.Value);
+                        break;
+                    case "text-indent":
+                        format.FirstLineIndent = ParseHtmlUnit(prop.Value);
+                        break;
+                    case "text-align":
+                        switch (prop.Value)
+                        {
+                            case "left":
+                                format.Alignment = ParagraphAlignment.Left;
+                                break;
+                            case "right":
+                                format.Alignment = ParagraphAlignment.Right;
+                                break;
+                            case "center":
+                                format.Alignment = ParagraphAlignment.Center;
+                                break;
+                            case "justify":
+                                format.Alignment = ParagraphAlignment.Justify;
+                                break;
                         }
                         break;
                 }
+            }
+        }
+        static void UpdateFontFromStyle(CssStyleProperty[] styleProperties, Font font)
+        {
+            foreach (var prop in styleProperties)
+            {
+                switch (prop.Name)
+                {
+                    case "color":
+                        //if (val[0] == '#') { val = "0xFF" + val.Substring(1); }
+                        font.Color = ParseColorString(prop.Value);
+                        break;
+                    case "font-size":
+                        font.Size = ParseHtmlUnit(prop.Value); //lots of stuff missed here - small, 150% etc
+                        break;
+                    case "font-family":
+                        font.Name = prop.Value;
+                        break;
+                    case "text-decoration":
+                        if (prop.Value == "underline")
+                        {
+                            font.Underline = Underline.Single;
+                        }
+                        break;
+                }
+            }
+        }
+        /// <summary>
+        /// Dumb but fast #000000 to color
+        /// </summary>
+        /// <returns></returns>
+        static Color ParseColorString (string colorString)
+        {
+            return new Color(uint.Parse("FF" + colorString.Substring(1), System.Globalization.NumberStyles.AllowHexSpecifier));
+        }
+        static readonly Unit ThinWidth;
+        static readonly Unit MediumWidth;
+        static readonly string[] HtmlUnits;
+        static readonly string[] HtmlWidths;
+        static readonly char[] StyleSeperator;
+        static Unit ParseHtmlUnit(string measure)
+        {
+            if (measure.Length <= 2)
+            {
+                return new Unit(0);
+            }
+            int splitPoint = measure.Length - 2;
+            string unit=measure.Substring(splitPoint);
+            double val = double.Parse(measure.Substring(0,splitPoint));
+            switch (unit)
+            {
+                case "px":
+                    val *= 0.75;
+                    goto case "pt";
+                case "em": //note incorrect parsing - of course relative to browser view size & parent
+                    val *= 12;
+                    goto case "pt";
+                case "pt":
+                    return new Unit(val);
+                default:
+                throw new NotImplementedException("px em(explicit) ex");
             }
         }
         #region testing tools

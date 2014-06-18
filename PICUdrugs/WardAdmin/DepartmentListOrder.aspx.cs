@@ -1,8 +1,6 @@
 ﻿using System;
-using System.Collections.Generic;
 using System.Linq;
 using System.Web;
-using System.Web.Security;
 using System.Web.UI;
 using System.Web.UI.WebControls;
 using System.Web.Services;
@@ -21,6 +19,7 @@ namespace PICUdrugs.WardAdmin
         protected void Page_Load(object sender, EventArgs e)
         {
             Master.AddJQueryUi();
+            Master.AddTinyMce();
             AntiforgeryToken.Text = AntiForgery.GetHtml().ToHtmlString();
             if (_templateSourceDirectory == null) { _templateSourceDirectory = Page.AppRelativeTemplateSourceDirectory; }
         }
@@ -29,7 +28,7 @@ namespace PICUdrugs.WardAdmin
             var selectedWard = WardList.SelectedWardId;
             if (WardList.CanModifySelectedWard)
             {
-                bolusHeader.MaxLength = FieldConst.maxBolusSubHeaderLength;
+                bolusHeader.MaxLength = BolusSortOrdering.maxBolusSubHeaderLength;
                 bolusHeader.ClientIDMode = System.Web.UI.ClientIDMode.Static;
             }
             else
@@ -37,39 +36,52 @@ namespace PICUdrugs.WardAdmin
                 submitInfusionOps.Visible = false;
                 submitBolusOps.Visible = false;
             }
+            int[] emptywards;
+            ILookup<bool, SortingDrugItem> sortingDrugs;
             //BolusDrugs
             using (BolusSortingBL bolusBL = new BolusSortingBL())
             {
-                var boluses = bolusBL.GetAllDrugs(selectedWard).ToLookup(b => b.SortOrder != null);
-                bolusSortOrderLV.DataSource = boluses[true].OrderBy(b => b.SortOrder);
-                bolusSortOrderLV.DataBind();
-                remainingBolusLV.DataSource = boluses[false].OrderBy(b=>b.DrugName);
-                remainingBolusLV.DataBind();
-                if (selectedWard != WardList.CurrentUser.HomeWardId && WardList.CurrentUser.HomeWardId.HasValue && !bolusBL.AnyBoluses(WardList.CurrentUser.HomeWardId.Value))
+                sortingDrugs = bolusBL.GetAllDrugs(selectedWard).ToLookup(b => b.SortOrder != null);
+                emptywards = bolusBL.GetWardsWithoutBoluses();
+            }
+            foreach (var bolusItem in sortingDrugs[true])
+            {
+                bolusItem.DrugName = bolusItem.DrugName.Replace("<!-- pagebreak -->","-- pagebreak --"); // could change this to have a bool property denoting a sectionheader, and only change those items
+            }
+            bolusSortOrderLV.DataSource = sortingDrugs[true].OrderBy(b => b.SortOrder);
+            bolusSortOrderLV.DataBind();
+            remainingBolusLV.DataSource = sortingDrugs[false].OrderBy(b=>b.DrugName);
+            remainingBolusLV.DataBind();
+
+
+            var currentUserWard = new UserWardDetails(HttpContext.Current.User.Identity.Name);
+            using (WardBL wardBl = new WardBL())
+            {
+                var wardList = wardBl.GetDepartments().Where(w => w.WardId != selectedWard && emptywards.Contains(w.WardId) && currentUserWard.HasEditPermission(w.WardId)).ToList();
+                if (wardList.Any())
                 {
-                    cloneBolus.Attributes.Add("data-clone-from", selectedWard.ToString());
-                    cloneBolus.Attributes.Add("data-clone-to", WardList.CurrentUser.HomeWardId.ToString());
+                    cloneBolusSelect.DataSource = wardList;
+                    cloneBolusSelect.DataTextField = "Abbrev";
+                    cloneBolusSelect.DataValueField = "WardId";
+                    cloneBolusSelect.DataBind();
+                    cloneBolusGo.Attributes.Add("data-clone-from", selectedWard.ToString());
                 }
                 else
                 {
-                    cloneBolus.Visible = false;
+                    cloneBolusLabel.Visible = cloneBolusGo.Visible = cloneBolusSelect.Visible = false;
                 }
             }
             //InfusionDrugs
             using (InfusionSortingBL ISBL = new InfusionSortingBL())
             {
-                var Infusions = ISBL.GetAllVariableInfusions(selectedWard).ToLookup(b => b.SortOrder != null);
-                InfusionSortOrderLV.DataSource = Infusions[true].OrderBy(b => b.SortOrder);
-                InfusionSortOrderLV.DataBind();
-                remainingInfusionsLV.DataSource = Infusions[false].OrderBy(b=>b.DrugName);
-                remainingInfusionsLV.DataBind();
+                sortingDrugs = ISBL.GetAllVariableInfusions(selectedWard).ToLookup(b => b.SortOrder != null);
             }
+            InfusionSortOrderLV.DataSource = sortingDrugs[true].OrderBy(b => b.SortOrder);
+            InfusionSortOrderLV.DataBind();
+            remainingInfusionsLV.DataSource = sortingDrugs[false].OrderBy(b => b.DrugName);
+            remainingInfusionsLV.DataBind();
         }
-        private static Boolean CanModifyWard(int wardId)
-        {
-            var currentUserWard = new UserWardDetails(HttpContext.Current.User.Identity.Name);
-            return currentUserWard.HasEditPermission(wardId);
-        }
+
         [WebMethod]
         public static void UpdateInfusionOrder(int wardId, int[] drugIdlist)
         {
@@ -95,7 +107,8 @@ namespace PICUdrugs.WardAdmin
         {
             var request = HttpContext.Current.Request;
             AntiForgery.Validate(request.Cookies[_validationTokenName].Value, request.Headers[_validationTokenName]);
-            if (!CanModifyWard(wardId))
+            var currentUserWard = new UserWardDetails(HttpContext.Current.User.Identity.Name);
+            if (!currentUserWard.HasEditPermission(wardId))
             {
                 throw new System.Security.Authentication.InvalidCredentialException("User is not authorised to alter information for this Ward"); 
             }
@@ -135,12 +148,12 @@ namespace PICUdrugs.WardAdmin
             {
                 li.Attributes.Add("data-id",drugItem.Id.ToString());
                 var route = drugItem.DrugName;
-                li.InnerText = drugItem.DrugName;
+                li.InnerHtml = drugItem.DrugName;
             }
             else
             {
                 li.Attributes.Add("data-id",drugItem.Id.ToString());
-                li.InnerText = drugItem.DrugName;
+                li.InnerHtml = drugItem.DrugName;
                 li.Attributes.Add("class", li.Attributes["class"] + " bolusSubHeader");
             }
         }

@@ -127,7 +127,11 @@ namespace PICUdrugs
         public void AddTinyMce()
         {
             if (_jHtmlAreaIncluded) { return; }
+#if DEBUG
+            CreateScript("/Scripts/tinymce/tinymce.js", false);
+#else
             CreateScript("/Scripts/tinymce/tinymce.min.js", false);
+#endif
             //CreateScript("/Scripts/jHtmlArea.ColorPickerMenu-0.8.min.js", false);
             //CreateStyle("/Content/jHtmlArea/jHtmlArea.css");
             //CreateStyle("/Content/jHtmlArea/ColorPickerMenu.css");
@@ -138,11 +142,19 @@ namespace PICUdrugs
             if (_jQueryScriptIncluded) { return; }
             if (IncludesCurrentBrowser(BrowserType.IeLegacy))
             {
+#if DEBUG
+                CreateScript("/Scripts/jquery-1.11.0.js", true);
+#else
                 CreateScript("//ajax.googleapis.com/ajax/libs/jquery/1.11.0/jquery.min.js", true);
+#endif
             }
             else 
             {
+#if DEBUG
+                CreateScript("/Scripts/jquery-2.1.0.js", true);
+#else
                 CreateScript("//ajax.googleapis.com/ajax/libs/jquery/2.1.0/jquery.min.js", true);
+#endif
             }
             _jQueryScriptIncluded = true;
         }
@@ -152,11 +164,19 @@ namespace PICUdrugs
             AddJQuery();
             if (IncludesCurrentBrowser(BrowserType.Ie6))
             {
+#if DEBUG
+                CreateScript("/Scripts/jquery-ui-1.9.2.js", true);
+#else
                 CreateScript("//ajax.googleapis.com/ajax/libs/jqueryui/1.9.2/jquery-ui.min.js", true);
+#endif
             }
             else
             {
+#if DEBUG
+                CreateScript("/Scripts/jquery-ui-1.10.4.js", true);
+#else
                 CreateScript("//ajax.googleapis.com/ajax/libs/jqueryui/1.10.4/jquery-ui.min.js", true);
+#endif
             }
             CreateStyle("//ajax.googleapis.com/ajax/libs/jqueryui/1.10.4/themes/ui-lightness/jquery-ui.min.css");
             _jQueryUIScriptIncluded = true;

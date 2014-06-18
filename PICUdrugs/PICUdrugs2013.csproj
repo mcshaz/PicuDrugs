@@ -537,6 +537,7 @@
     <Compile Include="Code\Utilities\HtmlSanitiser.cs" />
     <Compile Include="Code\Utilities\PatientCalculations.cs" />
     <Compile Include="Code\Utilities\PdfChartGeneration.cs" />
+    <Compile Include="Code\Utilities\CssStyleProperty.cs" />
     <Compile Include="Code\Utilities\TrueFalseTable.cs" />
     <Compile Include="Code\Utilities\UserProfile.cs" />
     <Compile Include="Code\Utilities\Utilities.cs" />

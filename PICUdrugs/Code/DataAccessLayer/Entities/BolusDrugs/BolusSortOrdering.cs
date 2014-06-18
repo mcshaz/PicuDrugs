@@ -14,8 +14,9 @@ namespace PICUdrugs.DAL
     using System.ComponentModel.DataAnnotations;
     using System.ComponentModel.DataAnnotations.Schema;
     [Table("BolusSortOrdering")]
-    public partial class BolusSortOrdering
+    public class BolusSortOrdering
     {
+        public const int maxBolusSubHeaderLength = 512;
         [Key]
         public int BolusSortOrderId { get; set; }
         [ForeignKey("Ward")]
@@ -23,7 +24,7 @@ namespace PICUdrugs.DAL
         [ForeignKey("BolusDrug")]
         public Nullable<int> BolusDrugId { get; set; }
         public int SortOrder { get; set; }
-        [MaxLength(FieldConst.maxBolusSubHeaderLength)]
+        [StringLength(maxBolusSubHeaderLength)]
         public string SectionHeader { get; set; }
     
         public virtual BolusDrug BolusDrug { get; set; }

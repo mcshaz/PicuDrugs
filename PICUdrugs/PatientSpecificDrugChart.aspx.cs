@@ -21,7 +21,7 @@ namespace PICUdrugs.Pages
             }
             else if (!Page.IsPostBack)
             {
-                PdfDocument doc = CreatePDFReport.CreatePdf(PreviousPage.PatientDetails(), PreviousPage.ChartSelected, PreviousPage.InfusionSelected, Request.UrlReferrer.AbsoluteUri);
+                PdfDocument doc = CreatePDFReport.CreatePdf(PreviousPage.PatientDetails(), PreviousPage.ChartSelected, PreviousPage.InfusionSelected /*, Request.UrlReferrer.AbsoluteUri */);
                 //if wanting an editable copy during development, uncomment below:
                 //CreatePDFReport.CreateRtf(PreviousPage.PatientDetails(), PreviousPage.ChartSelected, PreviousPage.InfusionSelected, Request.UrlReferrer.AbsoluteUri);
                 // Send PDF to browser

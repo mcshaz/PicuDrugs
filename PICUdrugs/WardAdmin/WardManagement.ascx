@@ -62,6 +62,19 @@
 				                        Text='<%# Bind("BolusChartHeader") %>' runat="server"/>
 		                        </EditItemTemplate>
                             </asp:TemplateField> 
+                            <asp:TemplateField HeaderText="Infusion Chart Header" HeaderStyle-CssClass="detailLabel">
+                    	        <ItemTemplate>
+			                        <%#Eval("InfusionChartHeader")%>
+		                        </ItemTemplate>
+		                        <InsertItemTemplate>
+			                        <asp:TextBox ID="InfusionChartHeader" TextMode="MultiLine" ValidationGroup="wardDetails" CssClass="rich"
+				                        Text='<%# Bind("InfusionChartHeader") %>' runat="server"/>
+		                        </InsertItemTemplate>
+		                        <EditItemTemplate>
+			                        <asp:TextBox ID="InfusionChartHeader" TextMode="MultiLine" ValidationGroup="wardDetails" CssClass="rich"
+				                        Text='<%# Bind("InfusionChartHeader") %>' runat="server"/>
+		                        </EditItemTemplate>
+                            </asp:TemplateField> 
                             <asp:DynamicField DataField="PaddingInCm" HeaderText="Bolus Drug Padding (cm)" HeaderStyle-CssClass="detailLabel" ValidationGroup="wardDetails" />
                             <asp:CheckBoxField DataField="IsLive" HeaderText="Is Live" HeaderStyle-CssClass="detailLabel"/>
                             <asp:CommandField ButtonType="Link" ValidationGroup="wardDetails" CausesValidation="true" 

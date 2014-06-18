@@ -25,7 +25,7 @@
         <EditItemTemplate>
             <tr class="editable">
                 <td>
-                    <asp:LinkButton ID="UpdateButton" runat="server" CommandName="Update" 
+                    <asp:LinkButton ID="UpdateButton" runat="server" CommandName="Update" OnClientClick="tinyMCE.triggerSave();"
                         Text="Update" /><br />
                     <asp:LinkButton ID="DeleteButton" runat="server" CommandName="Delete" 
                         Text="Delete" /><br />
@@ -34,10 +34,7 @@
                 </td>
                 <td>
                     <asp:HiddenField runat="server" ID="BolusDrugId" Value='<%# Bind("BolusDrugId") %>' />
-                    <asp:DynamicControl runat="server" DataField="DrugName" Mode="Edit" />
-                </td>
-                <td>
-                    <asp:DynamicControl runat="server" DataField="Route" Mode="Edit" />
+                    <asp:DynamicControl runat="server" DataField="DrugName" Mode="Edit" CssClass="rich" HtmlEncode="false"/>
                 </td>
                 <td>
                     <asp:DynamicControl runat="server" DataField="Conc_ml" Mode="Edit" />
@@ -46,9 +43,11 @@
                     <asp:DynamicControl runat="server" DataField="Units" Mode="Edit" CssClass="unitTB" />
                 </td>
                 <td>
-                    <asp:DynamicControl runat="server" DataField="AmpuleConcentration" Mode="Edit" />
+                    <span class="minMax">min</span><br />
+                    <asp:DynamicControl runat="server" DataField="Min" Mode="Edit" />
                 </td>
                 <td>
+                    <span class="minMax">max</span><br />
                     <asp:DynamicControl runat="server" DataField="AdultMax" Mode="Edit" />
                 </td>
             </tr>
@@ -65,15 +64,11 @@
         <InsertItemTemplate>
             <tr class="editable">
                 <td>
-                    <asp:LinkButton ID="InsertButton" runat="server" CommandName="Insert" Text="Insert" ValidationGroup="insert" /><br />
+                    <asp:LinkButton ID="InsertButton" runat="server" CommandName="Insert" Text="Insert" ValidationGroup="insert" OnClientClick="tinyMCE.triggerSave();" /><br />
                     <asp:LinkButton ID="CancelButton" runat="server" CommandName="Cancel" Text="Clear" />
                 </td>
                 <td>
-                    <asp:DynamicControl runat="server" DataField="DrugName" Mode="Insert" 
-                        ValidationGroup="insert" />
-                </td>
-                <td>
-                    <asp:DynamicControl runat="server" DataField="Route" Mode="Insert" 
+                    <asp:DynamicControl runat="server" DataField="DrugName" Mode="Insert" CssClass="rich" HtmlEncode="false" 
                         ValidationGroup="insert" />
                 </td>
                 <td>
@@ -85,10 +80,12 @@
                         ValidationGroup="insert" CssClass="unitTB" />
                 </td>
                 <td>
-                    <asp:DynamicControl runat="server" DataField="AmpuleConcentration" Mode="Insert" 
+                    <span class="minMax">min</span><br />
+                    <asp:DynamicControl runat="server" DataField="Min" Mode="Insert" 
                         ValidationGroup="insert" />
                 </td>
                 <td>
+                    <span class="minMax">max</span><br />
                     <asp:DynamicControl runat="server" DataField="AdultMax" Mode="Insert" 
                         ValidationGroup="insert" />
                 </td>
@@ -101,10 +98,7 @@
                 </td>
                 <td runat="server">
                     <asp:HiddenField runat="server" ID="BolusDrugId" Value='<%# Eval("BolusDrugId") %>'  />
-                    <asp:DynamicControl runat="server" DataField="DrugName" Mode="ReadOnly" />
-                </td>
-                <td runat="server">
-                    <asp:DynamicControl runat="server" DataField="Route" Mode="ReadOnly" />
+                    <asp:DynamicControl runat="server" DataField="DrugName" Mode="ReadOnly" HtmlEncode="false" />
                 </td>
                 <td runat="server">
                     <asp:Label ID="Conc_ml_Lbl" runat="server" />
@@ -112,11 +106,8 @@
                 <td runat="server">
                     <asp:DynamicControl runat="server" DataField="Units" Mode="ReadOnly" />
                 </td>
-                <td runat="server">
-                    <asp:DynamicControl runat="server" DataField="AmpuleConcentration" Mode="ReadOnly" />
-                </td>
-                <td runat="server">
-                    <asp:DynamicControl runat="server" DataField="AdultMax" Mode="ReadOnly" />
+                <td runat="server" colspan="2">
+                    <asp:DynamicControl runat="server" DataField="Min" Mode="ReadOnly" />-<asp:DynamicControl runat="server" DataField="AdultMax" Mode="ReadOnly" />
                     <asp:DynamicControl ID="DynamicControl5" runat="server" DataField="Units" Mode="ReadOnly"  CssClass="subTH"/>
                 </td>
                 <td runat="server">
@@ -220,14 +211,10 @@
                     <th rowspan="2">
                         Drug<br />Name</th>
                     <th rowspan="2">
-                        Drug<br />Route</th>
-                    <th rowspan="2">
                         Conc.</th>
                     <th rowspan="2">
                         Units <br /><span class="headerDescription">(pleural)</span></th>
-                    <th rowspan="2">
-                        Ampule</th>
-                    <th rowspan="2">
+                    <th rowspan="2" colspan="2">
                         Adult<br />Dose</th>
                     <th colspan="6">
                         Dose</th>

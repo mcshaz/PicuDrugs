@@ -1,9 +1,11 @@
-﻿using System.Collections.Generic;
+﻿//http://weblog.west-wind.com/posts/2012/Jul/19/NET-HTML-Sanitation-for-rich-HTML-Input
+
+using System.Collections.Generic;
 using System.IO;
 using System.Xml;
 using HtmlAgilityPack;
 
-namespace Westwind.Web.Utilities
+namespace PICUdrugs.Html.Utilities
 {
     public class HtmlSanitizer
     {
@@ -34,7 +36,7 @@ namespace Westwind.Web.Utilities
                 foreach (string item in blackList)
                     sanitizer.BlackList.Add(item);
             }
-            return sanitizer.Sanitize(html);
+            return sanitizer.Sanitize(html); 
         }
 
         /// <summary>
@@ -56,17 +58,19 @@ namespace Westwind.Web.Utilities
             string output = null;
 
             // Use an XmlTextWriter to create self-closing tags
+            // This creates its own problems by converting &nbsp; to &amp;nbsp;
+            // it might be better to use regex.replace(@"<br\s*>",@"<br \>") for the self closing elements I will use 
             using (StringWriter sw = new StringWriter())
             {
                 XmlWriter writer = new XmlTextWriter(sw);
                 doc.DocumentNode.WriteTo(writer);
                 output = sw.ToString();
 
-                // strip off XML doc header
+                // strip off XML doc header & fix &amp;nbsp;
                 if (!string.IsNullOrEmpty(output))
                 {
                     int at = output.IndexOf("?>");
-                    output = output.Substring(at + 2);
+                    output = output.Substring(at + 2).Replace("&amp;nbsp;", "&#160;"); //decimal=&#160;, hex = &#xA0;);
                 }
 
                 writer.Close();

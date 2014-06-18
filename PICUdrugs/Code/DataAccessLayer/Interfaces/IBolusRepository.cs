@@ -14,6 +14,6 @@ namespace PICUdrugs.DAL
         void DeleteBolusDose(BolusDose dose);
         void UpdateBolusDose(BolusDose Dose, BolusDose origDose);
         IEnumerable<BolusDose> GetDosesByOverlappingWeight(BolusDose drug);
-        IEnumerable<BolusDrug> GetDrugsByNameRoute(BolusDrug drug);
+        IEnumerable<BolusDrug> GetDrugsByName(BolusDrug drug);
     }
 }

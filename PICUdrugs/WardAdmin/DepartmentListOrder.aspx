@@ -37,7 +37,7 @@
             </div>
             <div id="submitInfusionOps" class="submitOps" runat="server">
                 <input id="submitInfusionSort" type="button" value="Submit" class="submitOrder" disabled="disabled"/>
-                <div class="updateStatus"></div>
+                <span class="updateStatus"></span>
             </div>
         </div>
         <asp:ListView ID="remainingInfusionsLV" runat="server" >
@@ -65,7 +65,7 @@
         </asp:ListView>
     </div>
     <div id="bolusOrder" class="orderGroup">
-        <h4 class="clickHandle">Emergency bolus drugs <span class="dragInstruction">(drag and drop between lists)</span> <input runat="server" type="button" id="cloneBolus" value="Clone To My Ward" /></h4>
+        <h4 class="clickHandle">Emergency bolus drugs <span class="dragInstruction">(drag and drop between lists)</span> <label runat="server" id="cloneBolusLabel">Clone These To: <asp:DropDownList runat="server" id="cloneBolusSelect" /></label><input type="button" value="go" id="cloneBolusGo" runat="server"/><span class="updateStatus"></span></h4>
         <div id="bolusListAndSubmit" class="druglist">
             <div id="includedBoluses">
                 <h5>Used:</h5>  
@@ -89,12 +89,12 @@
             <div id="submitBolusOps" class="submitOps"  runat="server">
                 <div id="freeText">
                     <label for="bolusHeader">Subheaders: </label>
-                    <input type="text" id="bolusHeader" runat="server"/>
+                    <input type="text" id="bolusHeader" runat="server" class="rich"/>
                     <input type="button" id="addBolusHeader" value="Add" />
                     <div class="error" id="bolusHeaderVal"></div>
                 </div>
                 <input id="submitBolusSort" type="button" value="Submit" class="submitOrder" disabled="disabled"/>
-                <div class="updateStatus"></div>
+                <span class="updateStatus"></span>
             </div>
         </div>
         <div id="unusedBolus" class="druglist">

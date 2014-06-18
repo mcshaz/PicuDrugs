@@ -73,7 +73,7 @@ namespace PICUdrugs.Utils
             int i=0;
             tbl.Rows = (from b in _db.BolusDrugs
                         orderby b.DrugName
-                        select b).ToDictionary(b=>b.BolusDrugId, b => new Vector{ Index=i++, Header=b.Fullname });
+                        select b).ToDictionary(b=>b.BolusDrugId, b => new Vector{ Index=i++, Header=b.DrugName });
             var usedBoluses = (from s in _db.BolusSortOrdering
                                select s).ToArray();
 

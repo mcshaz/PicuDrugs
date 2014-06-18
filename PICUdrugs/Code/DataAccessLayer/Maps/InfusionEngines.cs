@@ -283,8 +283,6 @@ namespace PICUdrugs.DAL
     {
         public bool IsHeader { get; set; }
         public string RowTitle { get; set; }
-        public string Route { get; set; }
-        public string AmpuleConcentration { get; set; }
         public double Conc_ml { get; set; }
         private string _doseUnits;
         public string DoseUnits 
@@ -308,6 +306,7 @@ namespace PICUdrugs.DAL
             }
         }
         public double AdultMax { get; set; }
+        public double Min { get; set; }
         public NumericRange DosePerKg { get; set; }
         public NumericRange BolusDose { get; private set; }
         public NumericRange BolusVolume { get; private set; }
@@ -316,8 +315,10 @@ namespace PICUdrugs.DAL
             if (IsHeader) { return; }
             if (DosePerKg == null) { throw new Exception("DosePerKg must be set before calling this Description"); }
             if (Conc_ml == 0) { throw new Exception("Conc_ml must be set before calling this Description"); }
+
             double lb = weight * DosePerKg.LowerBound;
             if (lb > AdultMax) { lb = AdultMax; }
+            else if (lb < Min) { lb = Min; }
 
             BolusDose = new NumericRange();
             BolusVolume = new NumericRange();
@@ -328,6 +329,7 @@ namespace PICUdrugs.DAL
 
             double ub = weight * DosePerKg.UpperBound;
             if (ub > AdultMax) { ub = AdultMax; }
+            else if (ub < Min) { ub = Min; }
             if (roundingList != null)
             {
                 if (ub == lb)

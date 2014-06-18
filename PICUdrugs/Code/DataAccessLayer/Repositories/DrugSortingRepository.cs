@@ -63,6 +63,12 @@ namespace PICUdrugs.DAL
                 FROM [PicuDrugData].[dbo].[InfusionSortOrdering]
                 WHERE [WardId]=@fromWardId", toParam, fromParam);
         }
+        public int[] GetWardsWithoutInfusions()
+        {
+            return (from w in _db.Wards
+                    where !w.InfusionSortOrderings.Any()
+                    select w.WardId).ToArray();
+        }
         public void DeleteSortOrder(InfusionSortOrdering infSort)
         {
             try
@@ -167,6 +173,12 @@ namespace PICUdrugs.DAL
                 FROM [PicuDrugData].[dbo].[BolusSortOrdering]
                 WHERE [WardId]=@fromWardId", toParam, fromParam);
         }
+        public int[] GetWardsWithoutBoluses()
+        {
+            return (from w in _db.Wards
+                    where !w.BolusSortOrderings.Any()
+                    select w.WardId).ToArray();
+        }
         public void InsertSortOrder(int WardId, string[] bolusIDs)
         {
             try
@@ -201,6 +213,10 @@ namespace PICUdrugs.DAL
                     _db.BolusSortOrdering.Add(sort);
                 }
                 _db.SaveChanges();
+            }
+            catch (System.Data.Entity.Validation.DbEntityValidationException e)
+            {
+                System.Diagnostics.Debug.Write(string.Join(";", e.EntityValidationErrors.Select(ve => string.Join(",", ve.ValidationErrors.Select(v => v.PropertyName + ":" + v.ErrorMessage)))));
             }
             catch (Exception)
             {

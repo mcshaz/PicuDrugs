@@ -89,15 +89,4 @@ namespace PICUdrugs.DAL
             }
         }
     }
-    public partial class BolusDrug
-    {
-        public string Fullname
-        {
-            get
-            {
-                if (Route == null || Route == "") return DrugName;
-                return DrugName + " - " + Route;
-            }
-        }
-    }
 }

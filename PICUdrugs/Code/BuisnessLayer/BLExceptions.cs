@@ -9,12 +9,16 @@ namespace PICUdrugs.BLL
     public class BLexception : Exception
     {
         public BLexception(Exception innerException)
-            : base("The buisness logic was violated - see innerException for details", innerException)
-        {
-        }
+            : this("The buisness logic was violated - see innerException for details", innerException)
+        {}
+        public BLexception(string message, Exception innerException) : base(message, innerException)
+        {}
+        public BLexception(string message):base(message)
+        {}
+
     }
     [Serializable]
-    public class OverlappingAgeWeightException : Exception
+    public class OverlappingAgeWeightException : BLexception
     {
         public OverlappingAgeWeightException(string message)
             : base(message)
@@ -22,7 +26,7 @@ namespace PICUdrugs.BLL
         }
     }
     [Serializable]
-    public class DuplicateDoseCatException : Exception
+    public class DuplicateDoseCatException : BLexception
     {
         public DuplicateDoseCatException(string message)
             : base(message)
@@ -30,7 +34,7 @@ namespace PICUdrugs.BLL
         }
     }
     [Serializable]
-    public class DuplicateConcentrationException : Exception
+    public class DuplicateConcentrationException : BLexception
     {
         public DuplicateConcentrationException(string message)
             : base(message)
@@ -38,7 +42,7 @@ namespace PICUdrugs.BLL
         }
     }
     [Serializable]
-    public class NonAscendingConcentrationException : Exception
+    public class NonAscendingConcentrationException : BLexception
     {
         public NonAscendingConcentrationException(string message)
             : base(message)
@@ -46,7 +50,7 @@ namespace PICUdrugs.BLL
         }
     }
     [Serializable]
-    public class NullDoseCatException : Exception
+    public class NullDoseCatException : BLexception
     {
         public NullDoseCatException(string message)
             : base(message)
@@ -54,15 +58,15 @@ namespace PICUdrugs.BLL
         }
     }
     [Serializable]
-    public class NonAscendingRangeException : Exception
+    public class NonAscendingRangeException : BLexception
     {
         public NonAscendingRangeException(string variableDescription)
-            : base("values for: " + variableDescription.ToUpper() + " are not in ascending order")
+            : base("values for: " + variableDescription + " are not in ascending order")
         {
         }
     }
     [Serializable]
-    public class DuplicateTimeException : Exception
+    public class DuplicateTimeException : BLexception
     {
         public DuplicateTimeException(string message)
             : base(message)
@@ -70,7 +74,7 @@ namespace PICUdrugs.BLL
         }
     }
     [Serializable]
-    public class DuplicateNameException : Exception
+    public class DuplicateNameException : BLexception
     {
         public DuplicateNameException(string message)
             : base(message)
@@ -78,7 +82,7 @@ namespace PICUdrugs.BLL
         }
     }
     [Serializable]
-    public class ConcUnitDisparity : Exception
+    public class ConcUnitDisparity : BLexception
     {
         public ConcUnitDisparity(string message)
             : base(message)
@@ -86,10 +90,22 @@ namespace PICUdrugs.BLL
         }
     }
     [Serializable]
-    public class InvalidNullCombination : Exception
+    public class InvalidNullCombination : BLexception
     {
         public InvalidNullCombination(string message)
             : base(message)
+        {
+        }
+    }
+    [Serializable]
+    public class HtmlParsingException : BLexception
+    {
+        public HtmlParsingException(string message)
+            : base(message)
+        {
+        }
+        public HtmlParsingException(Exception ex)
+            : base(ex)
         {
         }
     }

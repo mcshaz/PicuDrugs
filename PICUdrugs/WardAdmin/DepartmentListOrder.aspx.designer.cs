@@ -58,13 +58,31 @@ namespace PICUdrugs.WardAdmin {
         protected global::System.Web.UI.WebControls.ListView remainingInfusionsLV;
         
         /// <summary>
-        /// cloneBolus control.
+        /// cloneBolusLabel control.
         /// </summary>
         /// <remarks>
         /// Auto-generated field.
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
-        protected global::System.Web.UI.HtmlControls.HtmlInputButton cloneBolus;
+        protected global::System.Web.UI.HtmlControls.HtmlGenericControl cloneBolusLabel;
+        
+        /// <summary>
+        /// cloneBolusSelect control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::System.Web.UI.WebControls.DropDownList cloneBolusSelect;
+        
+        /// <summary>
+        /// cloneBolusGo control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::System.Web.UI.HtmlControls.HtmlInputButton cloneBolusGo;
         
         /// <summary>
         /// bolusSortOrderLV control.

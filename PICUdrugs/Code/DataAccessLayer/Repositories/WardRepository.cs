@@ -12,6 +12,10 @@ namespace PICUdrugs.DAL
         {
             return _db.Wards.ToList();
         }
+        public int[] GetDepartmentIds()
+        {
+            return _db.Wards.Select(w=>w.WardId).ToArray();
+        }
         public IDictionary<int, string> GetDepartmentNames()
         {
             return (from w in _db.Wards

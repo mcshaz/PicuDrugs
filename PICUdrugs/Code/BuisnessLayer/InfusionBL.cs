@@ -100,7 +100,7 @@ namespace PICUdrugs.BLL
         {
             Exception e = ValidateInfusionDilutionAgeWeight(infDil);
             if (e != null) { throw e; }
-            if (infDil.RateMin > infDil.RateMax) throw new BLexception(new NonAscendingRangeException("Dose Range"));
+            if (infDil.RateMin > infDil.RateMax) throw new NonAscendingRangeException("Dose Range");
             try
             {
                 ValidateVariableTimeVolume(infDil.Volume, infDil.DilutionMethodId);
@@ -118,7 +118,7 @@ namespace PICUdrugs.BLL
             var dilType = drugConcRepository.GetDilutionMethod(dilutionMethodId);
             if (!(dilType.IsVaryVolume && dilType.IsVaryConcentration))
             {
-                throw new BLexception(new InvalidNullCombination("Volume can only be null if dilution method is of variable volume and fixed flow"));
+                throw new InvalidNullCombination("Volume can only be null if dilution method is of variable volume and fixed flow");
             }
 
         }
@@ -128,7 +128,7 @@ namespace PICUdrugs.BLL
             var dilType = drugConcRepository.GetDilutionMethod(dilutionMethodId);
             if (!(dilType.IsPerKg && !dilType.IsVaryConcentration && !dilType.IsVaryVolume))
             {
-                throw new BLexception(new InvalidNullCombination("Volume must be entered with this dilution method"));
+                throw new InvalidNullCombination("Volume must be entered with this dilution method");
             }
 
         }
@@ -162,21 +162,21 @@ namespace PICUdrugs.BLL
                     //check infConc.DoseCat unused
                     if (ascConc.DoseCatId == infConc.DoseCatId)
                     {
-                        throw new BLexception(new DuplicateDoseCatException("each Dilution can have only one of each dose category (including null)"));
+                        throw new DuplicateDoseCatException("each Dilution can have only one of each dose category (including null)");
                     }
                     if (ascConc.Concentration == infConc.Concentration)
                     {
-                        throw new BLexception(new DuplicateConcentrationException("Concentrations cannot be duplicated for the same Dilution Description"));
+                        throw new DuplicateConcentrationException("Concentrations cannot be duplicated for the same Dilution Description");
                     }
                     //check infConc.Concentration is ascending with DoseCat.SortOrder
                     if ((ascConc.DoseCat.SortOrder < checkDoseCat.SortOrder && ascConc.Concentration > infConc.Concentration) ||
                         (ascConc.DoseCat.SortOrder > checkDoseCat.SortOrder && ascConc.Concentration < infConc.Concentration))
                     {
-                        throw new BLexception(new NonAscendingConcentrationException("Concentrations must ascend according to category - low med high etc"));
+                        throw new NonAscendingConcentrationException("Concentrations must ascend according to category - low med high etc");
                     }
                 }
             }
-            if (otherConcentrations && !infConc.DoseCatId.HasValue) throw new BLexception(new NullDoseCatException("dose category cannot be empty if a Dilution has more than 1 Concentration"));
+            if (otherConcentrations && !infConc.DoseCatId.HasValue) throw new NullDoseCatException("dose category cannot be empty if a Dilution has more than 1 Concentration");
         }
 
         public IEnumerable<FixedTimeDilution> GetFixedTimeDilutions(int drugId)
@@ -279,11 +279,11 @@ namespace PICUdrugs.BLL
         {
             if (infDil.AgeMaxMonths <= infDil.AgeMinMonths)
             {
-                return new BLexception(new NonAscendingRangeException("age"));
+                return new NonAscendingRangeException("age");
             }
             if (infDil.WeightMax <= infDil.WeightMin)
             {
-                return new BLexception(new NonAscendingRangeException("weight"));
+                return new NonAscendingRangeException("weight");
             }
             return null;
         }
@@ -294,13 +294,13 @@ namespace PICUdrugs.BLL
                 var duplicateRange = drugConcRepository.GetDilutionsByOverlappingAgeWeight(infDil).FirstOrDefault();
                 if (duplicateRange != null)
                 {
-                    throw new BLexception(new OverlappingAgeWeightException(String.Format("Infusion for {0} overlaps with age({1}-{2}months) &/or weight({3}-{4}kg).{5}Weights can have the same (non overlapping) value, months of age must be distinct.",
+                    throw new OverlappingAgeWeightException(String.Format("Infusion for {0} overlaps with age({1}-{2}months) &/or weight({3}-{4}kg).{5}Weights can have the same (non overlapping) value, months of age must be distinct.",
                                                                           duplicateRange.InfusionDrug.Fullname,
                                                                           duplicateRange.AgeMinMonths,
                                                                           duplicateRange.AgeMaxMonths,
                                                                           duplicateRange.WeightMin,
                                                                           duplicateRange.WeightMax,
-                                                                          Environment.NewLine)));
+                                                                          Environment.NewLine));
                 }
             }
         }
@@ -309,7 +309,7 @@ namespace PICUdrugs.BLL
             FixedTimeConcentration duplicateStopTime = drugConcRepository.GetFixedTimeConcentrationsByStopTime(infConc.InfusionDilutionId, infConc.StopMinutes).FirstOrDefault();
             if (duplicateStopTime != null && duplicateStopTime.InfusionConcentrationId != infConc.InfusionConcentrationId)
             {
-                throw new BLexception(new DuplicateTimeException(string.Format("Infusions for the same drug, age & weight group cannot have the same stop time ({0}) minutes", infConc.StopMinutes)));
+                throw new DuplicateTimeException(string.Format("Infusions for the same drug, age & weight group cannot have the same stop time ({0}) minutes", infConc.StopMinutes));
             }
             if (!infConc.Volume.HasValue)
             {

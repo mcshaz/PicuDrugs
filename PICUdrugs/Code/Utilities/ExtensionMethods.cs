@@ -92,6 +92,14 @@ namespace PICUdrugs.Utils
             //if (d <= 10) { return Math.Round(d * 5) / 5; } //nearest 0.2
             //return Math.Round(d);
         }
+        public static string RemoveWhitespace(this string input)
+        {
+            return new string(input.Where(c => !Char.IsWhiteSpace(c)).ToArray());
+        }
+        public static string RemoveNonAlphaNumeric(this string input)
+        {
+            return new string(input.Where(c => Char.IsLetterOrDigit(c)).ToArray());
+        }
         public static string ToString(this double d, int sigFigures)
         {
             // this Method will round and then append zeros if needed.
@@ -204,6 +212,29 @@ namespace PICUdrugs.Utils
             string minStr = (min == 0) ? "<1" : min.ToString("0");
             string maxStr = (max == 100) ? ">99" : max.ToString("0");
             return centileText + ' ' + minStr + '-' + maxStr;
+        }
+        public static TResult[] Map<TSource,TResult>(this TSource[] source, Func<TSource,TResult> predicate)
+        {
+            TResult[] result = new TResult[source.Length];
+            for (int i=0;i<source.Length;i++)
+            {
+                result[i] = predicate(source[i]);
+            }
+            return result;
+        }
+        ///<summary>Finds the index of the first item matching an expression in an enumerable.</summary>
+        ///<param name="items">The enumerable to search.</param>
+        ///<param name="predicate">The expression to test the items against.</param>
+        ///<returns>The index of the first matching item, or -1 if no items match.</returns>
+        public static int FindIndex<T>(this IEnumerable<T> items, Func<T, bool> predicate)
+        {
+            int index = 0;
+            foreach (var item in items)
+            {
+                if (predicate(item)) return index;
+                index++;
+            }
+            return -1;
         }
         /*
         public static string ToValidPath(this string path)

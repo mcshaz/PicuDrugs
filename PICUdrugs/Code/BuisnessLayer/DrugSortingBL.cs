@@ -2,8 +2,10 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Web;
-
 using PICUdrugs.DAL;
+using PICUdrugs.Code.Utilities;
+using PICUdrugs.Utils;
+using PICUdrugs.Html.Utilities;
 namespace PICUdrugs.BLL
 {
     public class SortingDrugItem
@@ -41,6 +43,10 @@ namespace PICUdrugs.BLL
             }
             infSortRepository.CloneWard(fromWardId, toWardId);
         }
+        public int[] GetWardsWithoutInfusions()
+        {
+            return infSortRepository.GetWardsWithoutInfusions();
+        }
         public IEnumerable<SortingDrugItem> GetAllVariableInfusions(int WardId)
         {
             var drugs = infSortRepository.GetInfDrugsAndOrders();
@@ -74,21 +80,27 @@ namespace PICUdrugs.BLL
     }
     public class BolusSortingBL : IDisposable
     {
+        public const string ETTsize = "ETT size";
         private BolusSortingRepository bolusSortRepository;
         public IEnumerable<SortingDrugItem> GetAllDrugs(int WardId)
         {
             var drugs = bolusSortRepository.GetBolusDrugsAndOrders();
-            var returnVal = new List<SortingDrugItem>();
+            var returnVar = new List<SortingDrugItem>();
             foreach (var drug in drugs)
             {
-                var item = new SortingDrugItem { DrugName = drug.DrugName + (drug.Route == null ? "" : (string.Format(" ({0})", drug.Route))), 
+                var item = new SortingDrugItem { DrugName = drug.DrugName, 
                     Id= drug.BolusDrugId };
                 var so = drug.BolusSortOrderings.FirstOrDefault(s=>s.WardId == WardId);
                 if (so!=null) {item.SortOrder=so.SortOrder;}
-                returnVal.Add(item);
+                returnVar.Add(item);
             }
-            returnVal.AddRange(bolusSortRepository.GetHeaders(WardId).Select(s => new SortingDrugItem { DrugName = s.SectionHeader, SortOrder = s.SortOrder }));
-            return returnVal;
+            var headers = bolusSortRepository.GetHeaders(WardId).Select(s => new SortingDrugItem { DrugName = s.SectionHeader, SortOrder = s.SortOrder });
+            if (!headers.Any(h=>h.DrugName == ETTsize))
+            {
+                returnVar.Add(new SortingDrugItem { DrugName = ETTsize });
+            }
+            returnVar.AddRange(headers);
+            return returnVar;
         }
         public BolusSortingBL() : this(new BolusSortingRepository())
         {
@@ -99,8 +111,10 @@ namespace PICUdrugs.BLL
         }
         public void SetNewSortOrdering(int WardId, string[] newOrder)
         {
+            string[] htmlCleanedOrder = newOrder.Map(o => o.Any(d=>!char.IsDigit(d))?CleanHtml(o):o);//clean first in order not to delete if it throws an error
+
             bolusSortRepository.DeleteSortOrder(WardId);
-            bolusSortRepository.InsertSortOrder(WardId, newOrder);
+            bolusSortRepository.InsertSortOrder(WardId, htmlCleanedOrder);
         }
         public void DeleteAllOrderingforWard(int WardId)
         {
@@ -118,6 +132,19 @@ namespace PICUdrugs.BLL
                 throw new InvalidOperationException("attempt to overwrite ward which already contains boluses");
             }
             bolusSortRepository.CloneWard(fromWardId, toWardId);
+        }
+        static readonly System.Text.RegularExpressions.Regex cleanPageBreaks = new System.Text.RegularExpressions.Regex(@"<\s*(\w+)\s*>[\r\n\s]*<!--\s*pagebreak\s*-->[\r\n\s]*<\/\s*\1\s*>");
+        static string CleanHtml(string html)
+        {
+            string returnVar = cleanPageBreaks.Replace(html, "<!-- pagebreak -->");
+            returnVar = HtmlSanitizer.SanitizeHtml(returnVar);
+            Exception testBolus = CreatePDFReport.TestHtml(returnVar);
+            if (testBolus != null) { throw new HtmlParsingException(testBolus); }
+            return returnVar;
+        }
+        public int[] GetWardsWithoutBoluses()
+        {
+            return bolusSortRepository.GetWardsWithoutBoluses();
         }
         private bool disposedValue = false;
         protected virtual void Dispose(bool disposing)

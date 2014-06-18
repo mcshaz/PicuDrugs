@@ -1,15 +1,39 @@
 ﻿h1 {
     text-align:center;
     font-size:22pt;
-    font-family: Constantia
+    font-family: Constantia;
+    margin:0;
+    padding:0;
+    line-height:1;
 }
 h2 {
     text-align:center;
-    font-size:18pt;
+    font-size:20pt;
+    font-family:Constantia
+}
+h3 {
+    text-align:center;
+    font-size:16pt;
     font-family:Constantia
 }
 body {
     text-align:left;
     font-size:12pt;
     font-family:Arial
+}
+.RowHeader {
+    text-align:left;
+    font-weight:bold;
+    font-Size:14pt;
+}
+.RowHeader {
+    text-align:left;
+    font-weight:bold;
+    font-Size:14pt;
+}
+.concentration{
+    font-size:11pt;
+}
+.route{
+    font-style:italic;
 }

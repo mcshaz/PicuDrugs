@@ -207,14 +207,13 @@ namespace PICUdrugs.DAL
                     {
                         IsHeader = false,
                         RowTitle = r.Drug.DrugName,
-                        Route = r.Drug.Route,
-                        AmpuleConcentration = r.Drug.AmpuleConcentration,
                         DosePerKg = new NumericRange
                         {
                             LowerBound = r.Dose.MinDosePerKg,
                             UpperBound = r.Dose.MaxDosePerKg,
                         },
                         AdultMax = r.Drug.AdultMax,
+                        Min = r.Drug.Min,
                         DoseUnits = r.Drug.Units,
                         Conc_ml = r.Drug.Conc_ml
                     });

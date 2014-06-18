@@ -36,7 +36,6 @@ namespace PICUdrugs.DAL
         public const string hyperlinkRegEx = "(" + urlRegEx + ")|(" + filePathRegEx + ")";
         public const string urlOrPathRegEx = "(" + urlRegEx + ")|(" + inputFileRegEx + ")";
         public const double maxJoules = 360;
-        public const int maxBolusSubHeaderLength = 50;
     }
     public class InfusionDilutionMetaData
     {
@@ -122,27 +121,6 @@ namespace PICUdrugs.DAL
         public double Volume { get; set; }
         [Range(1e-3, 10000, ErrorMessage = "Drug ampule Concentration must be between 0.001 and 10 000 [drug units]/mL")]
         public double Concentration { get; set; }
-    }
-    [MetadataType(typeof(BolusDrugMetaData))]
-    public partial class BolusDrug
-    {
-    }
-    public class BolusDrugMetaData
-    {
-        [StringLength(25, MinimumLength = 3, ErrorMessage = "Drug name must be between 3 and 25 characters long")]
-        [Required(ErrorMessage="Drug name must be provided")]
-        public string DrugName { get; set; }
-        [StringLength(32, MinimumLength = 2, ErrorMessage = "Drug route must be between 2 and 25 characters long")]
-        public string Route { get; set; }
-        [StringLength(15, ErrorMessage = "Units must be less than 16 characters long")]
-        [Required(ErrorMessage = "units must be provided")]
-        public string Units { get; set; }
-        [StringLength(25, MinimumLength = 2, ErrorMessage = "Ampule Concentration must be between 2 and 25 characters long")]
-        public string AmpuleConcentration { get; set; }
-        [Range(0, 100000, ErrorMessage = "Concentration must be between 0 and 100 000 [units of measure] per mL")]
-        public int Conc_ml { get; set; }
-        [Range(0, 1000000, ErrorMessage = "Maximum adult dose must be between 0 and 1 000 000 [units of measure]")]
-        public int AdultMax { get; set; }
     }
     [MetadataType(typeof(BolusDoseMetaData))]
     public partial class BolusDose

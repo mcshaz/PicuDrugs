@@ -3,6 +3,8 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Web;
 using PICUdrugs.DAL;
+using PICUdrugs.Html.Utilities;
+using PICUdrugs.Code.Utilities;
 namespace PICUdrugs.BLL
 {
     public class BolusBL:IDisposable
@@ -46,11 +48,11 @@ namespace PICUdrugs.BLL
                 throw;
             }
         }
-        public void DeleteBolusDose(BolusDose Dose)
+        public void DeleteBolusDose(BolusDose dose)
         {
             try
             {
-                bolusesRepository.DeleteBolusDose(Dose);
+                bolusesRepository.DeleteBolusDose(dose);
             }
             catch (Exception)
             {
@@ -76,12 +78,13 @@ namespace PICUdrugs.BLL
             return persistingDrugs;
         }
 
-        public void InsertBolusDrug(BolusDrug Drug)
+        public void InsertBolusDrug(BolusDrug drug)
         {
             try
             {
-                ValidateBolusDrug(Drug);
-                bolusesRepository.InsertBolusDrug(Drug);
+                CleanHtml(drug);
+                ValidateBolusDrug(drug);
+                bolusesRepository.InsertBolusDrug(drug);
             }
             catch (Exception)
             {
@@ -99,12 +102,13 @@ namespace PICUdrugs.BLL
                 throw;
             }
         }
-        public void UpdateBolusDrug(BolusDrug Drug, BolusDrug origDrug)
+        public void UpdateBolusDrug(BolusDrug drug, BolusDrug origDrug)
         {
             try
             {
-                ValidateBolusDrug(Drug);
-                bolusesRepository.UpdateBolusDrug(Drug, origDrug);
+                CleanHtml(drug);
+                ValidateBolusDrug(drug);
+                bolusesRepository.UpdateBolusDrug(drug, origDrug);
             }
             catch (Exception)
             {
@@ -112,36 +116,50 @@ namespace PICUdrugs.BLL
             }
         }
 //
-        private void ValidateBolusDrug(BolusDrug Drug)
+        private void ValidateBolusDrug(BolusDrug drug)
         {
-            if (Drug != null) 
+            if (drug != null) 
             {
-                Drug.DrugName = Drug.DrugName.Trim();
-                if (Drug.Route != null) Drug.Route = Drug.Route.Trim();
-                if (Drug.AmpuleConcentration != null)
+                if (drug.AdultMax < drug.Min)
                 {
-                    Drug.AmpuleConcentration = Drug.AmpuleConcentration.Trim();
-                    string lconc = Drug.AmpuleConcentration.ToLower();
-                    if ((lconc == "ml" || lconc == "mls") && Drug.Conc_ml != 1)
+                    throw new NonAscendingRangeException("Min, AdultMax");
+                }
+
+                drug.DrugName = drug.DrugName.Trim();
+                drug.Units = drug.Units.Trim();
+                string lunits = drug.Units.ToLower();
+                if (lunits == "ml" || lunits == "mls")
+                {
+                    drug.Units = "mL";
+                    if (drug.Conc_ml != 1)
                     {
-                        throw new BLexception(new ConcUnitDisparity("if units are mL, Concentration by definition must be 1 mL per mL"));
-                    }
-                    else if (lconc == "j" && Drug.Conc_ml != 1)
-                    {
-                        throw new BLexception(new ConcUnitDisparity("if units are J(joules), Concentration by definition must be 1J"));
+                        throw new ConcUnitDisparity("if units are mL, Concentration by definition must be 1 mL per mL");
                     }
                 }
-                var duplicateDrug = bolusesRepository.GetDrugsByNameRoute(Drug).FirstOrDefault();
+
+                else if (lunits == "j" && drug.Conc_ml != 1)
+                {
+                    throw new ConcUnitDisparity("if units are J(joules), Concentration by definition must be 1J");
+                }
+
+                var duplicateDrug = bolusesRepository.GetDrugsByName(drug).FirstOrDefault(d=>d.BolusDrugId!=drug.BolusDrugId);
                 if (duplicateDrug != null)
                 {
-                    throw new BLexception(new DuplicateNameException("A definition already exists for a bolus with the same name and route - please choose another name"));
+                    throw new DuplicateNameException(string.Format("A definition exists for '{0}' which is the same or similar to '{1}'",duplicateDrug.DrugName,drug.DrugName));
                 }
             }
         }
+        private static void CleanHtml(BolusDrug drug)
+        {
+            if (drug.Units.Contains('<') || drug.Units.Contains("&#")) { throw new HttpRequestValidationException(); }
+            drug.DrugName = HtmlSanitizer.SanitizeHtml(drug.DrugName);
+            Exception testBolus = CreatePDFReport.TestHtml(drug.DrugName);
+            if (testBolus != null) { throw new HtmlParsingException(testBolus); }
+        }
         private void ValidateBolusDose(BolusDose Dose)
         {
-            if (Dose.WeightMin >= Dose.WeightMax) throw new BLexception(new NonAscendingRangeException("weight"));
-            if (Dose.MinDosePerKg > Dose.MaxDosePerKg) throw new BLexception(new NonAscendingRangeException("Dose per Kg"));
+            if (Dose.WeightMin >= Dose.WeightMax) throw new NonAscendingRangeException("weight");
+            if (Dose.MinDosePerKg > Dose.MaxDosePerKg) throw new NonAscendingRangeException("Dose per Kg");
             try
             {
                 ValidateSingleWeightPerDrug(Dose);
@@ -159,10 +177,10 @@ namespace PICUdrugs.BLL
                 var duplicateRange = bolusesRepository.GetDosesByOverlappingWeight(Dose).FirstOrDefault(); 
                 if (duplicateRange != null) 
                 {
-                    throw new BLexception(new OverlappingAgeWeightException(String.Format("Infusion for {0} overlaps with weight({1}-{2}kg)", 
+                    throw new OverlappingAgeWeightException(String.Format("Infusion for {0} overlaps with weight({1}-{2}kg)", 
                                                                           duplicateRange.BolusDrug.DrugName, 
                                                                           duplicateRange.WeightMin,
-                                                                          duplicateRange.WeightMax)));
+                                                                          duplicateRange.WeightMax));
                 } 
             }
         }

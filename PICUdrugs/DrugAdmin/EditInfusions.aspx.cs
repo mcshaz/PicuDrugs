@@ -100,9 +100,9 @@ namespace PICUdrugs.drugAdmin
             {
                 var overlappingAgeWtValidator = new CustomValidator();
                 overlappingAgeWtValidator.IsValid = false;
-                if (outerExcept.InnerException is BLexception)
+                if (outerExcept is BLexception)
                 {
-                    overlappingAgeWtValidator.ErrorMessage = "Cannot update as the following rule would be broken: " + outerExcept.InnerException.InnerException.Message;
+                    overlappingAgeWtValidator.ErrorMessage = "Cannot update as the following rule would be broken: " + outerExcept.InnerException.Message;
                 }
                 else
                 {

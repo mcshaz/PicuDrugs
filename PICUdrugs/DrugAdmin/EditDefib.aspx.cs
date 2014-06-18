@@ -28,9 +28,9 @@ namespace PICUdrugs.drugAdmin
             {
                 var customVal = new CustomValidator();
                 customVal.IsValid = false;
-                if (outerExcept.InnerException is BLexception)
+                if (outerExcept is BLexception)
                 {
-                    customVal.ErrorMessage = "Cannot update as the following rule would be broken: " + outerExcept.InnerException.InnerException.Message;
+                    customVal.ErrorMessage = "Cannot update as the following rule would be broken: " + outerExcept.InnerException.Message;
                 }
                 else
                 {

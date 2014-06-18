@@ -1,7 +1,9 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Text.RegularExpressions;
 using System.Web;
+using PICUdrugs.Utils;
 namespace PICUdrugs.DAL
 {
     public class BolusRepository : IDisposable, IBolusRepository
@@ -57,14 +59,17 @@ namespace PICUdrugs.DAL
             return (from d in _db.BolusDoses 
                     select d).ToList();
         }
-        public IEnumerable<BolusDrug> GetDrugsByNameRoute(BolusDrug drug)
+        public IEnumerable<BolusDrug> GetDrugsByName(BolusDrug drug)
         {
-            string lName = drug.DrugName.ToLower();
-            string lRoute = (drug.Route==null)?null:drug.Route.ToLower();
-            return (from d in _db.BolusDrugs.AsNoTracking()
-                    where d.BolusDrugId != drug.BolusDrugId &&
-                          d.DrugName.ToLower() == lName && d.Route.ToLower() == lRoute
-                    select d).ToList();
+            string searchName = GetTextFromHtml(drug.DrugName);
+            return _db.BolusDrugs.AsNoTracking().ToList().Where(b => GetTextFromHtml(b.DrugName) == searchName);
+        }
+        
+        static string GetTextFromHtml(string html)
+        {
+            var doc = new HtmlAgilityPack.HtmlDocument();
+            doc.LoadHtml(html);
+            return doc.DocumentNode.InnerText.ToLower().Replace("/","per").Replace(":","in").RemoveNonAlphaNumeric();
         }
         public IEnumerable<BolusDose> GetDosesByOverlappingWeight(BolusDose dose)
         {

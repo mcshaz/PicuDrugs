@@ -53,6 +53,8 @@ div.druglist
 .updateStatus
 {
     display:inline;
+    font-weight:normal;
+    font-size:1em;
 }
 .errorUpdating, div.error
 {
@@ -80,8 +82,13 @@ div.submitOps
     margin-bottom:1em;
 }
 li.bolusSubHeader {
-    background-color:aqua;
+    border-top:black 1px solid;
+    border-bottom:black 1px solid;
     font-weight:bold;
+}
+li.bolusSubHeader > div:first-child
+{
+    display:inline-block;
 }
 .note {
     color:navy;
