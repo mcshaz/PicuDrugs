@@ -21,7 +21,7 @@ namespace PICUdrugs.DAL
         [Required(ErrorMessage = "Drug name must be provided")]
         public string DrugName { get; set; }
         [Range(0, 100000, ErrorMessage = "Concentration must be between 0 and 100 000 [units of measure] per mL")]
-        public double Conc_ml { get; set; }
+        public double? Conc_ml { get; set; }
         [StringLength(15, ErrorMessage = "Units must be less than 16 characters long")]
         [Required(ErrorMessage = "units must be provided")]
         public string Units { get; set; }

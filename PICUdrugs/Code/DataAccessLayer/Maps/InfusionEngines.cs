@@ -283,7 +283,7 @@ namespace PICUdrugs.DAL
     {
         public bool IsHeader { get; set; }
         public string RowTitle { get; set; }
-        public double Conc_ml { get; set; }
+        public double? Conc_ml { get; set; }
         private string _doseUnits;
         public string DoseUnits 
         { 
@@ -321,11 +321,9 @@ namespace PICUdrugs.DAL
             else if (lb < Min) { lb = Min; }
 
             BolusDose = new NumericRange();
-            BolusVolume = new NumericRange();
 
             if (roundingList != null) { BolusDose.LowerBound = Formulas.ClosestValue(lb, roundingList); }
             else { BolusDose.LowerBound = lb; }
-            BolusVolume.LowerBound = BolusDose.LowerBound / Conc_ml;
 
             double ub = weight * DosePerKg.UpperBound;
             if (ub > AdultMax) { ub = AdultMax; }
@@ -345,7 +343,12 @@ namespace PICUdrugs.DAL
             {
                 BolusDose.UpperBound = ub;
             }
-            BolusVolume.UpperBound = BolusDose.UpperBound / Conc_ml;
+            if (Conc_ml.HasValue)
+            {
+                BolusVolume = new NumericRange();
+                BolusVolume.LowerBound = BolusDose.LowerBound / Conc_ml.Value;
+                BolusVolume.UpperBound = BolusDose.UpperBound / Conc_ml.Value;
+            }
         }
     }
     public class FixedDurationInfusion : DrugInfusion

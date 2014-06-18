@@ -117,12 +117,17 @@ namespace PICUdrugs.drugAdmin
                                             unitCSSclass, 
                                             drug.Units);
             }
-            else
+            else if (drug.Conc_ml.HasValue)
             {
                 concLbl.Text = string.Format("{0} <span class='{1}'>{2}/mL</span>",
                                                 drug.Conc_ml.ToString(),
                                                 unitCSSclass,
                                                 drug.Units);
+            }
+            else
+            {
+                concLbl.Text = (string.Format("<span class='{0}'>NOT per mL</span>",
+                    unitCSSclass));
             }
         }
         private void setRowSpan(Control rowItem, int rowSpan)

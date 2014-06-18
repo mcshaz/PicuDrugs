@@ -400,11 +400,13 @@ namespace PICUdrugs.Code.Utilities
                 {
                     AddParaFromHtml(section, bolus.RowTitle, CreateNewStdPara);
                     //ampule concentration: fmt.Font.Size = 11; //1 point less 
-                    Paragraph adminPara = row.Cells[1].AddParagraph(String.Format("{0} {1}", bolus.BolusVolume.AsDrawingUpVolume(), bolus.AdministrationUnits));
+                    Paragraph adminPara = (bolus.BolusVolume==null)
+                        ? row.Cells[1].AddParagraph(bolus.BolusDose.ToString(3) + ' ' + bolus.DoseUnits)
+                        :row.Cells[1].AddParagraph(bolus.BolusVolume.AsDrawingUpVolume() + ' ' + bolus.AdministrationUnits);
                     adminPara.Format.SpaceBefore = adminPara.Format.SpaceAfter = extraPad;
                     Paragraph notePara;
 
-                    if (bolus.DoseUnits == BolusDrugListItem.DefaultAdministrationUnits || bolus.DoseUnits == BolusDrugListItem.EnergyUnits)
+                    if (bolus.DoseUnits == BolusDrugListItem.DefaultAdministrationUnits || bolus.DoseUnits == BolusDrugListItem.EnergyUnits || bolus.Conc_ml == null)
                     {
                         notePara = row.Cells[2].AddParagraph(String.Format("{0} {1}/kg\nmax {2} {3}", bolus.DosePerKg, bolus.DoseUnits, bolus.AdultMax, bolus.MaxDoseUnits));
                     }
