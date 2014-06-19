@@ -134,18 +134,31 @@ namespace PICUdrugs.DAL
             return (from d in _db.BolusDrugs.Include("BolusSortOrderings")
                     select d).ToList();
         }
+        public IEnumerable<FixedDrug> GetFixedDrugsAndOrders()
+        {
+            return (from d in _db.FixedDrugs.Include("BolusSortOrderings")
+                    select d).ToList();
+        }
         public IEnumerable<BolusSortOrdering> GetHeaders(int WardId)
         {
             return (from d in _db.BolusSortOrdering
-                    where d.WardId == WardId && d.BolusDrugId==null
+                    where d.WardId == WardId && d.SectionHeader!=null
                     select d).ToList();
         }
-        public void InsertSortOrder(BolusSortOrdering bolusSort)
+        public void InsertSortOrders(params BolusSortOrdering[] bolusSorting)
         {
+            foreach (var order in bolusSorting)
+            {
+                _db.BolusSortOrdering.Add(order);
+            }
             try
             {
-                _db.BolusSortOrdering.Add(bolusSort);
                 _db.SaveChanges();
+            }
+            catch (System.Data.Entity.Validation.DbEntityValidationException e)
+            {
+                System.Diagnostics.Debug.Write(string.Join(";", e.EntityValidationErrors.Select(ve => string.Join(",", ve.ValidationErrors.Select(v => v.PropertyName + ":" + v.ErrorMessage)))));
+                throw;
             }
             catch (Exception)
             {
@@ -178,50 +191,6 @@ namespace PICUdrugs.DAL
             return (from w in _db.Wards
                     where !w.BolusSortOrderings.Any()
                     select w.WardId).ToArray();
-        }
-        public void InsertSortOrder(int WardId, string[] bolusIDs)
-        {
-            try
-            {
-                for (int i = 0; i < bolusIDs.Length; i++)
-                {
-                    int drugId;
-                    var isInt = int.TryParse(bolusIDs[i], out drugId);
-                    BolusSortOrdering sort;
-                    if (isInt)
-                    {
-                        sort = new BolusSortOrdering
-                        {
-                            WardId = WardId,
-                            SortOrder = i + 1,
-                            BolusDrugId = drugId
-                        };
-                    }
-                    else if (string.IsNullOrWhiteSpace(bolusIDs[i]))
-                    {
-                        continue;
-                    }
-                    else 
-                    {
-                        sort = new BolusSortOrdering
-                        {
-                            WardId = WardId,
-                            SortOrder = i + 1,
-                            SectionHeader = bolusIDs[i]
-                        };
-                    }
-                    _db.BolusSortOrdering.Add(sort);
-                }
-                _db.SaveChanges();
-            }
-            catch (System.Data.Entity.Validation.DbEntityValidationException e)
-            {
-                System.Diagnostics.Debug.Write(string.Join(";", e.EntityValidationErrors.Select(ve => string.Join(",", ve.ValidationErrors.Select(v => v.PropertyName + ":" + v.ErrorMessage)))));
-            }
-            catch (Exception)
-            {
-                throw;
-            }
         }
         public void DeleteSortOrder(BolusSortOrdering bolusSort)
         {

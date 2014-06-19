@@ -82,7 +82,7 @@ namespace PICUdrugs.Code.Utilities
             Ward dpt = null;
             if (chartType == SelectedChart.bolusOnly || chartType == SelectedChart.bolusPlusInfusion)
             {
-                var bolusList = InfusionData.EmergencyBoluses();
+                var bolusList = InfusionData.EmergencyBoluses(patient.Age);
                 if (bolusList.Any())
                 {
                     dpt = InfusionData.GetWard();
@@ -374,57 +374,65 @@ namespace PICUdrugs.Code.Utilities
             foreach (BolusDrugListItem bolus in bolusList)
             {
                 
-                if (bolus.IsHeader)
+                switch (bolus.ItemType)
                 {
-                    if (ett != null && bolus.RowTitle == PICUdrugs.BLL.BolusSortingBL.ETTsize)
-                    {
-                        row = tbl.AddRow();
-                        var para = row.Cells[0].AddParagraph("ETT");
-                        para.Format.SpaceBefore = para.Format.SpaceAfter = extraPad;
-                        var fmt = para.AddFormattedText("(internal diameter)", TextFormat.Italic);
-                        fmt.Size = 9;
-                        para = row.Cells[1].AddParagraph();
-                        if (ett.InternalDiameter.HasValue) { para.AddText(ett.InternalDiameter.Value.ToString("0.0")); }
-                        fmt = para.AddFormattedText(String.Format(" ({0}) mm", ett.InternalDiameterRange.ToString(1, NumericRange.Rounding.FixedDecimalPlaces)));
-                        if (!String.IsNullOrEmpty(ett.Note)) { fmt.AddText("\n" + ett.Note); }
-                        fmt.Size = 10;
-                        row.Cells[2].AddParagraph(String.Format("{0} cm @ lips\n{1} cm @ nose", ett.LengthAtLip, ett.LengthAtNose));
-                    }
-                    else
-                    {
-                        AddParaFromHtml(section, bolus.RowTitle, CreateNewHeaderPara);
-                    }
-                    //para.Style = rowHeader.Name;
-                }
-                else
-                {
-                    AddParaFromHtml(section, bolus.RowTitle, CreateNewStdPara);
-                    //ampule concentration: fmt.Font.Size = 11; //1 point less 
-                    Paragraph adminPara = (bolus.BolusVolume==null)
-                        ? row.Cells[1].AddParagraph(bolus.BolusDose.ToString(3) + ' ' + bolus.DoseUnits)
-                        :row.Cells[1].AddParagraph(bolus.BolusVolume.AsDrawingUpVolume() + ' ' + bolus.AdministrationUnits);
-                    adminPara.Format.SpaceBefore = adminPara.Format.SpaceAfter = extraPad;
-                    Paragraph notePara;
-
-                    if (bolus.DoseUnits == BolusDrugListItem.DefaultAdministrationUnits || bolus.DoseUnits == BolusDrugListItem.EnergyUnits || bolus.Conc_ml == null)
-                    {
-                        notePara = row.Cells[2].AddParagraph(String.Format("{0} {1}/kg\nmax {2} {3}", bolus.DosePerKg, bolus.DoseUnits, bolus.AdultMax, bolus.MaxDoseUnits));
-                    }
-                    else
-                    {
-                        string dosePerKg = string.Format("{0} {1}/kg",bolus.DosePerKg, bolus.DoseUnits);
-                        string doseTotal = string.Format("{0} {1}",bolus.BolusDose.AsDrawingUpVolume(), bolus.DoseUnits);
-                        if (dosePerKg.Length + doseTotal.Length <= 24)
+                    case BolusListItemType.Header:
+                        if (ett != null && bolus.RowTitle == PICUdrugs.BLL.BolusSortingBL.ETTsize)
                         {
-                            notePara =  row.Cells[2].AddParagraph(dosePerKg + " = ");
+                            row = tbl.AddRow();
+                            var para = row.Cells[0].AddParagraph("ETT");
+                            para.Format.SpaceBefore = para.Format.SpaceAfter = extraPad;
+                            var fmt = para.AddFormattedText("(internal diameter)", TextFormat.Italic);
+                            fmt.Size = 9;
+                            para = row.Cells[1].AddParagraph();
+                            if (ett.InternalDiameter.HasValue) { para.AddText(ett.InternalDiameter.Value.ToString("0.0")); }
+                            fmt = para.AddFormattedText(String.Format(" ({0}) mm", ett.InternalDiameterRange.ToString(1, NumericRange.Rounding.FixedDecimalPlaces)));
+                            if (!String.IsNullOrEmpty(ett.Note)) { fmt.AddText("\n" + ett.Note); }
+                            fmt.Size = 10;
+                            row.Cells[2].AddParagraph(String.Format("{0} cm @ lips\n{1} cm @ nose", ett.LengthAtLip, ett.LengthAtNose));
                         }
                         else
                         {
-                            notePara = row.Cells[2].AddParagraph(dosePerKg + "\n= ");
+                            AddParaFromHtml(section, bolus.RowTitle, CreateNewHeaderPara);
                         }
-                        notePara.AddFormattedText(doseTotal, TextFormat.Bold);
-                        notePara.AddText(string.Format("\nmax {0} {1}", bolus.AdultMax, bolus.MaxDoseUnits));
-                    }
+                        break;
+                    //para.Style = rowHeader.Name;
+                    case BolusListItemType.DosePerKg:
+                        AddParaFromHtml(section, bolus.RowTitle, CreateNewStdPara);
+                        //ampule concentration: fmt.Font.Size = 11; //1 point less 
+                        Paragraph adminPara = (bolus.BolusVolume==null)
+                            ? row.Cells[1].AddParagraph(bolus.BolusDose.ToString(3) + ' ' + bolus.DoseUnits)
+                            :row.Cells[1].AddParagraph(bolus.BolusVolume.AsDrawingUpVolume() + ' ' + bolus.AdministrationUnits);
+                        adminPara.Format.SpaceBefore = adminPara.Format.SpaceAfter = extraPad;
+                        Paragraph notePara;
+
+                        if (bolus.DoseUnits == BolusDrugListItem.DefaultAdministrationUnits || bolus.DoseUnits == BolusDrugListItem.EnergyUnits || bolus.Conc_ml == null)
+                        {
+                            notePara = row.Cells[2].AddParagraph(String.Format("{0} {1}/kg\nmax {2} {3}", bolus.DosePerKg, bolus.DoseUnits, bolus.AdultMax, bolus.MaxDoseUnits));
+                        }
+                        else
+                        {
+                            string dosePerKg = string.Format("{0} {1}/kg",bolus.DosePerKg, bolus.DoseUnits);
+                            string doseTotal = string.Format("{0} {1}",bolus.BolusDose.AsDrawingUpVolume(), bolus.DoseUnits);
+                            if (dosePerKg.Length + doseTotal.Length <= 24)
+                            {
+                                notePara =  row.Cells[2].AddParagraph(dosePerKg + " = ");
+                            }
+                            else
+                            {
+                                notePara = row.Cells[2].AddParagraph(dosePerKg + "\n= ");
+                            }
+                            notePara.AddFormattedText(doseTotal, TextFormat.Bold);
+                            notePara.AddText(string.Format("\nmax {0} {1}", bolus.AdultMax, bolus.MaxDoseUnits));
+                        }
+                        break;
+                    case BolusListItemType.FixedDose:
+                        AddParaFromHtml(section, bolus.RowTitle, CreateNewStdPara);
+                        Paragraph dosePara = row.Cells[1].AddParagraph(bolus.DoseUnits);
+                        dosePara.Format.SpaceBefore = dosePara.Format.SpaceAfter = extraPad;
+                        notePara = row.Cells[2].AddParagraph();
+                        notePara.AddFormattedText("Not per Kg", TextFormat.Italic);
+                        break;
                 }
             }
 

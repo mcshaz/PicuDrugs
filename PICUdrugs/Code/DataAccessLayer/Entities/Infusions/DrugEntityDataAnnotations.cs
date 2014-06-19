@@ -122,22 +122,6 @@ namespace PICUdrugs.DAL
         [Range(1e-3, 10000, ErrorMessage = "Drug ampule Concentration must be between 0.001 and 10 000 [drug units]/mL")]
         public double Concentration { get; set; }
     }
-    [MetadataType(typeof(BolusDoseMetaData))]
-    public partial class BolusDose
-    {
-    }
-    public class BolusDoseMetaData
-    {
-        [Range(FieldConst.minWeight, FieldConst.maxWeight, ErrorMessage = FieldConst.wtErr)]
-        public int WeightMin { get; set; }
-        [Range(FieldConst.minWeight, FieldConst.maxWeight, ErrorMessage = FieldConst.wtErr)]
-        //[GreaterThan("WeightMin")]
-        public int WeightMax { get; set; }
-        [Range(0, 100000, ErrorMessage = "Dose per kg must be between 0 and 100 000 [units of measure]" )]
-        public int MinDosePerKg { get; set; }
-        [Range(0, 100000, ErrorMessage = "Dose per kg must be between 0 and 100 000 [units of measure]")]
-        public int MaxDosePerKg { get; set; }
-    }
     [MetadataType(typeof(DefibModelMetaData))]
     public partial class DefibModel
     {

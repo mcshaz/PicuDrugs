@@ -44,13 +44,9 @@ namespace PICUdrugs.WardAdmin
                 sortingDrugs = bolusBL.GetAllDrugs(selectedWard).ToLookup(b => b.SortOrder != null);
                 emptywards = bolusBL.GetWardsWithoutBoluses();
             }
-            foreach (var bolusItem in sortingDrugs[true])
-            {
-                bolusItem.DrugName = bolusItem.DrugName.Replace("<!-- pagebreak -->","-- pagebreak --"); // could change this to have a bool property denoting a sectionheader, and only change those items
-            }
-            bolusSortOrderLV.DataSource = sortingDrugs[true].OrderBy(b => b.SortOrder);
+            bolusSortOrderLV.DataSource = sortingDrugs[true].ToArray().IndexBy(b => b.SortOrder.Value);
             bolusSortOrderLV.DataBind();
-            remainingBolusLV.DataSource = sortingDrugs[false].OrderBy(b=>b.DrugName);
+            remainingBolusLV.DataSource = sortingDrugs[false];
             remainingBolusLV.DataBind();
 
 

@@ -213,12 +213,38 @@ namespace PICUdrugs.Utils
             string maxStr = (max == 100) ? ">99" : max.ToString("0");
             return centileText + ' ' + minStr + '-' + maxStr;
         }
+        /// <summary>
+        /// faster than select().toarray();
+        /// </summary>
+        /// <typeparam name="TSource"></typeparam>
+        /// <typeparam name="TResult"></typeparam>
+        /// <param name="source"></param>
+        /// <param name="predicate"></param>
+        /// <returns></returns>
         public static TResult[] Map<TSource,TResult>(this TSource[] source, Func<TSource,TResult> predicate)
         {
             TResult[] result = new TResult[source.Length];
             for (int i=0;i<source.Length;i++)
             {
                 result[i] = predicate(source[i]);
+            }
+            return result;
+        }
+        /// <summary>
+        /// When an object has a property which is an ascending integer between 1...n, will create a new array, placing each item in
+        /// position of integer-1. faster than orderby().toarray
+        /// </summary>
+        /// <typeparam name="TSource"></typeparam>
+        /// <typeparam name="TResult"></typeparam>
+        /// <param name="source"></param>
+        /// <param name="predicate"></param>
+        /// <returns></returns>
+        public static T[] IndexBy<T>(this T[] source, Func<T,int> predicate)
+        {
+            T[] result = new T[source.Length];
+            for (int i = 0; i < source.Length; i++)
+            {
+                result[predicate(source[i])-1] = source[i];
             }
             return result;
         }

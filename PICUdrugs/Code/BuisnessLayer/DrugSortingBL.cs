@@ -84,17 +84,33 @@ namespace PICUdrugs.BLL
         private BolusSortingRepository bolusSortRepository;
         public IEnumerable<SortingDrugItem> GetAllDrugs(int WardId)
         {
-            var drugs = bolusSortRepository.GetBolusDrugsAndOrders();
+            var perKgDrugs = bolusSortRepository.GetBolusDrugsAndOrders();
+            
             var returnVar = new List<SortingDrugItem>();
-            foreach (var drug in drugs)
+            foreach (var drug in perKgDrugs)
             {
-                var item = new SortingDrugItem { DrugName = drug.DrugName, 
-                    Id= drug.BolusDrugId };
+                var item = new SortingDrugItem 
+                { 
+                    DrugName = drug.DrugName, 
+                    Id= drug.BolusDrugId 
+                };
                 var so = drug.BolusSortOrderings.FirstOrDefault(s=>s.WardId == WardId);
                 if (so!=null) {item.SortOrder=so.SortOrder;}
                 returnVar.Add(item);
             }
-            var headers = bolusSortRepository.GetHeaders(WardId).Select(s => new SortingDrugItem { DrugName = s.SectionHeader, SortOrder = s.SortOrder });
+            var fixedDrugs = bolusSortRepository.GetFixedDrugsAndOrders();
+            foreach (var drug in fixedDrugs)
+            {
+                var item = new SortingDrugItem
+                {
+                    DrugName = drug.DrugName,
+                    Id = -drug.FixedDrugId
+                };
+                var so = drug.BolusSortOrderings.FirstOrDefault(s => s.WardId == WardId);
+                if (so != null) { item.SortOrder = so.SortOrder; }
+                returnVar.Add(item);
+            }
+            var headers = bolusSortRepository.GetHeaders(WardId).Select(s => new SortingDrugItem { DrugName = s.SectionHeader.Replace("<!-- pagebreak -->","-- pagebreak --"), SortOrder = s.SortOrder });
             if (!headers.Any(h=>h.DrugName == ETTsize))
             {
                 returnVar.Add(new SortingDrugItem { DrugName = ETTsize });
@@ -111,10 +127,43 @@ namespace PICUdrugs.BLL
         }
         public void SetNewSortOrdering(int WardId, string[] newOrder)
         {
-            string[] htmlCleanedOrder = newOrder.Map(o => o.Any(d=>!char.IsDigit(d))?CleanHtml(o):o);//clean first in order not to delete if it throws an error
-
+            BolusSortOrdering[] sort = new BolusSortOrdering[newOrder.Length];
+            for (int i = 0; i < newOrder.Length; i++)
+            {
+                int drugId;
+                var isInt = int.TryParse(newOrder[i], out drugId);
+                if (isInt)
+                {
+                    sort[i] = new BolusSortOrdering
+                    {
+                        WardId = WardId,
+                        SortOrder = i + 1,
+                    };
+                    if (drugId >0)
+                    {
+                        sort[i].BolusDrugId = drugId;
+                    }
+                    else
+                    {
+                        sort[i].FixedDrugId = -drugId;
+                    }
+                }
+                else if (string.IsNullOrWhiteSpace(newOrder[i]))
+                {
+                    continue;
+                }
+                else
+                {
+                    sort[i] = new BolusSortOrdering
+                    {
+                        WardId = WardId,
+                        SortOrder = i + 1,
+                        SectionHeader = CleanHtml(newOrder[i])
+                    };
+                }
+            } //run this before delete in case of error
             bolusSortRepository.DeleteSortOrder(WardId);
-            bolusSortRepository.InsertSortOrder(WardId, htmlCleanedOrder);
+            bolusSortRepository.InsertSortOrders(sort);
         }
         public void DeleteAllOrderingforWard(int WardId)
         {

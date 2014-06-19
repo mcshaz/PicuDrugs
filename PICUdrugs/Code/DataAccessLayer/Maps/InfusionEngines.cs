@@ -279,15 +279,19 @@ namespace PICUdrugs.DAL
         public string SubHeader{get; internal set;}
         public string Href { get; set; }
     }
+    public enum BolusListItemType { Header, DosePerKg, FixedDose}
     public class BolusDrugListItem
     {
-        public bool IsHeader { get; set; }
+        public BolusListItemType ItemType { get; set; }
         public string RowTitle { get; set; }
         public double? Conc_ml { get; set; }
         private string _doseUnits;
         public string DoseUnits 
         { 
-            get { return (DosePerKg.UpperBound==1)?_doseUnits.Singularise():_doseUnits; } 
+            get 
+            {
+                return (DosePerKg!=null && DosePerKg.UpperBound == 1) ? _doseUnits.Singularise() : _doseUnits; 
+            } 
             set { _doseUnits = value; } 
         }
         public string MaxDoseUnits
@@ -312,7 +316,6 @@ namespace PICUdrugs.DAL
         public NumericRange BolusVolume { get; private set; }
         public void SetWeight(double weight, int[] roundingList = null)
         {
-            if (IsHeader) { return; }
             if (DosePerKg == null) { throw new Exception("DosePerKg must be set before calling this Description"); }
             if (Conc_ml == 0) { throw new Exception("Conc_ml must be set before calling this Description"); }
 

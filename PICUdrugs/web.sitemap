@@ -13,6 +13,7 @@
       <siteMapNode url="~/DrugAdmin/EditInfusionDrugNames.aspx" title="Infusion Drugs" description="edit drugs used in Infusions"  />
       <siteMapNode url="~/DrugAdmin/EditReferences.aspx" title="References" description="edit reference source details" />
       <siteMapNode url="~/DrugAdmin/EditDefib.aspx" title="Defibs" description="edit defibrillator energy select"  />
+      <siteMapNode url="~/DrugAdmin/EditFixedDoseDrugs.aspx" title="Fixed Dose Drugs" description="edit fixed dose resuscitation drugs" />
     </siteMapNode>
     <siteMapNode title="Edit List Order" description="manage ordering of drug lists" url="~/WardAdmin/DepartmentListOrder.aspx" />
     <siteMapNode title="Manage Users" description="add/Remove/modify users and Wards" roles="websiteAdmin">

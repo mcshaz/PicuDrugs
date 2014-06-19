@@ -23,6 +23,8 @@ namespace PICUdrugs.DAL
         */
         public virtual DbSet<BolusDose> BolusDoses { get; set; }
         public virtual DbSet<BolusDrug> BolusDrugs { get; set; }
+        public virtual DbSet<FixedDrug> FixedDrugs { get; set; }
+        public virtual DbSet<FixedDose> FixedDoses { get; set; }
         public virtual DbSet<BolusSortOrdering> BolusSortOrdering { get; set; }
         public virtual DbSet<CdcBmiForAge> CdcBmiForAges { get; set; }
         public virtual DbSet<CdcLengthForAge> CdcLengthForAges { get; set; }

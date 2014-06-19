@@ -1,4 +1,11 @@
 ﻿; (function ($) {
+    $.fn.any = function (fn) {
+        var i = 0;
+        for (; i < this.length; i++) {
+            if (fn.call(this[i], i, this[i])) { return true; }
+        }
+        return false;
+    }
     $(document).ready(function () {
         var $lists = $('.listOrder'),
             $submitBtns = $('input').filter('[id^=submit]'),
@@ -42,6 +49,7 @@
                         $validator.show();
                     },
                     txt = mce.getContent(),
+                    spaceBetween = /\w \w/,
                     li, regexFromStr, regexToStr;
                 
                 if (isNaN(parseInt(txt))) {
@@ -60,7 +68,10 @@
                         displayError("The header is too long");
                         return;
                     }
-
+                    if ($(li).find('*').any(function () { return spaceBetween.test(this.className) })) {
+                        displayError("currently, the application cannot deal with multiple styles applied to a single element. suggest clear formatting, and try again using 1 style + other functions such as bold, fontsize etc.");
+                        return;
+                    }
                     $bolusList.append(li);
                     //cleanup
                     $bolusList.find('.empty').remove()

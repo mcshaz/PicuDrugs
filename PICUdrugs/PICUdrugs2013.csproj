@@ -204,6 +204,7 @@
     <Content Include="Content\WardManagement.css" />
     <Content Include="CurrentDrugList.aspx" />
     <Content Include="DisplayAnthropometry.aspx" />
+    <Content Include="DrugAdmin\EditFixedDoseDrugs.aspx" />
     <Content Include="DrugAdmin\EditBolusDrugs.aspx" />
     <Content Include="DrugAdmin\EditDefib.aspx" />
     <Content Include="DrugAdmin\EditInfusionDrugNames.aspx" />
@@ -480,6 +481,7 @@
     </Compile>
     <Compile Include="Code\BuisnessLayer\Anthropometry.cs" />
     <Compile Include="Code\BuisnessLayer\BLExceptions.cs" />
+    <Compile Include="Code\BuisnessLayer\FixedBolusBL.cs" />
     <Compile Include="Code\BuisnessLayer\BolusBL.cs" />
     <Compile Include="Code\BuisnessLayer\DefibBL.cs" />
     <Compile Include="Code\BuisnessLayer\DefibJouleBL.cs" />
@@ -492,6 +494,7 @@
     <Compile Include="Code\BuisnessLayer\WardBL.cs" />
     <Compile Include="Code\DataAccessLayer\Context\DataContext.cs" />
     <Compile Include="Code\DataAccessLayer\Entities\BolusDrugs\BolusDose.cs" />
+    <Compile Include="Code\DataAccessLayer\Entities\BolusDrugs\FixedDoseBolus.cs" />
     <Compile Include="Code\DataAccessLayer\Entities\BolusDrugs\BolusDrug.cs" />
     <Compile Include="Code\DataAccessLayer\Entities\BolusDrugs\BolusSortOrdering.cs" />
     <Compile Include="Code\DataAccessLayer\Entities\BolusDrugs\DefibJoule.cs" />
@@ -520,6 +523,7 @@
     <Compile Include="Code\DataAccessLayer\Maps\InfusionEngines.cs" />
     <Compile Include="Code\DataAccessLayer\Maps\PatientChart.cs" />
     <Compile Include="Code\DataAccessLayer\Maps\StatisticalTables.cs" />
+    <Compile Include="Code\DataAccessLayer\Repositories\FixedDoseRepository.cs" />
     <Compile Include="Code\DataAccessLayer\Repositories\BolusRepository.cs" />
     <Compile Include="Code\DataAccessLayer\Repositories\DefibJouleRepository.cs" />
     <Compile Include="Code\DataAccessLayer\Repositories\DefibRepository.cs" />
@@ -561,6 +565,13 @@
     </Compile>
     <Compile Include="DisplayAnthropometry.aspx.designer.cs">
       <DependentUpon>DisplayAnthropometry.aspx</DependentUpon>
+    </Compile>
+    <Compile Include="DrugAdmin\EditFixedDoseDrugs.aspx.cs">
+      <DependentUpon>EditFixedDoseDrugs.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="DrugAdmin\EditFixedDoseDrugs.aspx.designer.cs">
+      <DependentUpon>EditFixedDoseDrugs.aspx</DependentUpon>
     </Compile>
     <Compile Include="DrugAdmin\EditBolusDrugs.aspx.cs">
       <DependentUpon>EditBolusDrugs.aspx</DependentUpon>

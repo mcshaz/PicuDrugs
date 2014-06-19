@@ -79,9 +79,11 @@ namespace PICUdrugs.DAL
                         Href = (dil.HrefBase == null || dil.HrefLink == null) ? null : (dil.HrefBase.ReferenceBase(true) + dil.HrefLink)
                     });
         }
-        public IEnumerable<BolusDrugListItem> EmergencyBoluses()
+        public IEnumerable<BolusDrugListItem> EmergencyBoluses(ChildAge age=null)
         {
-            var returnList = GetBolusSortOrdering(_ptDetail.WardId, _ptDetail.WorkingWeight);
+            var returnList = (age==null)
+                ?GetBolusSortOrdering(_ptDetail.WardId, _ptDetail.WorkingWeight)
+                :GetBolusSortOrdering(_ptDetail.WardId, _ptDetail.WorkingWeight, age.TotalMonthsEstimate);
             var defibSettings = (from j in _db.DefibJoules
                      where j.DefibModel.Wards.Any(w => w.WardId == _ptDetail.WardId)
                      select j.Joules).ToArray();
@@ -92,7 +94,7 @@ namespace PICUdrugs.DAL
 
             foreach (var eb in returnList)
             {
-                if (eb.IsHeader) { continue;  }
+                if (eb.ItemType != BolusListItemType.DosePerKg) { continue;  }
                 if (eb.DoseUnits == "J")
                 {
                     eb.SetWeight(_ptDetail.WorkingWeight, defibSettings);
@@ -193,19 +195,50 @@ namespace PICUdrugs.DAL
             }
             return returnVal;
         }
-        public IEnumerable<BolusDrugListItem> GetBolusSortOrdering(int WardId, double weight)
+        public IEnumerable<BolusDrugListItem> GetBolusSortOrdering(int WardId, double weight, int? ageMonths = null)
         {
             var records = (from s in _db.BolusSortOrdering
                            where s.WardId == WardId
-                           select new { Header = s.SectionHeader, Drug = s.BolusDrug, Dose = s.BolusDrug.BolusDoses.FirstOrDefault(d => d.WeightMin < weight && d.WeightMax >= weight) }).ToList();
+                           orderby s.SortOrder
+                           select new 
+                           { 
+                               Header = s.SectionHeader, 
+                               Drug = s.BolusDrug,
+                               Dose = s.BolusDrug.BolusDoses.FirstOrDefault(d => d.WeightMin < weight && d.WeightMax >= weight),
+                               Fixed = s.FixedDrug,
+                               FixDose = s.FixedDrug.FixedDoses.FirstOrDefault(d => (d.MinAgeMonths==0 && d.MaxAgeMonths==1200) || (d.MinAgeMonths < ageMonths && d.MaxAgeMonths >= ageMonths))
+                           }).ToList();
             var returnVal = new List<BolusDrugListItem>(records.Count);
             foreach (var r in records)
             {
-                if (r.Dose != null)
+                if (r.Dose == null)
+                {
+                    if (r.Header == null)
+                    {
+                        if (r.FixDose != null)
+                        {
+                            returnVal.Add(new BolusDrugListItem
+                            {
+                                ItemType = BolusListItemType.FixedDose,
+                                RowTitle = r.Fixed.DrugName,
+                                DoseUnits = r.FixDose.Dose
+                            });
+                        }
+                    }
+                    else
+                    {
+                        returnVal.Add(new BolusDrugListItem
+                        {
+                            ItemType = BolusListItemType.Header,
+                            RowTitle = r.Header,
+                        });
+                    }
+                }
+                else
                 {
                     returnVal.Add(new BolusDrugListItem
                     {
-                        IsHeader = false,
+                        ItemType = BolusListItemType.DosePerKg,
                         RowTitle = r.Drug.DrugName,
                         DosePerKg = new NumericRange
                         {
@@ -216,14 +249,6 @@ namespace PICUdrugs.DAL
                         Min = r.Drug.Min,
                         DoseUnits = r.Drug.Units,
                         Conc_ml = r.Drug.Conc_ml
-                    });
-                }
-                else
-                {
-                    returnVal.Add(new BolusDrugListItem
-                    {
-                        IsHeader = true,
-                        RowTitle = r.Header,
                     });
                 }
             }
