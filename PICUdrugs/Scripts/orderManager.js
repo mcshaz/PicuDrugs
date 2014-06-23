@@ -13,8 +13,35 @@
             submitRegX = /included/i,
             infusionRegX = /infusion/i,
             $cloneBolusBtn = $("#MainContent_cloneBolusGo"),
-            $cloneBolusSelect = $("#MainContent_cloneBolusSelect");
+            $cloneBolusSelect = $("#MainContent_cloneBolusSelect"),
+            regexFromStr = '<!-- pagebreak -->',
+            regexToStr = '-- pagebreak --',
+            mce,
+            mcePos;
         zebra($lists);
+        tinymce.init({
+            selector: "#bolusHeader",
+            // consider in future charmap spellchecker
+            plugins: [
+                    "pagebreak textcolor"
+            ],
+            toolbar1: "bold italic underline forecolor superscript | fontselect fontsizeselect | alignleft aligncenter alignright | outdent indent | pagebreak | styleselect removeformat",
+            //doctype:"<!DOCTYPE html PUBLIC '-//W3C//DTD XHTML 1.0 Strict//EN' 'http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd'>",
+            menubar: false,
+            forced_root_block: 'div',
+            width: "100%",
+            content_css: "/Content/ChartHeader.css",
+            style_formats: [
+                { title: 'Row Header', selector: 'div', classes: 'RowHeader' },
+                { title: 'Concentration', inline: 'span', classes: "concentration" },
+                { title: 'Route', inline: 'span', classes: "route" }
+            ]
+        });
+        $(window).on('load', function () {
+            mce = tinymce.get('bolusHeader');
+            mcePos = getPositions(mce.editorContainer);
+        });
+
         $(".clickHandle").on('click', function (e) {
             $(this).nextAll().slideToggle();
         });
@@ -28,9 +55,28 @@
                 $this.sortable({
                     connectWith: $assdList,
                     placeholder: 'ui-state-highlight',
-                    receive: function (event, ui) { adopt($this); },
-                    remove: function (event, ui) { orphan($this); },
-                    update: function (event, ui) { zebra($this); if (isSubmitList) { $submitBtn[0].disabled = false; } }
+                    receive: function (event, ui) {
+                        adopt($this);
+                    },
+                    remove: function (event, ui) {
+                        orphan($this);
+                    },
+                    update: function (event, ui) {
+                        zebra($this);
+                        if (isSubmitList) { $submitBtn[0].disabled = false; }
+                    },
+                    beforeStop: function (event, ui) {
+                        var offset,
+                            $item = ui.item;
+                        if ($item.hasClass("bolusSubHeader")) {
+                            offset = ui.offset;
+                            if (isOverlapping(mcePos, { x: { min: offset.left, max: offset.left + $item.width() }, y: { min: offset.top, max: offset.top + $item.height() } })) {
+                                mce.setContent($item[0].innerHTML.replace(new RegExp(regexToStr, "g"), regexFromStr));
+                                $item.remove();
+                                orphan($this);
+                            }
+                        }
+                    }
                 }).disableSelection();
                 if (isSubmitList) {
                     var isInfusion = infusionRegX.test(this.id);
@@ -39,9 +85,8 @@
                 }
             });
             $("#addBolusHeader").on("click", function () {
-                var mce = tinyMCE.get('bolusHeader'),
+                var $validator = $("#bolusHeaderVal"),
                     $mceBody = $(mce.getBody()),
-                    $validator = $("#bolusHeaderVal"),
                     displayError = function(msg)
                     {
                         $validator.text('*' + msg);
@@ -56,8 +101,6 @@
                     //add new li
                     li = document.createElement('li');
                     li.className = "bolusSubHeader";
-                    regexFromStr = '<!--\\s*pagebreak\\s*-->';
-                    regexToStr = '-- pagebreak --'
                     li.innerHTML = txt.replace(new RegExp('<\\s*(\\w+)\\s*>[\\r\\n\\s]*'+regexFromStr+'[\\r\\n\\s]*</\\s*\\1\\s*>',"gi"),regexToStr)
                         .replace(new RegExp(regexFromStr, "gi"), regexToStr);
                     if (li.innerHTML == "ETT size") {
@@ -107,24 +150,6 @@
                 error: ajaxError
             });
         })
-        tinymce.init({
-            selector: "#bolusHeader",
-            // consider in future charmap spellchecker
-            plugins: [
-                    "pagebreak textcolor"
-            ],
-            toolbar1: "bold italic underline forecolor | fontselect fontsizeselect | alignleft aligncenter alignright | outdent indent | pagebreak | styleselect removeformat",
-            //doctype:"<!DOCTYPE html PUBLIC '-//W3C//DTD XHTML 1.0 Strict//EN' 'http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd'>",
-            menubar: false,
-            forced_root_block : 'div',
-            width: "100%",
-            content_css: "/Content/ChartHeader.css",
-            style_formats: [
-                { title: 'Row Header', selector: 'div', classes: 'RowHeader' },
-                { title: 'Concentration', inline: 'span', classes: "concentration" },
-                { title: 'Route', inline: 'span', classes: "route" }
-            ]
-        });
     });
     //list sorting
     function zebra($which) {
@@ -220,5 +245,34 @@
         alert("Unable to update:" + fullDetails);
         $("#waitUpdating").remove();
         $('#updatingOrderProgress').addClass('errorUpdating').text('Update failed:' + Date().toString() + ' ' + fullDetails);
+    }
+
+    function getPositions( elem ) {
+        var pos, width, height;
+        if (!(elem instanceof jQuery)) {
+            elem = $(elem);
+        }
+
+        pos = elem.offset();
+        width = elem.width();
+        height = elem.height();
+        return {
+            x:{
+                min: pos.left,
+                max: pos.left + width
+                },
+            y: {
+                min: pos.top,
+                max: pos.top + height
+                }
+        };
+    }
+
+    function withinRange( rng1, rng2 ) {
+        return rng1.max > rng2.min && rng1.min < rng2.max;
+    }
+
+    function isOverlapping(pos1, pos2) {
+        return withinRange(pos1.x, pos2.x) && withinRange(pos1.y, pos2.y);
     }
 })(jQuery);

@@ -742,6 +742,11 @@ namespace PICUdrugs.Code.Utilities
                                 currentFont.Italic = true;
                                 fontStack.Push(currentFont);
                                 break;
+                            case "sup":
+                                currentFont = fontStack.Peek().Clone();
+                                currentFont.Superscript = true;
+                                fontStack.Push(currentFont);
+                                break;
                             case "h1":
                             case "h2":
                             case "h3":
