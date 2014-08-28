@@ -90,6 +90,14 @@ namespace PICUdrugs.BLL
         }
     }
     [Serializable]
+    public class CleanedHtmlTooLongException : BLexception
+    {
+        public CleanedHtmlTooLongException(string message)
+            : base(message)
+        {
+        }
+    }
+    [Serializable]
     public class InvalidNullCombination : BLexception
     {
         public InvalidNullCombination(string message)

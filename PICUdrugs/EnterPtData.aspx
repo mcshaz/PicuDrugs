@@ -2,7 +2,7 @@
     CodeBehind="EnterPtData.aspx.cs" Inherits="PICUdrugs.Pages.EnterPtData" %>
 
 <asp:Content ID="Content1" ContentPlaceHolderId="HeadContent" runat="server">
-    <link href="<%# ResolveUrl("~/Content/EnterPtData-0.3.css")%>" rel="stylesheet" type="text/css"/>
+    <link href="<%# ResolveUrl("~/Content/EnterPtData-0.4.css")%>" rel="stylesheet" type="text/css"/>
 </asp:Content>
 <asp:Content ID="Cotent2" ContentPlaceHolderId="headings" runat="server">
     <h2>Drug Doses</h2>
@@ -35,6 +35,14 @@
             </asp:DropDownList>
         </div>
 
+        <div class="editor-label changeCookie hidden">
+            <label for="MainContent_wardList">Remember Selection</label>
+        </div>
+        <div class="editor-field changeCookie hidden">
+            <input id="isToChangeCookie" type="checkbox" />
+            <span class="explanation">Make this selection the new default chart?</span>
+        </div>
+
         <div class="editor-label">
             <label for="MainContent_ptName">First + Last Name</label>
         </div>
@@ -65,7 +73,7 @@
             <input id="medianWeightBtn" type="button" value="Median Weight"/>
             <asp:HiddenField runat="server" ID="upperCentileValue" />
             <asp:HiddenField runat="server" ID="lowerCentileValue" />
-            <asp:TextBox ID="centileText" runat="server" CssClass="normalCentile" ReadOnly="true"></asp:TextBox>
+            <asp:TextBox ID="centileText" runat="server" CssClass="normalCentile" ></asp:TextBox>
         </div>
         <div class="minor-label">
             <label id="weightEstimateLbl" for="MainContent_weightEstimate" >(estimated weight only)</label>
@@ -155,8 +163,8 @@
 </asp:Content>
 <asp:Content ID="MyScripts" ContentPlaceHolderId="masterScripts" runat="server">
     <script src="/Scripts/json2.min.js" type="text/javascript"></script>
-    <script src="/Scripts/PICUdrugUtils-0.4.js" type="text/javascript"></script>
+    <script src="/Scripts/PICUdrugUtils-0.5.js" type="text/javascript"></script>
     <script src="/Scripts/DobAgePageManagement-0.2.js" type="text/javascript"></script>
-    <script src="/Scripts/EnterPtData-0.3.js" type="text/javascript"></script>
+    <script src="/Scripts/EnterPtData-0.4.js" type="text/javascript"></script>
 </asp:Content>
 

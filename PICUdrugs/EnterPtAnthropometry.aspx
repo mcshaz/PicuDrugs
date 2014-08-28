@@ -2,7 +2,7 @@
     CodeBehind="EnterPtAnthropometry.aspx.cs" Inherits="PICUdrugs.Pages.EnterPtAnthropometry" %>
 
 <asp:Content ID="Content1" ContentPlaceHolderId="HeadContent" runat="server">
-    <link href="<%# ResolveUrl("~/Content/EnterPtData-0.3.css")%>" rel="stylesheet" type="text/css"/>
+    <link href="<%# ResolveUrl("~/Content/EnterPtData-0.4.css")%>" rel="stylesheet" type="text/css"/>
 </asp:Content>
 <asp:Content ID="Cotent2" ContentPlaceHolderId="headings" runat="server">
     <h2>Tools for calculating height, weight and BMI centiles</h2>

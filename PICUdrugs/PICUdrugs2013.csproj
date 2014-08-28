@@ -110,7 +110,7 @@
     <Content Include="Content\ChartHeader.css" />
     <Content Include="Content\CurrentDrugList.css" />
     <Content Include="Content\departmentListOrder.css" />
-    <Content Include="Content\EnterPtData-0.3.css" />
+    <Content Include="Content\EnterPtData-0.4.css" />
     <Content Include="Content\ie6and7DataEntry.css" />
     <Content Include="Content\InfusionCharts.css" />
     <Content Include="Content\infusionDilution.css" />
@@ -246,8 +246,11 @@
     <Content Include="Scripts\editInfusionDrugNames.js" />
     <Content Include="Scripts\emailGridUtilities.js" />
     <Content Include="Scripts\EnterAnthropometry.js" />
-    <Content Include="Scripts\EnterPtData-0.3.js" />
+    <Content Include="Scripts\EnterPtData-0.4.js" />
     <Content Include="Scripts\jquery-1.11.0.min.js" />
+    <Content Include="Administrators Guide to the Starship PICU Drug Calculator.pdf">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
     <None Include="Properties\PublishProfiles\WebDrive.pubxml" />
     <None Include="Scripts\jquery-2.1.0.intellisense.js" />
     <Content Include="Scripts\jquery-2.1.0.js" />
@@ -259,7 +262,7 @@
     <Content Include="Scripts\modernizr-2.7.2.js" />
     <Content Include="Scripts\MvcFoolproofValidation.min.js" />
     <Content Include="Scripts\orderManager.js" />
-    <Content Include="Scripts\PICUdrugUtils-0.4.js" />
+    <Content Include="Scripts\PICUdrugUtils-0.5.js" />
     <Content Include="Scripts\roleList.js" />
     <Content Include="Scripts\tinymce\license.txt" />
     <Content Include="Scripts\tinymce\plugins\advlist\plugin.js" />
@@ -443,7 +446,6 @@
     <Content Include="Reports\infusionList working table format.rdlc" />
     <Content Include="Reports\infusionList.rdlc" />
     <Content Include="Content\JQueryUI\Thumbs.db" />
-    <Content Include="Administrators Guide to the Starship PICU Drug Calculator.pdf" />
     <Content Include="Scripts\jquery-1.11.0.min.map" />
     <Content Include="Scripts\jquery-2.1.0.min.map" />
     <Content Include="Scripts\tinymce\skins\lightgray\fonts\tinymce-small.woff" />

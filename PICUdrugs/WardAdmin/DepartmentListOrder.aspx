@@ -84,7 +84,6 @@
                         </ol> 
                     </EmptyDataTemplate>
                 </asp:ListView>
-                <span class="note" >*note - endotracheal size is automatically added as the last item.</span>
             </div>
             <div id="submitBolusOps" class="submitOps"  runat="server">
                 <div id="freeText">

@@ -22,6 +22,7 @@ namespace PICUdrugs.DAL
         public string BolusChartHeader { get; set; }
         [StringLength(512, MinimumLength = 3)]
         public string InfusionChartHeader { get; set; }
+        public bool DefaultBolusOnly { get; set; }
     
         public virtual ICollection<BolusSortOrdering> BolusSortOrderings { get; set; }
         public virtual DefibModel DefibModel { get; set; }

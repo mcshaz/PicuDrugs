@@ -35,11 +35,11 @@
                 { title: 'Row Header', selector: 'div', classes: 'RowHeader' },
                 { title: 'Concentration', inline: 'span', classes: "concentration" },
                 { title: 'Route', inline: 'span', classes: "route" }
-            ]
-        });
-        $(window).on('load', function () {
-            mce = tinymce.get('bolusHeader');
-            mcePos = getPositions(mce.editorContainer);
+            ],
+            init_instance_callback: function (editor) {
+                mce = editor;
+                mcePos = getPositions(mce.editorContainer);
+            }
         });
 
         $(".clickHandle").on('click', function (e) {
@@ -95,7 +95,7 @@
                     },
                     txt = mce.getContent(),
                     spaceBetween = /\w \w/,
-                    li, regexFromStr, regexToStr;
+                    li;
                 
                 if (isNaN(parseInt(txt))) {
                     //add new li

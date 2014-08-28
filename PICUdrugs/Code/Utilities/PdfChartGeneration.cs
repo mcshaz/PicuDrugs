@@ -50,7 +50,7 @@ namespace PICUdrugs.Code.Utilities
         static CreatePDFReport()
         { 
             BlockEls = new HashSet<string>(new string[] { "div", "p", "h1", "h2", "h3", "h4", "h5", "h6" });
-            UsedHtmlTags = new HashSet<string>(new string[]{ "strong", "em", "span"});
+            UsedHtmlTags = new HashSet<string>(new string[]{ "strong", "em", "span", "sup"});
             UsedHtmlTags.UnionWith(BlockEls);
             ThinWidth = new Unit(0.5);
             MediumWidth = ThinWidth * 2;
@@ -193,7 +193,7 @@ namespace PICUdrugs.Code.Utilities
             para.Format.AddTabStop(usableWidth, TabAlignment.Right);
             para.Style = detailLabel.Name;
             para.AddText("Date: ");
-            para.AddFormattedText(DateTime.Today.ToLongDateString(), detail.Font);
+            para.AddFormattedText(DateTime.Today.ToString("MMMMM dd, yyyy"), detail.Font);
             para.AddTab();
             para.AddText("Weight: ");
             string str = (patient.ActualWeight > 20) ? patient.ActualWeight.ToString("###") : patient.ActualWeight.ToString("#0.#");
@@ -334,6 +334,9 @@ namespace PICUdrugs.Code.Utilities
 
             currentStyle = doc.AddStyle("route", "Normal");
             currentStyle.Font.Italic = true;
+
+            currentStyle = doc.AddStyle("note", "Normal");
+            currentStyle.Font.Size = 10;
         }
         //const int NewLineCharLimit = 32;
         //currently 1cm per row via 0.05 cm top and bottom padding all cells, + 0.1cm top & bottom in rows which do not have route specified
@@ -696,6 +699,7 @@ namespace PICUdrugs.Code.Utilities
                         if (UsedHtmlTags.Contains(reader.Name))
                         {
                             fontStack.Pop();
+                            currentFont = fontStack.Peek();
                             /*
                             if (BlockEls.Contains(reader.Name))
                             {

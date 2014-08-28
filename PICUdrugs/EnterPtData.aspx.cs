@@ -172,8 +172,9 @@ namespace PICUdrugs.Pages
                return serial.Deserialize<UserSelectedInfusion.SelectedInfusion>(drugJSON.Value);
             }
         }
+        /*
         private string JSglobals() {
-            return "<script src='" + ResolveUrl("~/Scripts/PICUdrugUtils-0.4.js") + "' type='text/javascript'></script><script type='text/javascript'>" +
+            return "<script src='" + ResolveUrl("~/Scripts/PICUdrugUtils-0.5.js") + "' type='text/javascript'></script><script type='text/javascript'>" +
                 "pic.el('male','" + genderRadio.ClientID + "_0')" + 
                    ".el('female','" + genderRadio.ClientID + "_1')" + 
                    ".el('yrs','" + ptAgeYrs.ClientID + "')" + 
@@ -211,7 +212,7 @@ namespace PICUdrugs.Pages
                 "pic.el('drugDiv', 'drugSelect').el('concDiv').el('drugName', 'selectDrug').el('cancelConc').el('cancelDrug', 'cancelList').el('concTable').el('drugList').el('chosenDrug');" + 
                 "</script>";
         }
-
+        */
         [WebMethod]
         public static UserSelectedInfusion.SingleInfusion[] GetSingleInfusions()
         {

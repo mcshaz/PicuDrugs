@@ -9,7 +9,9 @@ namespace PICUdrugs.DAL
     {
         [Key]
         public int BolusDrugId { get; set; }
-        [StringLength(256, MinimumLength = 3, ErrorMessage = "Drug name must be between 3 and 256 characters long")]
+        internal const int DrugNameLength = 256;
+        //[StringLength(256, MinimumLength = 3, ErrorMessage = "Drug name (incl. format directives) must be between 3 and 256 characters long")]
+        [MinLength(3)]
         [Required(ErrorMessage = "Drug name must be provided")]
         public string DrugName { get; set; }
         [Range(0, 100000, ErrorMessage = "Concentration must be between 0 and 100 000 [units of measure] per mL")]

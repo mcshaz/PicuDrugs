@@ -89,7 +89,7 @@ namespace PICUdrugs.Pages
         }
         private string JSglobals() {
             StringBuilder returnVal = new StringBuilder(1500);
-            returnVal.AppendFormat("<script src='{0}' type='text/javascript'></script><script  type='text/javascript'>", ResolveUrl("~/Scripts/PICUdrugUtils-0.4.js"));
+            returnVal.AppendFormat("<script src='{0}' type='text/javascript'></script><script  type='text/javascript'>", ResolveUrl("~/Scripts/PICUdrugUtils-0.5.js"));
             string radioId = genderRadio.ClientID;
             returnVal.AppendLine("pic.el('male','" + radioId + "_0')");
             returnVal.AppendLine("   .el('female','" + radioId + "_1')");

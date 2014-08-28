@@ -77,6 +77,7 @@
                             </asp:TemplateField> 
                             <asp:DynamicField DataField="PaddingInCm" HeaderText="Bolus Drug Padding (cm)" HeaderStyle-CssClass="detailLabel" ValidationGroup="wardDetails" />
                             <asp:CheckBoxField DataField="IsLive" HeaderText="Is Live" HeaderStyle-CssClass="detailLabel"/>
+                            <asp:CheckBoxField DataField="DefaultBolusOnly" HeaderText="Default to Bolus Only" HeaderStyle-CssClass="detailLabel"/>
                             <asp:CommandField ButtonType="Link" ValidationGroup="wardDetails" CausesValidation="true" 
                                 ShowCancelButton="true" ShowDeleteButton="true" ShowEditButton="true" ShowInsertButton="true" />
                         </Fields>

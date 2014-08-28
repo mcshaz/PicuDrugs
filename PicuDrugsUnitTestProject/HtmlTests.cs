@@ -2,12 +2,20 @@
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using PICUdrugs.Code.Utilities;
 using PICUdrugs.Html.Utilities;
+using System.IO;
+using System.Xml;
 
 namespace PicuDrugsUnitTestProject
 {
     [TestClass]
     public class HtmlTests
     {
+        [TestMethod]
+        public void TestEncoding()
+        {
+            const string testChar = "\u8211";
+            Assert.AreEqual(testChar, HtmlSanitizer.SanitizeHtml(testChar));
+        }
         [TestMethod]
         public void TestHtmlToPdfDoesNotThrow()
         {

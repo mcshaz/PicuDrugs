@@ -2,7 +2,7 @@
     var wtData = uKWeightData(),
         centileAnswerThisSubmit;
     
-    pic.el('male','MainContent_genderRadio_0').el('female','MainContent_genderRadio_1').el('yrs','MainContent_ptAgeYrs').el('months','MainContent_ptAgeMonths').el('days','MainContent_ptAgeDays').el('DOB','MainContent_ptDOB').el('WtOrAgeVal','MainContent_dobOrAgeValidator').el('DOBvalidator','MainContent_ptDOBRngValidator').el('weight','MainContent_ptWeight').el('guessCB','MainContent_weightEstimate').el('DOBval','MainContent_ptDOBRngValidator').el('medianWeightBtn').el('NHI','MainContent_ptNHI').el('centileVal','MainContent_centileValidator').el('wardList','MainContent_wardList').el('drugJSON','MainContent_drugJSON').el('bolus','MainContent_chartTypeRadio_0').el('list','MainContent_chartTypeRadio_1').el('choose','MainContent_chartTypeRadio_2').el('monthVal','MainContent_ptMonthsVal').el('gestation','MainContent_WeeksGestation').el('centileText','MainContent_centileText').el('upperCentileValue','MainContent_upperCentileValue').el('lowerCentileValue','MainContent_lowerCentileValue');pic.el.chooseLbl=pic.el.choose.parentNode.getElementsByTagName('label')[0];pic.centileValue = {};pic.centileValue.hardMin = 1E-10;pic.centileValue.softMin = 1;pic.centileValue.softMax = 99;pic.centileValue.hardMax = 99.9999999;pic.centileValue.set = {};pic.centileValue.set.age = new pic.construct.Age(null, null, null);pic.centileValue.set.weight = null;pic.centileValue.set.isMale = null;pic.el('drugDiv', 'drugSelect').el('concDiv').el('drugName', 'selectDrug').el('cancelConc').el('cancelDrug', 'cancelList').el('concTable').el('drugList').el('chosenDrug');
+    pic.el('male', 'MainContent_genderRadio_0').el('female', 'MainContent_genderRadio_1').el('yrs', 'MainContent_ptAgeYrs').el('months', 'MainContent_ptAgeMonths').el('days', 'MainContent_ptAgeDays').el('DOB', 'MainContent_ptDOB').el('WtOrAgeVal', 'MainContent_dobOrAgeValidator').el('DOBvalidator', 'MainContent_ptDOBRngValidator').el('weight', 'MainContent_ptWeight').el('guessCB', 'MainContent_weightEstimate').el('DOBval', 'MainContent_ptDOBRngValidator').el('medianWeightBtn').el('NHI', 'MainContent_ptNHI').el('centileVal', 'MainContent_centileValidator').el('wardList', 'MainContent_wardList').el('drugJSON', 'MainContent_drugJSON').el('bolus', 'MainContent_chartTypeRadio_0').el('list', 'MainContent_chartTypeRadio_1').el('choose', 'MainContent_chartTypeRadio_2').el('monthVal', 'MainContent_ptMonthsVal').el('gestation', 'MainContent_WeeksGestation').el('centileText', 'MainContent_centileText').el('upperCentileValue', 'MainContent_upperCentileValue').el('lowerCentileValue', 'MainContent_lowerCentileValue').el('isToChangeCookie'); pic.el.chooseLbl = pic.el.choose.parentNode.getElementsByTagName('label')[0]; pic.centileValue = {}; pic.centileValue.hardMin = 1E-10; pic.centileValue.softMin = 1; pic.centileValue.softMax = 99; pic.centileValue.hardMax = 99.9999999; pic.centileValue.set = {}; pic.centileValue.set.age = new pic.construct.Age(null, null, null); pic.centileValue.set.weight = null; pic.centileValue.set.isMale = null; pic.el('drugDiv', 'drugSelect').el('concDiv').el('drugName', 'selectDrug').el('cancelConc').el('cancelDrug', 'cancelList').el('concTable').el('drugList').el('chosenDrug');
     function asCentileString(centileRange) {
         if (centileRange instanceof NumericRange) {
             if(typeof centileRange.min == 'undefined') {
@@ -74,6 +74,26 @@
         pic.el.upperCentileValue.value = result.max;
         pic.page.setCentileClass(result);
     };
+    function getElementsByClassAndTag(className, tagName) {
+        var returnVar=[],
+            i = 0, el,
+            divs = (document.getElementsByClassName)
+                ?document.getElementsByClassName(className)
+                : document.getElementsByTagName(tagName);
+        tagName = tagName.toUpperCase();
+        for (; i < divs.length; i++) {
+            el = divs[i];
+            if (el.tagName.toUpperCase() == tagName && pic.util.hasClass(el, className)) {
+                returnVar.push(el);
+            }
+        }
+        return returnVar;
+    }
+    function isReportTypeChanged() {
+        var reportCookie = docCookies.getItem("report");
+        return (reportCookie == "list" && pic.el.bolus.checked) || (reportCookie == "bolus" && pic.el.list.checked)
+    }
+
 
     pic.extend('vals', {
         centileValClient: function (source, args) {
@@ -168,15 +188,24 @@
             }
         },
         validateOnSubmit: pic.vals.validationManager('age', '', 'centile').setAnchorName('Error_Summary').setErrClassName('validationError'),
-        bolus_click: function () {
+        bolusOrList_Click: function () {
             pic.page.validateOnSubmit.remove('age');
             pic.el.wardList.disabled = false;
             pic.el.drugDiv.style.display = "none";
+            if (isReportTypeChanged()) {
+                getElementsByClassAndTag('changeCookie', 'div').forEach(function (el) { pic.util.removeClass(el, 'hidden'); });
+            } else if (docCookies.getItem("ward") == pic.el.wardList.value) {
+                pic.el.isToChangeCookie.checked = false;
+                getElementsByClassAndTag('changeCookie', 'div').forEach(function (el) { pic.util.addClass(el, 'hidden'); });
+            }
         },
-        list_click: function () {
-            pic.page.validateOnSubmit.add('age');
-            pic.el.wardList.disabled = false;
-            pic.el.drugDiv.style.display = "none";
+        wardList_Change: function () {
+            if (docCookies.getItem("ward") != pic.el.wardList.value) {
+                getElementsByClassAndTag('changeCookie', 'div').forEach(function (el) { pic.util.removeClass(el, 'hidden'); });
+            } else if (!isReportTypeChanged()) {
+                pic.el.isToChangeCookie.checked = false;
+                getElementsByClassAndTag('changeCookie', 'div').forEach(function (el) { pic.util.addClass(el, 'hidden'); });
+            }
         },
         cancelDrug: function () {
             pic.el.drugJSON.value = "";
@@ -278,18 +307,21 @@
             centileAnswerThisSubmit = null;
             var Ok = pic.page.validateOnSubmit.validate(); // Page_IsValid &&
             if (Ok) {
-                pic.util.setCookie("ward", pic.el.wardList.value, 260000); //~6 months in minutes
-                if (pic.el.bolus.checked) {
-                    pic.util.setCookie("report", pic.el.bolus.value, 260000);
-                } else if (pic.el.list.checked) {
-                    pic.util.setCookie("report", pic.el.list.value, 260000);
+                if (pic.el.isToChangeCookie.checked) {
+                    docCookies.setItem("ward", pic.el.wardList.value, Infinity);
+                    if (pic.el.bolus.checked) {
+                        docCookies.setItem("report", pic.el.bolus.value, Infinity);
+                    } else if (pic.el.list.checked) {
+                        docCookies.setItem("report", pic.el.list.value, Infinity);
+                    }
                 }
             } else {
                 evt.preventDefault();
             }
         });
-        pic.util.addEvent(pic.el.bolus, 'click', pic.page.bolus_click);
-        pic.util.addEvent(pic.el.list, 'click', pic.page.list_click);
+        pic.util.addEvent(pic.el.bolus, 'click', pic.page.bolusOrList_Click);
+        pic.util.addEvent(pic.el.list, 'click', pic.page.bolusOrList_Click);
+        pic.util.addEvent(pic.el.wardList, 'change', pic.page.wardList_Change);
         pic.util.addEvent(pic.el.choose, 'click', pic.ajax.choose_click);
         pic.util.addEvent(pic.el.cancelDrug, 'click', pic.page.cancelDrug);
         if (pic.el.bolus.checked) { pic.page.validateOnSubmit.remove('age'); }
@@ -297,6 +329,11 @@
         if (pic.el.drugJSON.value) {
             pic.page.displaySelectedDrug(pic.el.drugJSON);
         }
+        if (!docCookies.hasItem("ward")) {
+            pic.el.isToChangeCookie.checked = true;
+        }
+        pic.page.bolusOrList_Click();
+        pic.page.wardList_Change();
         if (typeof (Sys) !== 'undefined') Sys.Application.notifyScriptLoaded();
     });
 })();

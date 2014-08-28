@@ -104,16 +104,17 @@ namespace PICUdrugs.BLL
         }
         public void UpdateBolusDrug(BolusDrug drug, BolusDrug origDrug)
         {
-            try
-            {
+            //try
+            //{
                 CleanHtml(drug);
                 ValidateBolusDrug(drug);
                 bolusesRepository.UpdateBolusDrug(drug, origDrug);
-            }
+            /*}
             catch (Exception)
             {
                 throw;
             }
+            */
         }
 //
         private void ValidateBolusDrug(BolusDrug drug)
@@ -126,6 +127,10 @@ namespace PICUdrugs.BLL
                 }
 
                 drug.DrugName = drug.DrugName.Trim();
+                if (drug.DrugName.Length > BolusDrug.DrugNameLength)
+                {
+                    throw new CleanedHtmlTooLongException("The drug name (including format directives) must be less than " + BolusDrug.DrugNameLength + " characters long");
+                }
                 drug.Units = drug.Units.Trim();
                 string lunits = drug.Units.ToLower();
                 if (lunits == "ml" || lunits == "mls")
