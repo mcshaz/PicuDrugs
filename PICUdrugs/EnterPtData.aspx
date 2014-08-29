@@ -2,7 +2,7 @@
     CodeBehind="EnterPtData.aspx.cs" Inherits="PICUdrugs.Pages.EnterPtData" %>
 
 <asp:Content ID="Content1" ContentPlaceHolderId="HeadContent" runat="server">
-    <link href="<%# ResolveUrl("~/Content/EnterPtData-0.4.css")%>" rel="stylesheet" type="text/css"/>
+    <link href="<%# ResolveUrl("~/Content/EnterPtData-0.5.css")%>" rel="stylesheet" type="text/css"/>
 </asp:Content>
 <asp:Content ID="Cotent2" ContentPlaceHolderId="headings" runat="server">
     <h2>Drug Doses</h2>
@@ -153,6 +153,19 @@
             <asp:ValidationSummary ID="ValidationSummaryCentile" runat="server" ValidationGroup="centile" cssClass="errorDescription" ShowSummary="true"/>
         </div>
     </fieldset>
+
+    <div id="departmentNotes">
+        <p>
+            We are always looking for motivated and appropriately experienced registrars to spend 6 to 12 months working with us in <a title="About Starship PICU" href="http://www.adhb.govt.nz/picu/">Starship PICU</a>. 
+            Registrars have come from all over the world to be a part of our team.
+        </p>
+        <p>
+            If you are interested or have queries about when positions are available 
+            (or when might be a good time to integrate a Starship PICU run into your training pathway), 
+            please <a href="mailto:contactpicu@adhb.govt.nz?Subject=Enquiry%20regarding%20Starship%20registrar%20positions">send us an email</a>.
+        </p>
+
+    </div>
     <div id="drugSelect">
         <span class="drugListHeader">Please select a drug or click <span id="cancelList" class="cancelDialog">Cancel</span> to close this window.</span>
         <div id="listScroll"><ul id="drugList"></ul></div>

@@ -110,7 +110,7 @@
     <Content Include="Content\ChartHeader.css" />
     <Content Include="Content\CurrentDrugList.css" />
     <Content Include="Content\departmentListOrder.css" />
-    <Content Include="Content\EnterPtData-0.4.css" />
+    <Content Include="Content\EnterPtData-0.5.css" />
     <Content Include="Content\ie6and7DataEntry.css" />
     <Content Include="Content\InfusionCharts.css" />
     <Content Include="Content\infusionDilution.css" />

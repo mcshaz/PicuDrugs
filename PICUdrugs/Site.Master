@@ -52,7 +52,7 @@
 		    <div id="published">Published: <asp:Label runat="server" ID="dateFileMod" /></div>
 	    </div>
         <div id="mainContent">
-            <h1>NZ Hospitalised Children Calculators</h1>
+            <h1>Hospitalised Children Calculators</h1>
             <asp:ContentPlaceHolder runat="server" ID="headings" />
                 <asp:ContentPlaceHolder ID="MainContent" runat="server"/>
         </div>

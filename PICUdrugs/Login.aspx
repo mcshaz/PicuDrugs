@@ -62,7 +62,6 @@
     <ol class="inlineList">
         <li>Do not have a user name and password.</li>
         <li>Are a senior nurse or medical officer within your department.</li>
-        <li>Work within a New Zealand DHB.</li>
         <li>Would like to use starship drug protocols, but alter the exact Infusions displayed.</li>
     </ol>
     <p class="postList">

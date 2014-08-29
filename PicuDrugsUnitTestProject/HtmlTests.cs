@@ -13,8 +13,11 @@ namespace PicuDrugsUnitTestProject
         [TestMethod]
         public void TestEncoding()
         {
-            const string testChar = "\u8211";
-            Assert.AreEqual(testChar, HtmlSanitizer.SanitizeHtml(testChar));
+            Assert.AreEqual("\u2013", HtmlSanitizer.SanitizeHtml("&#8211;"));
+            Assert.AreEqual("\u2013", HtmlSanitizer.SanitizeHtml("&#x2013;"));
+            Assert.AreEqual("\u2013", HtmlSanitizer.SanitizeHtml("&ndash;"));
+            Assert.AreEqual("Adrenaline <span class=\"concentration\">(1:10 000) <span class=\"route\">IV/IO</span><br /></span><span class=\"note\">(every 2<sup>nd</sup> CPR cycle ≈ </span><span class=\"note\">every 4 mins)</span>",
+                HtmlSanitizer.SanitizeHtml("Adrenaline <span class=\"concentration\">(1:10 000) <span class=\"route\">IV/IO</span><br /></span><span class=\"note\">(every 2<sup>nd</sup> CPR cycle &asymp; </span><span class=\"note\">every 4 mins)</span>"));
         }
         [TestMethod]
         public void TestHtmlToPdfDoesNotThrow()
