@@ -69,7 +69,7 @@
                 ControlToValidate="ptWeight" ErrorMessage="Weight must be between 0.3 & 400 kg" Display="Dynamic" MinimumValue="0.3" MaximumValue="400">*</asp:RangeValidator>
         </div>
         <div class ="editor-field">
-            <asp:TextBox ID="ptWeight" runat="server" CssClass="textBox" type="number"/><span class="unit"> Kg</span>
+            <asp:TextBox ID="ptWeight" runat="server" CssClass="textBox" type="number" step="any" min="0"/><span class="unit"> Kg</span>
             <input id="medianWeightBtn" type="button" value="Median Weight"/>
             <asp:HiddenField runat="server" ID="upperCentileValue" />
             <asp:HiddenField runat="server" ID="lowerCentileValue" />
@@ -110,11 +110,11 @@
                 MaximumValue="72" MinimumValue="0" Type="Integer" Display="Dynamic">*</asp:RangeValidator>
         </div>
         <div class ="editor-field">
-            <asp:TextBox ID="ptAgeYrs" runat="server" CssClass="textBox" type="number"></asp:TextBox>
+            <asp:TextBox ID="ptAgeYrs" runat="server" CssClass="textBox" type="number" min="0"></asp:TextBox>
             <span class="unit">Years</span>
-            <asp:TextBox ID="ptAgeMonths" runat="server" CssClass="textBox" type="number"></asp:TextBox>
+            <asp:TextBox ID="ptAgeMonths" runat="server" CssClass="textBox" type="number" min="0"></asp:TextBox>
             <span class="unit">Months</span>
-            <asp:TextBox ID="ptAgeDays" runat="server" CssClass="textBox" type="number"></asp:TextBox>
+            <asp:TextBox ID="ptAgeDays" runat="server" CssClass="textBox" type="number" min="0"></asp:TextBox>
             <span class="unit">Days</span>
         </div>
 
@@ -136,7 +136,7 @@
                  MinimumValue="23" MaximumValue="43" ValidationGroup="gender" Display="Dynamic">*</asp:RangeValidator>
         </div>
         <div class="editor-field">
-            <asp:TextBox runat="server" ID="WeeksGestation" Text="40" type="number" CssClass="textBox"/>
+            <asp:TextBox runat="server" ID="WeeksGestation" Text="40" type="number" min="0" CssClass="textBox"/>
             <span class="unit">Weeks</span>
         </div>
 

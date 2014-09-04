@@ -214,6 +214,6 @@ div.hidden {
 #departmentNotes {
     background: none repeat scroll 0 0 lightyellow;
     border: 1px solid #00309C;
-    margin: 0 1em;
+    margin: 1em 0 1em 1em;
     padding: 0 1em;
 }
