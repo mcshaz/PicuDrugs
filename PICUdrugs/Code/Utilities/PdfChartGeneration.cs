@@ -380,10 +380,11 @@ namespace PICUdrugs.Code.Utilities
                 switch (bolus.ItemType)
                 {
                     case BolusListItemType.Header:
-                        if (ett != null && bolus.RowTitle == PICUdrugs.BLL.BolusSortingBL.ETTsize)
+                        if (bolus.RowTitle == PICUdrugs.BLL.BolusSortingBL.ETTsize)
                         {
+                            if (ett == null) { break; }
                             row = tbl.AddRow();
-                            var para = row.Cells[0].AddParagraph("ETT");
+                            var para = row.Cells[0].AddParagraph(PICUdrugs.BLL.BolusSortingBL.ETTsize);
                             para.Format.SpaceBefore = para.Format.SpaceAfter = extraPad;
                             var fmt = para.AddFormattedText("(internal diameter)", TextFormat.Italic);
                             fmt.Size = 9;
