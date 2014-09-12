@@ -178,6 +178,6 @@
     <script src="/Scripts/json2.min.js" type="text/javascript"></script>
     <script src="/Scripts/PICUdrugUtils-0.5.js" type="text/javascript"></script>
     <script src="/Scripts/DobAgePageManagement-0.2.js" type="text/javascript"></script>
-    <script src="/Scripts/EnterPtData-0.4.js" type="text/javascript"></script>
+    <script src="/Scripts/EnterPtData-0.5.js" type="text/javascript"></script>
 </asp:Content>
 

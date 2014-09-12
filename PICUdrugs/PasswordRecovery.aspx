@@ -5,7 +5,7 @@
 <asp:Content ID="Content3" ContentPlaceHolderId="MainContent" runat="server">
         <asp:PasswordRecovery ID="PasswordRecovery1" runat="server" BackColor="#EFF3FB" 
             BorderColor="#B5C7DE" BorderPadding="4" BorderStyle="Solid" BorderWidth="1px" 
-            Font-Names="Verdana" Font-Size="0.8em" CssClass="pwdEl">
+            Font-Names="Verdana" Font-Size="0.8em" CssClass="pwdEl" OnVerifyingUser="PasswordRecovery1_VerifyingUser"  >
             <SubmitButtonStyle BackColor="White" BorderColor="#507CD1" BorderStyle="Solid" 
                 BorderWidth="1px" Font-Names="Verdana" Font-Size="0.8em" ForeColor="#284E98" />
             <InstructionTextStyle Font-Italic="True" ForeColor="Black" />

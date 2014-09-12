@@ -15,7 +15,7 @@
         <p>
              <b>Select a User:</b>
              <asp:DropDownList ID="UserList" runat="server" AutoPostBack="True"
-                  DataTextField="UserName" DataValueField="UserName" OnSelectedIndexChanged="UserList_SelectedIndexChanged">
+                  DataTextField="UserName" DataValueField="UserName" >
              </asp:DropDownList>
         </p>
     <fieldset>

@@ -247,7 +247,7 @@
     <Content Include="Scripts\editInfusionDrugNames.js" />
     <Content Include="Scripts\emailGridUtilities.js" />
     <Content Include="Scripts\EnterAnthropometry.js" />
-    <Content Include="Scripts\EnterPtData-0.4.js" />
+    <Content Include="Scripts\EnterPtData-0.5.js" />
     <Content Include="Scripts\jquery-1.11.0.min.js" />
     <Content Include="Administrators Guide to the Starship PICU Drug Calculator.pdf">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>

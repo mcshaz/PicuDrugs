@@ -187,9 +187,15 @@
                 setWt4ageInputs(new pic.construct.NumericRange(50));
             }
         },
-        validateOnSubmit: pic.vals.validationManager('age', '', 'centile').setAnchorName('Error_Summary').setErrClassName('validationError'),
+        validateOnSubmit: pic.vals.validationManager(/*'age',*/ '', 'centile').setAnchorName('Error_Summary').setErrClassName('validationError'),
         bolusOrList_Click: function () {
-            pic.page.validateOnSubmit.remove('age');
+            if (pic.el.bolus.checked) {
+                pic.page.validateOnSubmit.remove('age');
+            } else if (pic.el.list.checked) {//this.value==='list'
+                pic.page.validateOnSubmit.add('age');
+            } else {
+                return;
+            }
             pic.el.wardList.disabled = false;
             pic.el.drugDiv.style.display = "none";
             if (isReportTypeChanged()) {
@@ -213,6 +219,7 @@
             pic.el.drugDiv.style.display = "none";
             pic.el.concDiv.style.display = "none";
             pic.el.list.checked = true;
+            pic.el.wardList.disabled = false;
         },
         createConcTable: function (currentDrug) {
             var tr,
