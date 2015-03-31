@@ -18,6 +18,12 @@
             <asp:Literal runat="server" ID="weight"></asp:Literal> <span class="unit">kg</span>
             <span class="centileDetail">(equates to <span class="centileValue"><asp:Literal runat="server" ID="weightCentile"></asp:Literal></span>)</span>
         </div>
+        <div class="display-label">
+            Basal Metabolic Rate:
+        </div>
+        <div class="display-field">
+            <asp:Literal runat="server" ID="bmr"></asp:Literal><span class="unit"> kcal/day</span> <span class="explanation">(Schofield estimation)</span>
+        </div>
     </asp:PlaceHolder>
     <asp:PlaceHolder runat="server" ID="LengthDetails">
         <div class="display-label">

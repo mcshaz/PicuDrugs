@@ -28,9 +28,10 @@
                 <asp:RequiredFieldValidator ID="EmailRequired" runat="server" ControlToValidate="Email" 
                         CssClass="validationError" ErrorMessage="E-mail is required." ToolTip="E-mail is required." 
                         ValidationGroup="RegisterUserValidationGroup">*</asp:RequiredFieldValidator>
-                <asp:RegularExpressionValidator ID="validEmailValidator" runat="server" ControlToValidate="Email" ValidationExpression="\w+([-+.]\w+)*@\w+([-.]\w+)*\.\w+([-.]\w+)*" 
+                <asp:RegularExpressionValidator ID="validEmailValidator" runat="server" ControlToValidate="Email"
                         CssClass="validationError" ErrorMessage="Address must be a valid email." ToolTip="Enter a valid E-mail adress." 
-                        ValidationGroup="RegisterUserValidationGroup" />
+                        ValidationGroup="RegisterUserValidationGroup" 
+                        ValidationExpression="^(([^<>()[\]\\.,;:\s@\&quot;]+(\.[^<>()[\]\\.,;:\s@\&quot;]+)*)|(\&quot;.+\&quot;))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$"/>
             </div>
             <div class="editor-label">
                 <asp:Label ID="UserNameLabel" runat="server" AssociatedControlId="UserName">User Name:</asp:Label>

@@ -13,6 +13,7 @@
 // Internal unload handler will be called before the page is unloaded
 // Needs to be outside the plugin since it would otherwise keep
 // a reference to editor in closue scope
+/*eslint no-func-assign:0 */
 tinymce._beforeUnloadHandler = function() {
 	var msg;
 
@@ -135,7 +136,7 @@ tinymce.PluginManager.add('autosave', function(editor) {
 	function isEmpty(html) {
 		var forcedRootBlockName = editor.settings.forced_root_block;
 
-		html = tinymce.trim(typeof(html) == "undefined" ? editor.getBody().innerHTML : html);
+		html = tinymce.trim(typeof html == "undefined" ? editor.getBody().innerHTML : html);
 
 		return html === '' || new RegExp(
 			'^<' + forcedRootBlockName + '[^>]*>((\u00a0|&nbsp;|[ \t]|<br[^>]*>)+?|)<\/' + forcedRootBlockName + '>|<br>$', 'i'

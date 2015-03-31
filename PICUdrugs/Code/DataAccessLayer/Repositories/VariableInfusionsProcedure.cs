@@ -39,6 +39,9 @@ namespace PICUdrugs.DAL
 
         public IEnumerable<VariableInfusionRowData> GetRowData(int wardId, double weight, int ageMonths)
         {
+            return _db.Database.SqlQuery<VariableInfusionRowData>("EXEC sp_GetVariableInfusions @WardId={0}, @AgeMonths={1}, @WeightKg={2}",
+                wardId, ageMonths, weight).ToList();
+            /*
             return (from c in _db.VariableTimeConcentrations
                     where c.VariableTimeDilution.WeightMin < weight && c.VariableTimeDilution.WeightMax >= weight
 		                 && c.VariableTimeDilution.AgeMinMonths <= ageMonths && c.VariableTimeDilution.AgeMaxMonths >= ageMonths
@@ -65,6 +68,7 @@ namespace PICUdrugs.DAL
                         HrefBase = c.VariableTimeDilution.InfusionDrug.DrugReferenceSource.Hyperlink,
                         HrefLink = c.VariableTimeDilution.ReferencePage
                     }).ToList();
+             */
         }
 
         private bool disposedValue = false;
@@ -86,3 +90,43 @@ namespace PICUdrugs.DAL
         }
     }
 }
+
+/*
+USE [PicuDrugData]
+GO
+
+SET ANSI_NULLS ON
+GO
+
+SET QUOTED_IDENTIFIER ON
+GO
+
+CREATE PROCEDURE [dbo].[sp_GetVariableInfusions]
+	-- Add the parameters for the stored procedure here
+	@WardId int, 
+	@AgeMonths int,
+	@WeightKg float
+AS
+BEGIN
+	-- SET NOCOUNT ON added to prevent extra result sets from
+	-- interfering with SELECT statements.
+	SET NOCOUNT ON;
+
+    -- Insert statements for procedure here
+	SELECT drug.Fullname, drug.Abbrev, drug.SiPrefixVal AS AmpulePrefix, drug.Note, unit.Measure, cat.Category, dm.IsNeat, dm.IsVaryConcentration, 
+                      dm.IsVaryVolume, dm.IsPerKg, dil.SiPrefixVal AS DilutionPrefix, dil.Volume, dil.RateMin, dil.RateMax, dil.IsPerMin, conc.Concentration, ref.Hyperlink, 
+                      dil.ReferencePage
+FROM         dbo.InfusionDrugs AS drug INNER JOIN
+                      dbo.SiUnits AS unit ON drug.SiUnitId = unit.SiUnitId INNER JOIN
+                      dbo.InfusionSortOrdering AS so ON drug.InfusionDrugId = so.InfusionDrugId INNER JOIN
+                      dbo.VariableTimeDilutions AS dil ON drug.InfusionDrugId = dil.InfusionDrugId INNER JOIN
+                      dbo.VariableTimeConcentrations AS conc ON dil.InfusionDilutionId = conc.InfusionDilutionId LEFT OUTER JOIN
+                      dbo.DoseCats AS cat ON conc.DoseCatId = cat.DoseCatId INNER JOIN
+                      dbo.DilutionMethods AS dm ON dil.DilutionMethodId = dm.DilutionMethodId INNER JOIN
+                      dbo.DrugReferenceSources AS ref ON drug.DrugReferenceId = ref.DrugReferenceId
+WHERE     (so.WardId = @WardId) AND (dil.AgeMinMonths <= @AgeMonths) AND (dil.AgeMaxMonths >= @AgeMonths) AND (dil.WeightMin <= @WeightKg) AND (dil.WeightMax >= @WeightKg)
+ORDER BY so.SortOrder, cat.SortOrder
+END
+
+GO
+*/

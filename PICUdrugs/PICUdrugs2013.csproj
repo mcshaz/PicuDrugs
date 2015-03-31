@@ -23,7 +23,7 @@
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
     <DebugSymbols>true</DebugSymbols>
     <DebugType>full</DebugType>
-    <Optimize>false</Optimize>
+    <Optimize>true</Optimize>
     <OutputPath>bin\</OutputPath>
     <DefineConstants>DEBUG;TRACE</DefineConstants>
     <ErrorReport>prompt</ErrorReport>
@@ -43,14 +43,15 @@
     </Reference>
     <Reference Include="EntityFramework, Version=6.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089, processorArchitecture=MSIL">
       <SpecificVersion>False</SpecificVersion>
-      <HintPath>..\packages\EntityFramework.6.1.1\lib\net40\EntityFramework.dll</HintPath>
+      <HintPath>..\packages\EntityFramework.6.1.3\lib\net40\EntityFramework.dll</HintPath>
     </Reference>
     <Reference Include="EntityFramework.SqlServer, Version=6.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089, processorArchitecture=MSIL">
       <SpecificVersion>False</SpecificVersion>
-      <HintPath>..\packages\EntityFramework.6.1.1\lib\net40\EntityFramework.SqlServer.dll</HintPath>
+      <HintPath>..\packages\EntityFramework.6.1.3\lib\net40\EntityFramework.SqlServer.dll</HintPath>
     </Reference>
-    <Reference Include="HtmlAgilityPack">
-      <HintPath>..\packages\HtmlAgilityPack.1.4.6\lib\Net40\HtmlAgilityPack.dll</HintPath>
+    <Reference Include="HtmlAgilityPack, Version=1.4.9.0, Culture=neutral, PublicKeyToken=bd319b19eaf3b43a, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\packages\HtmlAgilityPack.1.4.9\lib\Net40\HtmlAgilityPack.dll</HintPath>
     </Reference>
     <Reference Include="Microsoft.CSharp" />
     <Reference Include="MigraDoc.DocumentObjectModel">
@@ -356,12 +357,6 @@
     <Content Include="Scripts\tinymce\plugins\noneditable\plugin.min.js" />
     <Content Include="Scripts\tinymce\plugins\pagebreak\plugin.js" />
     <Content Include="Scripts\tinymce\plugins\pagebreak\plugin.min.js" />
-    <Content Include="Scripts\tinymce\plugins\paste\classes\Clipboard.js" />
-    <Content Include="Scripts\tinymce\plugins\paste\classes\Plugin.js" />
-    <Content Include="Scripts\tinymce\plugins\paste\classes\Quirks.js" />
-    <Content Include="Scripts\tinymce\plugins\paste\classes\Utils.js" />
-    <Content Include="Scripts\tinymce\plugins\paste\classes\WordFilter.js" />
-    <Content Include="Scripts\tinymce\plugins\paste\plugin.dev.js" />
     <Content Include="Scripts\tinymce\plugins\paste\plugin.js" />
     <Content Include="Scripts\tinymce\plugins\paste\plugin.min.js" />
     <Content Include="Scripts\tinymce\plugins\preview\plugin.js" />
@@ -372,19 +367,10 @@
     <Content Include="Scripts\tinymce\plugins\save\plugin.min.js" />
     <Content Include="Scripts\tinymce\plugins\searchreplace\plugin.js" />
     <Content Include="Scripts\tinymce\plugins\searchreplace\plugin.min.js" />
-    <Content Include="Scripts\tinymce\plugins\spellchecker\classes\DomTextMatcher.js" />
-    <Content Include="Scripts\tinymce\plugins\spellchecker\classes\Plugin.js" />
-    <Content Include="Scripts\tinymce\plugins\spellchecker\plugin.dev.js" />
     <Content Include="Scripts\tinymce\plugins\spellchecker\plugin.js" />
     <Content Include="Scripts\tinymce\plugins\spellchecker\plugin.min.js" />
     <Content Include="Scripts\tinymce\plugins\tabfocus\plugin.js" />
     <Content Include="Scripts\tinymce\plugins\tabfocus\plugin.min.js" />
-    <Content Include="Scripts\tinymce\plugins\table\classes\CellSelection.js" />
-    <Content Include="Scripts\tinymce\plugins\table\classes\Dialogs.js" />
-    <Content Include="Scripts\tinymce\plugins\table\classes\Plugin.js" />
-    <Content Include="Scripts\tinymce\plugins\table\classes\Quirks.js" />
-    <Content Include="Scripts\tinymce\plugins\table\classes\TableGrid.js" />
-    <Content Include="Scripts\tinymce\plugins\table\plugin.dev.js" />
     <Content Include="Scripts\tinymce\plugins\table\plugin.js" />
     <Content Include="Scripts\tinymce\plugins\table\plugin.min.js" />
     <Content Include="Scripts\tinymce\plugins\template\plugin.js" />
@@ -490,6 +476,7 @@
     </Compile>
     <Compile Include="Code\BuisnessLayer\Anthropometry.cs" />
     <Compile Include="Code\BuisnessLayer\BLExceptions.cs" />
+    <Compile Include="Code\BuisnessLayer\EnergyExpenditure.cs" />
     <Compile Include="Code\BuisnessLayer\FixedBolusBL.cs" />
     <Compile Include="Code\BuisnessLayer\BolusBL.cs" />
     <Compile Include="Code\BuisnessLayer\DefibBL.cs" />
@@ -497,6 +484,7 @@
     <Compile Include="Code\BuisnessLayer\DrugAmpuleBL.cs" />
     <Compile Include="Code\BuisnessLayer\DrugSortingBL.cs" />
     <Compile Include="Code\BuisnessLayer\InfusionBL.cs" />
+    <Compile Include="Code\BuisnessLayer\IVFluids.cs" />
     <Compile Include="Code\BuisnessLayer\ReferenceModel.cs" />
     <Compile Include="Code\BuisnessLayer\ReferencesBL.cs" />
     <Compile Include="Code\BuisnessLayer\StatisticalMethods.cs" />

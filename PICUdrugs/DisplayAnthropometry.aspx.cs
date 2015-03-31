@@ -37,7 +37,11 @@ namespace PICUdrugs
                 {
                     weight.Text = ptDetails.WeightKg.ToString("#.#");
                     weightCentile.Text = StatisticalDataExtensions.CentileToString(weightParams.Centile(ptDetails.WeightKg), true);
-                    if (ptDetails.LengthCm != 0)
+                    if (ptDetails.LengthCm == 0)
+                    {
+                        bmr.Text = EnergyExpenditure.Schofield(ptDetails.WeightKg, ptDetails.ChildAge.Years, ptDetails.IsMale).ToString("n0");
+                    }
+                    else
                     {
                         UKBMIData bmiData = new UKBMIData();
                         double bmiVal = ptDetails.Bmi();
@@ -59,6 +63,7 @@ namespace PICUdrugs
                         var yHat = ptDetails.eLbm();
                         lbm.Text = yHat.Estimate.ToString(2);
                         lbmReference.Text = yHat.ReferenceHtml;
+                        bmr.Text = EnergyExpenditure.Schofield(ptDetails.WeightKg, ptDetails.ChildAge.Years, ptDetails.IsMale, ptDetails.LengthCm/100).ToString("n0");
                     }
                 }
                 if (ptDetails.LengthCm != 0)
