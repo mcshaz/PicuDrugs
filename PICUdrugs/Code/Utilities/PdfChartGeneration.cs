@@ -476,7 +476,7 @@ namespace PICUdrugs.Code.Utilities
                 Visible = true,
                 Width = MediumWidth
             };
-            string currentDrug = String.Empty;
+            int currentDrugId = int.MinValue;
             bool alternateBknd = false;
             b = 220;
             Color lightGrey = new Color(b,b,b);
@@ -485,10 +485,10 @@ namespace PICUdrugs.Code.Utilities
             {
                 var row = tbl.AddRow();
                 Paragraph para;
-                if (infusn.DrugName != currentDrug)
+                if (infusn.DrugId != currentDrugId)
                 {
                     alternateBknd = !alternateBknd;
-                    currentDrug = infusn.DrugName;
+                    currentDrugId = infusn.DrugId;
                     //drug overview row
                     //row.Cells[0].MergeRight = 2;
                     para = row.Cells[0].AddParagraph();

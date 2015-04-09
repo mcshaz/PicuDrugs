@@ -133,7 +133,7 @@
             e.stopPropagation();
         });
         $cloneBolusBtn.on("click", function (e) {
-            var that = this;
+            var that = this, $ddl;
             e.stopPropagation();
             ajaxShowWait();
             $.ajax({
@@ -144,8 +144,14 @@
                 dataType: "json",
                 success: function () {
                     ajaxSuccess.call(that);
+                    $ddl = $('select[name$=DptDropDownList]');
+                    $ddl.val($cloneBolusSelect.val());
+                    /*
+                    No longer required now redirecting page
                     $cloneBolusBtn.prop("disabled", true);
                     $cloneBolusSelect.children(':selected').remove();
+                    */
+                    __doPostBack($ddl.prop('name'), '');
                 },
                 error: ajaxError
             });

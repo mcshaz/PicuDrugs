@@ -82,6 +82,7 @@ namespace PICUdrugs.DAL
         {
             return (from d in _db.BolusDoses.Include("BolusDrug")
                     where d.BolusDrugId==drugId
+                    orderby d.WeightMin
                     select d).ToList();
         }
         public void InsertBolusDose(BolusDose dose)

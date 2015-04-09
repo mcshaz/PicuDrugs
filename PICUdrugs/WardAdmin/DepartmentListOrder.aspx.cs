@@ -44,7 +44,7 @@ namespace PICUdrugs.WardAdmin
                 sortingDrugs = bolusBL.GetAllDrugs(selectedWard).ToLookup(b => b.SortOrder != null);
                 emptywards = bolusBL.GetWardsWithoutBoluses();
             }
-            bolusSortOrderLV.DataSource = sortingDrugs[true].ToArray().IndexBy(b => b.SortOrder.Value);
+            bolusSortOrderLV.DataSource = sortingDrugs[true].OrderBy(b=>b.SortOrder).ToList();
             bolusSortOrderLV.DataBind();
             remainingBolusLV.DataSource = sortingDrugs[false];
             remainingBolusLV.DataBind();

@@ -7,6 +7,7 @@ using System.Web;
 namespace PICUdrugs.DAL
 {
     public class VariableInfusionRowData {
+        public int InfusionDrugId { get; set; }
         public string Fullname {get; set;} 
         public string Abbrev {get; set;} 
         public int AmpulePrefix {get; set;} 
@@ -113,7 +114,7 @@ BEGIN
 	SET NOCOUNT ON;
 
     -- Insert statements for procedure here
-	SELECT drug.Fullname, drug.Abbrev, drug.SiPrefixVal AS AmpulePrefix, drug.Note, unit.Measure, cat.Category, dm.IsNeat, dm.IsVaryConcentration, 
+	SELECT drug.InfusionDrugId, drug.Fullname, drug.Abbrev, drug.SiPrefixVal AS AmpulePrefix, drug.Note, unit.Measure, cat.Category, dm.IsNeat, dm.IsVaryConcentration, 
                       dm.IsVaryVolume, dm.IsPerKg, dil.SiPrefixVal AS DilutionPrefix, dil.Volume, dil.RateMin, dil.RateMax, dil.IsPerMin, conc.Concentration, ref.Hyperlink, 
                       dil.ReferencePage
 FROM         dbo.InfusionDrugs AS drug INNER JOIN

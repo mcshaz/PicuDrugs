@@ -73,6 +73,7 @@ namespace PICUdrugs.DAL
                     minDoseRate: dil.RateMin,
                     maxDoseRate: dil.RateMax)
                     {
+                        DrugId = dil.InfusionDrugId,
                         DrugName = dil.Fullname,
                         SubHeader = Formulas.FirstNonEmptyString(dil.Category, dil.Abbrev),
                         Note = dil.Note,
