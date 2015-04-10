@@ -12,8 +12,10 @@
             $bolusList,
             submitRegX = /included/i,
             infusionRegX = /infusion/i,
+            /*
             $cloneBolusBtn = $("#MainContent_cloneBolusGo"),
             $cloneBolusSelect = $("#MainContent_cloneBolusSelect"),
+            */
             regexFromStr = '<!-- pagebreak -->',
             regexToStr = '-- pagebreak --',
             mce,
@@ -129,9 +131,11 @@
                 }
             });
         }
+        /*
         $cloneBolusSelect.on('click', function (e) {
             e.stopPropagation();
         });
+
         $cloneBolusBtn.on("click", function (e) {
             var that = this, $ddl;
             e.stopPropagation();
@@ -150,12 +154,13 @@
                     No longer required now redirecting page
                     $cloneBolusBtn.prop("disabled", true);
                     $cloneBolusSelect.children(':selected').remove();
-                    */
+
                     __doPostBack($ddl.prop('name'), '');
                 },
                 error: ajaxError
             });
         })
+        */
     });
     //list sorting
     function zebra($which) {

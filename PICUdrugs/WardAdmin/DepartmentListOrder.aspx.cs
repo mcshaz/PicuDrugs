@@ -60,7 +60,7 @@ namespace PICUdrugs.WardAdmin
                     cloneBolusSelect.DataTextField = "Abbrev";
                     cloneBolusSelect.DataValueField = "WardId";
                     cloneBolusSelect.DataBind();
-                    cloneBolusGo.Attributes.Add("data-clone-from", selectedWard.ToString());
+                    //cloneBolusGo.Attributes.Add("data-clone-from", selectedWard.ToString());
                 }
                 else
                 {
@@ -99,9 +99,27 @@ namespace PICUdrugs.WardAdmin
                 throw;
             }
         }
+        private static bool IsAjaxRequest(HttpRequest request)
+        {
+            if (request["isAjax"] != null)
+            {
+                return true;
+            }
+            var page = HttpContext.Current.Handler as Page;
+            if (request.HttpMethod.Equals("post", StringComparison.InvariantCultureIgnoreCase) && !page.IsPostBack)
+            {
+                return true;
+            }
+            if (request != null)
+            {
+                return (request["X-Requested-With"] == "XMLHttpRequest") || ((request.Headers != null) && (request.Headers["X-Requested-With"] == "XMLHttpRequest"));
+            }
+            return false;
+        }
         private static void ValidateAjaxRequest(int wardId)
         {
             var request = HttpContext.Current.Request;
+            if (!IsAjaxRequest(request)) { return; }
             AntiForgery.Validate(request.Cookies[_validationTokenName].Value, request.Headers[_validationTokenName]);
             var currentUserWard = new UserWardDetails(HttpContext.Current.User.Identity.Name);
             if (!currentUserWard.HasEditPermission(wardId))
@@ -125,8 +143,8 @@ namespace PICUdrugs.WardAdmin
                 }
             }
         }
-        [WebMethod]
-        public static void CloneWardBoluses(int cloneFromId, int cloneToId)
+        //[WebMethod]
+        private static void CloneWardBoluses(int cloneFromId, int cloneToId)
         {
             ValidateAjaxRequest(cloneToId);
             using (BolusSortingBL bolusBL = new BolusSortingBL())
@@ -152,6 +170,13 @@ namespace PICUdrugs.WardAdmin
                 li.InnerHtml = drugItem.DrugName;
                 li.Attributes.Add("class", li.Attributes["class"] + " bolusSubHeader");
             }
+        }
+
+        protected void cloneBolusGo_Click(object sender, EventArgs e)
+        {
+            int cloneTo = int.Parse(Request.Form[cloneBolusSelect.UniqueID]);
+            CloneWardBoluses(WardList.SelectedWardId, cloneTo);
+            WardList.SelectedWardId = cloneTo;
         }
     }
 }
