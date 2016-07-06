@@ -1,22 +1,20 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Web;
 using System.Web.UI;
 using System.Web.UI.WebControls;
 using PICUdrugs.DAL;
-using System.Data.Entity.Infrastructure;
-using System.Data.Entity.Core;
+using PICUdrugs.BLL;
 
 namespace PICUdrugs.drugAdmin
 {
-    public partial class editInfusionDrugNames : System.Web.UI.Page
+    public partial class editInfusionDrugNames : Page
     {
         protected Dictionary<int, string> SiPrefixesList;
         protected void Page_Load(object sender, EventArgs e)
         {
             Master.AddJQuery();
-            SiPrefixesList = PICUdrugs.Utils.FormUtilities.SiPrefixesList();
+            SiPrefixesList = Utils.FormUtilities.SiPrefixesList();
         }
         protected void Page_Init(object sender, EventArgs e)
         {
@@ -39,6 +37,25 @@ namespace PICUdrugs.drugAdmin
             Label prefixLbl = e.Item.FindControl("SiPrefixValLabel") as Label;
             if (prefixLbl != null) prefixLbl.Text = SiPrefixesList[infDrug.SiPrefixVal];
         }
-
+        IEnumerable<KeyValuePair<int?, string>> _wards;
+        private IEnumerable<KeyValuePair<int?, string>> Wards
+        {
+            get
+            {
+                if (_wards == null)
+                {
+                    using (var wbl = new WardBL())
+                    {
+                        _wards = (new[] { new KeyValuePair<int?, string>(null, "(default)") })
+                            .Concat(wbl.GetDepartments().Select(d => new KeyValuePair<int?, string>(d.WardId, d.Abbrev))).ToList();
+                    }
+                }
+                return _wards;
+            }
+        }
+        protected void WardDropDown_DataBinding(object sender, EventArgs e)
+        {
+            ((DropDownList)sender).DataSource = Wards;
+        }
     }
 }

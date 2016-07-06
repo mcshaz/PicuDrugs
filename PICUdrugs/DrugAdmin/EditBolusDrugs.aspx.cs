@@ -1,17 +1,15 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Web;
 using System.Web.UI;
 using System.Web.UI.WebControls;
-using System.Web.DynamicData;
 using PICUdrugs.DAL;
 using PICUdrugs.BLL;
 using PICUdrugs.Utils;
 
 namespace PICUdrugs.drugAdmin
 {
-    public partial class editBolusDrugs : System.Web.UI.Page
+    public partial class editBolusDrugs : Page
     {
         private int[] rowsToShow;
         private BolusBL persistentRef;
@@ -242,52 +240,73 @@ namespace PICUdrugs.drugAdmin
                 e.ObjectInstance = persistentRef;
             }
         }
+        IEnumerable<KeyValuePair<int?, string>> _wards;
+        private IEnumerable<KeyValuePair<int?, string>> Wards 
+        {
+            get
+            {
+                if (_wards == null)
+                {
+                    using (var wbl = new WardBL())
+                    {
+                        _wards = (new [] { new KeyValuePair<int?, string>(null, "(default)")})
+                            .Concat( wbl.GetDepartments().Select(d=>new KeyValuePair<int?, string>(d.WardId, d.Abbrev))).ToList();
+                    }
+                }
+                return _wards;
+            }
+        }
+        protected void WardDropDown_DataBinding(object sender, EventArgs e)
+        {
+            ((DropDownList)sender).DataSource = Wards;
+        }
+
         /*
-        protected void showInsert_click(object sender, EventArgs e)
-        {
-            LinkButton thisBtn = (LinkButton)sender;
-            ListViewDataItem listRow = (ListViewDataItem)thisBtn.NamingContainer;
-            thisBtn.Visible = false;
-            int rowSpan = 0;
-            foreach (Control ctrl in listRow.Controls)
-            {
-                System.Web.UI.HtmlControls.HtmlTableCell td = ctrl as System.Web.UI.HtmlControls.HtmlTableCell;
-                if (td != null)
-                {
-                    if (rowSpan == 0)
-                    {
-                        rowSpan = td.RowSpan == -1 ? 2 : td.RowSpan + 1;
-                    }
-                    td.RowSpan = rowSpan;
-                }
-                    
-            }
-            ListView nestedLV = (ListView)listRow.FindControl("bolusDoseLV");
-            nestedLV.InsertItemPosition = InsertItemPosition.LastItem;
-        }
-        protected void cancelInsert_click(object sender, EventArgs e)
-        {
-            //find outerRow
-            LinkButton thisBtn = (LinkButton)sender;
-            ListViewDataItem outerListRow = (ListViewDataItem)thisBtn.NamingContainer.NamingContainer.NamingContainer; // nestedLVdataItem -> nestedLV ->outerLVdataItem
-            int rowSpan = 0;
-            foreach (Control ctrl in outerListRow.Controls)
-            {
-                System.Web.UI.HtmlControls.HtmlTableCell td = ctrl as System.Web.UI.HtmlControls.HtmlTableCell;
-                if (td != null)
-                {
-                    if (rowSpan == 0)
-                    {
-                        rowSpan = td.RowSpan <= 1 ? 1 : td.RowSpan -1;
-                    }
-                    td.RowSpan = rowSpan;
-                }
-            }
-            ListView nestedLV = (ListView)outerListRow.FindControl("bolusDoseLV");
-            nestedLV.InsertItemPosition = InsertItemPosition.None;
-            LinkButton showInsert = (LinkButton)outerListRow.FindControl("allowInsert");
-            showInsert.Visible = true;
-        }
-        */
+protected void showInsert_click(object sender, EventArgs e)
+{
+LinkButton thisBtn = (LinkButton)sender;
+ListViewDataItem listRow = (ListViewDataItem)thisBtn.NamingContainer;
+thisBtn.Visible = false;
+int rowSpan = 0;
+foreach (Control ctrl in listRow.Controls)
+{
+System.Web.UI.HtmlControls.HtmlTableCell td = ctrl as System.Web.UI.HtmlControls.HtmlTableCell;
+if (td != null)
+{
+  if (rowSpan == 0)
+  {
+      rowSpan = td.RowSpan == -1 ? 2 : td.RowSpan + 1;
+  }
+  td.RowSpan = rowSpan;
+}
+
+}
+ListView nestedLV = (ListView)listRow.FindControl("bolusDoseLV");
+nestedLV.InsertItemPosition = InsertItemPosition.LastItem;
+}
+protected void cancelInsert_click(object sender, EventArgs e)
+{
+//find outerRow
+LinkButton thisBtn = (LinkButton)sender;
+ListViewDataItem outerListRow = (ListViewDataItem)thisBtn.NamingContainer.NamingContainer.NamingContainer; // nestedLVdataItem -> nestedLV ->outerLVdataItem
+int rowSpan = 0;
+foreach (Control ctrl in outerListRow.Controls)
+{
+System.Web.UI.HtmlControls.HtmlTableCell td = ctrl as System.Web.UI.HtmlControls.HtmlTableCell;
+if (td != null)
+{
+  if (rowSpan == 0)
+  {
+      rowSpan = td.RowSpan <= 1 ? 1 : td.RowSpan -1;
+  }
+  td.RowSpan = rowSpan;
+}
+}
+ListView nestedLV = (ListView)outerListRow.FindControl("bolusDoseLV");
+nestedLV.InsertItemPosition = InsertItemPosition.None;
+LinkButton showInsert = (LinkButton)outerListRow.FindControl("allowInsert");
+showInsert.Visible = true;
+}
+*/
     }
 }

@@ -1,19 +1,16 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Web;
 using System.Web.UI;
 using System.Web.UI.WebControls;
 using System.Web.DynamicData;
 using PICUdrugs.DAL;
 using PICUdrugs.BLL;
 using PICUdrugs.Utils;
-using System.Text;
-using System.Text.RegularExpressions;
 
 namespace PICUdrugs.drugAdmin
 {
-    public partial class editInfusions : System.Web.UI.Page
+    public partial class editInfusions : Page
     {
         private readonly string[] FixedConcProperties = { "Volume", "Rate", "StopMinutes" };
         private readonly string[] ConcDynamicControls = { "ConcentrationDynamicControl", "volumeDynamicControl", "rateDynamicControl", "stopTimeDynamicControl" };

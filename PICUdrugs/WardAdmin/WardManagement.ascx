@@ -62,6 +62,27 @@
 				                        Text='<%# Bind("BolusChartHeader") %>' runat="server"/>
 		                        </EditItemTemplate>
                             </asp:TemplateField> 
+                            <asp:TemplateField HeaderText="Bolus Chart Footer" HeaderStyle-CssClass="detailLabel">
+                    	        <ItemTemplate>
+			                        <%#Eval("BolusChartFooter")%>
+		                        </ItemTemplate>
+		                        <InsertItemTemplate>
+			                        <asp:TextBox ID="BolusChartFooter" TextMode="MultiLine" ValidationGroup="wardDetails" CssClass="rich"
+				                        Text='<%# Bind("BolusChartFooter") %>' runat="server"/>
+                                    <div class="instructions">
+                                        To add an expiry date, use the format <span class="expireExample">[expires+7:ddd MMM d, yyyy]</span> where '7'
+                                        refers to the days (from the date of printing) and 'ddd MMM d, yyyy' is a date format as per <a href="https://msdn.microsoft.com/en-us/library/8kb3ddd4(v=vs.110).aspx">these date formatting guidelines</a>.
+                                    </div>
+		                        </InsertItemTemplate>
+		                        <EditItemTemplate>
+			                        <asp:TextBox ID="BolusChartFooter" TextMode="MultiLine" ValidationGroup="wardDetails" CssClass="rich"
+				                        Text='<%# Bind("BolusChartFooter") %>' runat="server"/>
+                                    <div class="instructions">
+                                        To add an expiry date, use the format <span class="expireExample">[expires+7:ddd MMM d, yyyy]</span> where '7'
+                                        refers to the days (from the date of printing) and 'ddd MMM d, yyyy' is a date format as per <a href="https://msdn.microsoft.com/en-us/library/8kb3ddd4(v=vs.110).aspx">these date formatting guidelines</a>.
+                                    </div>
+		                        </EditItemTemplate>
+                            </asp:TemplateField> 
                             <asp:TemplateField HeaderText="Infusion Chart Header" HeaderStyle-CssClass="detailLabel">
                     	        <ItemTemplate>
 			                        <%#Eval("InfusionChartHeader")%>
@@ -78,6 +99,7 @@
                             <asp:DynamicField DataField="PaddingInCm" HeaderText="Bolus Drug Padding (cm)" HeaderStyle-CssClass="detailLabel" ValidationGroup="wardDetails" />
                             <asp:CheckBoxField DataField="IsLive" HeaderText="Is Live" HeaderStyle-CssClass="detailLabel"/>
                             <asp:CheckBoxField DataField="DefaultBolusOnly" HeaderText="Default to Bolus Only" HeaderStyle-CssClass="detailLabel"/>
+                            <asp:CheckBoxField DataField="IsNicu" HeaderText="Is a NICU" HeaderStyle-CssClass="detailLabel"/>
                             <asp:CommandField ButtonType="Link" ValidationGroup="wardDetails" CausesValidation="true" 
                                 ShowCancelButton="true" ShowDeleteButton="true" ShowEditButton="true" ShowInsertButton="true" />
                         </Fields>

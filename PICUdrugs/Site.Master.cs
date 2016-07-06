@@ -143,17 +143,17 @@ namespace PICUdrugs
             if (IncludesCurrentBrowser(BrowserType.IeLegacy))
             {
 #if DEBUG
-                CreateScript("/Scripts/jquery-1.11.0.js", true);
+                CreateScript("/Scripts/jquery-1.12.4.min.js", true);
 #else
-                CreateScript("//ajax.googleapis.com/ajax/libs/jquery/1.11.0/jquery.min.js", true);
+                CreateScript("//ajax.googleapis.com/ajax/libs/jquery/1.12.4/jquery.min.js", true);
 #endif
             }
             else 
             {
 #if DEBUG
-                CreateScript("/Scripts/jquery-2.1.0.js", true);
+                CreateScript("/Scripts/jquery-2.2.4.min.js", true);
 #else
-                CreateScript("//ajax.googleapis.com/ajax/libs/jquery/2.1.0/jquery.min.js", true);
+                CreateScript("//ajax.googleapis.com/ajax/libs/jquery/2.2.4/jquery.min.js", true);
 #endif
             }
             _jQueryScriptIncluded = true;

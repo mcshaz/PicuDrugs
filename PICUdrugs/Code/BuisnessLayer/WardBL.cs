@@ -12,11 +12,11 @@ namespace PICUdrugs.BLL
         private WardRepository _WardRepository;
         public WardBL()
         {
-            this._WardRepository = new WardRepository();
+            _WardRepository = new WardRepository();
         }
         public WardBL(WardRepository dptSortRepository)
         {
-            this._WardRepository = dptSortRepository;
+            _WardRepository = dptSortRepository;
         }
         public void DeleteWard(Ward dpt)
         {
@@ -65,6 +65,7 @@ namespace PICUdrugs.BLL
         private static void CleanHtml(Ward dpt)
         {
             if ((new string[] { dpt.Fullname, dpt.Abbrev }).Any(w=>w.Contains('<') || w.Contains("&#"))) { throw new HttpRequestValidationException(); }
+
             dpt.BolusChartHeader = HtmlSanitizer.SanitizeHtml(dpt.BolusChartHeader);
             Exception testBolus = CreatePDFReport.TestHtml(dpt.BolusChartHeader);
             if (testBolus != null) { throw new HtmlParsingException(testBolus); }
@@ -72,7 +73,13 @@ namespace PICUdrugs.BLL
             {
                 dpt.InfusionChartHeader = HtmlSanitizer.SanitizeHtml(dpt.InfusionChartHeader);
                 Exception testInfusion = CreatePDFReport.TestHtml(dpt.InfusionChartHeader);
-                if (testBolus != null) { throw new HtmlParsingException(testInfusion); }
+                if (testInfusion != null) { throw new HtmlParsingException(testInfusion); }
+            }
+            if (!string.IsNullOrEmpty(dpt.BolusChartFooter))
+            {
+                dpt.BolusChartFooter = HtmlSanitizer.SanitizeHtml(dpt.BolusChartFooter);
+                Exception testFooter = CreatePDFReport.TestHtml(dpt.BolusChartFooter);
+                if (testFooter != null) { throw new HtmlParsingException(testFooter); }
             }
         }
         private void ValidateUniqueName(Ward dpt)

@@ -147,7 +147,7 @@ namespace PICUdrugs.BLL
                     throw new ConcUnitDisparity("if units are J(joules), Concentration by definition must be 1J");
                 }
 
-                var duplicateDrug = bolusesRepository.GetDrugsByName(drug).FirstOrDefault(d=>d.BolusDrugId!=drug.BolusDrugId);
+                var duplicateDrug = bolusesRepository.GetDrugsByName(drug).FirstOrDefault(d=>d.BolusDrugId!=drug.BolusDrugId && d.SpecificWardId==drug.SpecificWardId);
                 if (duplicateDrug != null)
                 {
                     throw new DuplicateNameException(string.Format("A definition exists for '{0}' which is the same or similar to '{1}'",duplicateDrug.DrugName,drug.DrugName));

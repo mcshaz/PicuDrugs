@@ -273,14 +273,14 @@ namespace PICUdrugs.DAL
         private bool disposedValue = false;
         protected virtual void Dispose(bool disposing)
         {
-            if (!this.disposedValue)
+            if (!disposedValue)
             {
                 if (disposing)
                 {
                     _db.Dispose();
                 }
             }
-            this.disposedValue = true;
+            disposedValue = true;
         }
         public void Dispose()
         {

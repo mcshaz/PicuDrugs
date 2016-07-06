@@ -1,37 +1,35 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Web;
 using PICUdrugs.DAL;
-using PICUdrugs.Utils;
 namespace PICUdrugs.BLL
 {
     public class InfusionBL:IDisposable
     {
-        private IInfusionRepository drugConcRepository;
+        private IInfusionRepository _drugConcRepository;
         public InfusionBL()
         {
-            this.drugConcRepository = new InfusionRepository();
+            _drugConcRepository = new InfusionRepository();
         }
         public InfusionBL(IInfusionRepository drugConcRepository)
         {
-            this.drugConcRepository = drugConcRepository;
+            _drugConcRepository = drugConcRepository;
         }
 
         public IEnumerable<VariableTimeDilution> GetVariableTimeDilutions(int drugId)
         {
-            return drugConcRepository.GetVariableTimeDilutions(drugId);
+            return _drugConcRepository.GetVariableTimeDilutions(drugId);
         }
         public IEnumerable<VariableTimeConcentration> GetVariableTimeConcentrations(int infDilutionId)
         {
-            return drugConcRepository.GetVariableTimeConcentrations(infDilutionId);
+            return _drugConcRepository.GetVariableTimeConcentrations(infDilutionId);
         }
         public void InsertConcentration(VariableTimeConcentration infConc)
         {
             try
             {
                 ValidateVariableTimeConcentration(infConc);
-                drugConcRepository.InsertConcentration(infConc);
+                _drugConcRepository.InsertConcentration(infConc);
             }
             catch (Exception)
             {
@@ -42,7 +40,7 @@ namespace PICUdrugs.BLL
         {
             try
             {
-                drugConcRepository.DeleteConcentration(infConc);
+                _drugConcRepository.DeleteConcentration(infConc);
             }
             catch (Exception)
             {
@@ -54,7 +52,7 @@ namespace PICUdrugs.BLL
             try
             {
                 ValidateVariableTimeConcentration(infConc);
-                drugConcRepository.UpdateConcentration(infConc, originfConc);
+                _drugConcRepository.UpdateConcentration(infConc, originfConc);
             }
             catch (Exception)
             {
@@ -66,7 +64,7 @@ namespace PICUdrugs.BLL
             try
             {
                 ValidateVariableTimeDilution(infDil);
-                drugConcRepository.InsertDilution(infDil);
+                _drugConcRepository.InsertDilution(infDil);
             }
             catch (Exception)
             {
@@ -77,7 +75,7 @@ namespace PICUdrugs.BLL
         {
             try
             {
-                drugConcRepository.DeleteDilution(infDil);
+                _drugConcRepository.DeleteDilution(infDil);
             }
             catch (Exception)
             {
@@ -89,7 +87,7 @@ namespace PICUdrugs.BLL
             try
             {
                 ValidateVariableTimeDilution(infDil);
-                drugConcRepository.UpdateDilution(infDil, origInfDil);
+                _drugConcRepository.UpdateDilution(infDil, origInfDil);
             }
             catch (Exception)
             {
@@ -115,7 +113,7 @@ namespace PICUdrugs.BLL
         private void ValidateVariableTimeVolume(int? volume, int dilutionMethodId)
         {
             if (volume.HasValue) { return; }
-            var dilType = drugConcRepository.GetDilutionMethod(dilutionMethodId);
+            var dilType = _drugConcRepository.GetDilutionMethod(dilutionMethodId);
             if (!(dilType.IsVaryVolume && dilType.IsVaryConcentration))
             {
                 throw new InvalidNullCombination("Volume can only be null if dilution method is of variable volume and fixed flow");
@@ -125,7 +123,7 @@ namespace PICUdrugs.BLL
         private void ValidateFixedTimeVolume(int? volume, int dilutionMethodId)
         {
             if (volume.HasValue) { return; }
-            var dilType = drugConcRepository.GetDilutionMethod(dilutionMethodId);
+            var dilType = _drugConcRepository.GetDilutionMethod(dilutionMethodId);
             if (!(dilType.IsPerKg && !dilType.IsVaryConcentration && !dilType.IsVaryVolume))
             {
                 throw new InvalidNullCombination("Volume must be entered with this dilution method");
@@ -136,7 +134,7 @@ namespace PICUdrugs.BLL
         { 
             if (infDil != null) 
             {
-                var duplicateRange = drugConcRepository.GetDilutionsByOverlappingAgeWeight(infDil).FirstOrDefault(); 
+                var duplicateRange = _drugConcRepository.GetDilutionsByOverlappingAgeWeight(infDil).FirstOrDefault(); 
                 if (duplicateRange != null) 
                 {
                     throw new OverlappingAgeWeightException(String.Format("Infusion for {0} overlaps with age({1}-{2}months) &/or weight({3}-{4}kg).{5}Weights can have the same (non overlapping) value, months of age must be distinct.", 
@@ -151,9 +149,9 @@ namespace PICUdrugs.BLL
         }
         private void ValidateVariableTimeConcentration(VariableTimeConcentration infConc)
         {
-            IEnumerable <VariableTimeConcentration> assdConcentrations = drugConcRepository.GetVariableTimeConcentrations(infConc.InfusionDilutionId, NoTracking:true);
+            IEnumerable <VariableTimeConcentration> assdConcentrations = _drugConcRepository.GetVariableTimeConcentrations(infConc.InfusionDilutionId, NoTracking:true);
             bool otherConcentrations = false;
-            DoseCat checkDoseCat = drugConcRepository.GetDoseCatById(infConc.DoseCatId);
+            DoseCat checkDoseCat = _drugConcRepository.GetDoseCatById(infConc.DoseCatId);
             foreach (VariableTimeConcentration ascConc in assdConcentrations)
             {
                 if (ascConc.InfusionConcentrationId != infConc.InfusionConcentrationId) //all checks only apply to records other than itself
@@ -181,18 +179,18 @@ namespace PICUdrugs.BLL
 
         public IEnumerable<FixedTimeDilution> GetFixedTimeDilutions(int drugId)
         {
-            return drugConcRepository.GetFixedTimeDilutions(drugId);
+            return _drugConcRepository.GetFixedTimeDilutions(drugId);
         }
         public IEnumerable<FixedTimeConcentration> GetFixedTimeConcentrations(int infDilutionId)
         {
-            return drugConcRepository.GetFixedTimeConcentrations(infDilutionId);
+            return _drugConcRepository.GetFixedTimeConcentrations(infDilutionId);
         }
         public void InsertConcentration(FixedTimeConcentration infConc)
         {
             try
             {
                 ValidateFixedTimeConcentration(infConc);
-                drugConcRepository.InsertConcentration(infConc);
+                _drugConcRepository.InsertConcentration(infConc);
             }
             catch (Exception)
             {
@@ -203,7 +201,7 @@ namespace PICUdrugs.BLL
         {
             try
             {
-                drugConcRepository.DeleteConcentration(infConc);
+                _drugConcRepository.DeleteConcentration(infConc);
             }
             catch (Exception)
             {
@@ -215,7 +213,7 @@ namespace PICUdrugs.BLL
             try
             {
                 ValidateFixedTimeConcentration(infConc);
-                drugConcRepository.UpdateConcentration(infConc, originfConc);
+                _drugConcRepository.UpdateConcentration(infConc, originfConc);
             }
             catch (Exception)
             {
@@ -228,7 +226,7 @@ namespace PICUdrugs.BLL
             try
             {
                 ValidateFixedTimeDilution(infDil);
-                drugConcRepository.InsertDilution(infDil);
+                _drugConcRepository.InsertDilution(infDil);
             }
             catch (Exception)
             {
@@ -239,7 +237,7 @@ namespace PICUdrugs.BLL
         {
             try
             {
-                drugConcRepository.DeleteDilution(infDil);
+                _drugConcRepository.DeleteDilution(infDil);
             }
             catch (Exception)
             {
@@ -251,7 +249,7 @@ namespace PICUdrugs.BLL
             try
             {
                 ValidateFixedTimeDilution(infDil);
-                drugConcRepository.UpdateDilution(infDil, origInfDil);
+                _drugConcRepository.UpdateDilution(infDil, origInfDil);
             }
             catch (Exception)
             {
@@ -272,7 +270,7 @@ namespace PICUdrugs.BLL
             {
                 throw;
             }
-            var reference = drugConcRepository.GetDrugReference(infDil.InfusionDrugId);
+            var reference = _drugConcRepository.GetDrugReference(infDil.InfusionDrugId);
             FormatReferencePage(infDil);
         }
         private static Exception ValidateInfusionDilutionAgeWeight(IInfusionDilution infDil)
@@ -291,7 +289,7 @@ namespace PICUdrugs.BLL
         {
             if (infDil != null)
             {
-                var duplicateRange = drugConcRepository.GetDilutionsByOverlappingAgeWeight(infDil).FirstOrDefault();
+                var duplicateRange = _drugConcRepository.GetDilutionsByOverlappingAgeWeight(infDil).FirstOrDefault();
                 if (duplicateRange != null)
                 {
                     throw new OverlappingAgeWeightException(String.Format("Infusion for {0} overlaps with age({1}-{2}months) &/or weight({3}-{4}kg).{5}Weights can have the same (non overlapping) value, months of age must be distinct.",
@@ -306,14 +304,14 @@ namespace PICUdrugs.BLL
         }
         private void ValidateFixedTimeConcentration(FixedTimeConcentration infConc)
         {
-            FixedTimeConcentration duplicateStopTime = drugConcRepository.GetFixedTimeConcentrationsByStopTime(infConc.InfusionDilutionId, infConc.StopMinutes).FirstOrDefault();
+            FixedTimeConcentration duplicateStopTime = _drugConcRepository.GetFixedTimeConcentrationsByStopTime(infConc.InfusionDilutionId, infConc.StopMinutes).FirstOrDefault();
             if (duplicateStopTime != null && duplicateStopTime.InfusionConcentrationId != infConc.InfusionConcentrationId)
             {
                 throw new DuplicateTimeException(string.Format("Infusions for the same drug, age & weight group cannot have the same stop time ({0}) minutes", infConc.StopMinutes));
             }
             if (!infConc.Volume.HasValue)
             {
-                var infDil = drugConcRepository.GetFixedTimeDilution(infConc.InfusionDilutionId);
+                var infDil = _drugConcRepository.GetFixedTimeDilution(infConc.InfusionDilutionId);
                 try
                 {
                     ValidateFixedTimeVolume(infConc.Volume, infDil.DilutionMethodId);
@@ -345,11 +343,11 @@ namespace PICUdrugs.BLL
         }
         public IEnumerable<DoseCat> GetDoseCats()
         {
-            return drugConcRepository.GetDoseCats();
+            return _drugConcRepository.GetDoseCats();
         }
         public IEnumerable<DilutionMethod> GetDilutionMethods()
         {
-            return drugConcRepository.GetDilutionMethods();
+            return _drugConcRepository.GetDilutionMethods();
         }
 
         private bool disposedValue = false; 
@@ -359,7 +357,7 @@ namespace PICUdrugs.BLL
             {
                 if (disposing) 
                 {
-                    drugConcRepository.Dispose(); 
+                    _drugConcRepository.Dispose(); 
                 } 
             } 
             this.disposedValue = true; 

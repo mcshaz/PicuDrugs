@@ -20,7 +20,10 @@
                 <asp:ListView ID="InfusionSortOrderLV" runat="server" >
                     <ItemTemplate>
                         <li class="stdItem" runat="server" data-id='<%# Eval("Id") %>'>
-                            <%# Eval("DrugName") %>
+                            <%# Eval("DrugName") %> 
+                            <span runat="server" visible='<%# Eval("SpecificWard") !=null %>' class="specificWard">
+                                <%# Eval("SpecificWard") %>
+                            </span>
                         </li>
                     </ItemTemplate>
                     <LayoutTemplate>
@@ -44,6 +47,9 @@
             <ItemTemplate>
                 <li class="stdItem" runat="server" data-id='<%# Eval("Id") %>'>
                     <%# Eval("DrugName") %>
+                    <span runat="server" visible='<%# Eval("SpecificWard") !=null %>' class="specificWard">
+                        <%# Eval("SpecificWard") %>
+                    </span>
                 </li>
             </ItemTemplate>
             <LayoutTemplate>

@@ -11,7 +11,7 @@ namespace PICUdrugs.DAL
         private DataContext _db = new DataContext();
         public IEnumerable<InfusionDrug> GetInfDrugsAndOrders()
         {
-            return (from d in _db.InfusionDrugs.Include("InfusionSortOrderings")
+            return (from d in _db.InfusionDrugs.Include("InfusionSortOrderings").Include("SpecificWard")
                     where d.IsTitratable==true
                     select d).ToList();
         }
@@ -131,7 +131,7 @@ namespace PICUdrugs.DAL
         private DataContext _db = new DataContext();
         public IEnumerable<BolusDrug> GetBolusDrugsAndOrders()
         {
-            return (from d in _db.BolusDrugs.Include("BolusSortOrderings")
+            return (from d in _db.BolusDrugs.Include("BolusSortOrderings").Include("SpecificWard")
                     select d).ToList();
         }
         public IEnumerable<FixedDrug> GetFixedDrugsAndOrders()

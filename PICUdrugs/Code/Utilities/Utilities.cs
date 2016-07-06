@@ -342,9 +342,9 @@ namespace PICUdrugs.Utils
                 Months = Months % 12;
             }
         }
-        public ChildAge(string years, string months, string days) : this(Int32.Parse(years), ToNullableInt(months), ToNullableInt(days))
+        public ChildAge(string years, string months, string days) : this(int.Parse(years), ToNullableInt(months), ToNullableInt(days))
         {
-            if (String.IsNullOrWhiteSpace(years) && String.IsNullOrWhiteSpace(months) && String.IsNullOrWhiteSpace(days))
+            if (string.IsNullOrWhiteSpace(years) && string.IsNullOrWhiteSpace(months) && string.IsNullOrWhiteSpace(days))
             {
                 throw new Exception("years, months and days cannot be all null, empty or whitepace");
             }

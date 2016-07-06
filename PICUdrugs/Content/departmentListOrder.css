@@ -104,3 +104,8 @@ li.bolusSubHeader > div:first-child
     font-style: italic;
     color: orange;
 }
+.specificWard {
+    font-size:85%;
+    color:navy;
+    font-style:italic;
+}

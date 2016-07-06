@@ -5,20 +5,18 @@ using System.Web;
 using System.Web.UI;
 using System.Web.UI.WebControls;
 using System.Web.Services;
-using System.Text;
 using System.Web.Script.Serialization;
 using PICUdrugs.Utils;
 using PICUdrugs.DAL;
-using PICUdrugs.BLL;
 using StatsForAge.DataSets;
 namespace PICUdrugs.Pages
 {
-    public partial class EnterPtData : System.Web.UI.Page
+    public partial class EnterPtData : Page
     {
         public const double warnCentileUbound = 99;
         public const double warnCentileLbound = 1;
         public const double limitCentileUbound = 100 - 1e-7;
-        public const double limitCentileLbound = 1e-10;
+        public const double limitCentileLbound = 1e-12;
         //private const string timeRegEx = @"^(20|21|22|23|0\d|\d):([0-5]\d)\s*([aApP])[.m]*$";
         protected void Page_PreInit(object sender, EventArgs e)
         {
@@ -108,16 +106,18 @@ namespace PICUdrugs.Pages
 
         public PatientDrugChartDetails PatientDetails()
         {
-            var returnVal = new PatientDrugChartDetails();
-            returnVal.Name = ptName.Text;
-            returnVal.NHI = ptNHI.Text.ToUpper();
-            returnVal.ActualWeight = Convert.ToDouble(ptWeight.Text);
-            returnVal.WeightEstimate = weightEstimate.Checked;
-            returnVal.WardId = Convert.ToInt32(Request.Form[wardList.UniqueID]);
-            returnVal.Centile = centileText.Text;
-            returnVal.Age = this.Age;
-            returnVal.IsMale = this.IsMale;
-            return returnVal;
+            return new PatientDrugChartDetails
+            {
+                Name = ptName.Text,
+                NHI = ptNHI.Text.ToUpper(),
+                ActualWeight = Convert.ToDouble(ptWeight.Text),
+                WeightEstimate = weightEstimate.Checked,
+                WardId = Convert.ToInt32(Request.Form[wardList.UniqueID]),
+                Centile = centileText.Text,
+                Age = Age,
+                IsMale = IsMale,
+                GestationAtBirth = Convert.ToDouble(WeeksGestation.Text)
+            };
         }
         private bool? _isMale;
         public bool? IsMale 

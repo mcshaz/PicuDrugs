@@ -36,11 +36,8 @@ using PICUdrugs.DAL;
 using PICUdrugs.Utils;
 using System;
 using System.Collections.Generic;
-using System.Globalization;
 using System.IO;
 using System.Linq;
-using System.Text.RegularExpressions;
-using System.Web;
 using System.Xml;
 
 namespace PICUdrugs.Code.Utilities
@@ -49,9 +46,8 @@ namespace PICUdrugs.Code.Utilities
     {
         static CreatePDFReport()
         { 
-            BlockEls = new HashSet<string>(new string[] { "div", "p", "h1", "h2", "h3", "h4", "h5", "h6" });
-            UsedHtmlTags = new HashSet<string>(new string[]{ "strong", "em", "span", "sup"});
-            UsedHtmlTags.UnionWith(BlockEls);
+            BlockEls = new [] { "div", "p", "h1", "h2", "h3", "h4", "h5", "h6" };
+            UsedHtmlTags = (new []{ "strong", "em", "span", "sup"}).Concat(BlockEls).ToArray();
             ThinWidth = new Unit(0.5);
             MediumWidth = ThinWidth * 2;
             HtmlUnits = new string[] { "px", "em", "pt" };
@@ -77,30 +73,31 @@ namespace PICUdrugs.Code.Utilities
             doc.DefaultPageSetup.Orientation = (chartType == SelectedChart.singleInfusion)?Orientation.Landscape:Orientation.Portrait;
 
             DefineStyles(doc);
-            var section = CreateHeadFoot(doc, patient, url);
-            var InfusionData = new PatientSpecificDrugData(patient);
-            Ward dpt = null;
-            if (chartType == SelectedChart.bolusOnly || chartType == SelectedChart.bolusPlusInfusion)
+            using (var InfusionData = new PatientSpecificDrugData(patient))
             {
-                var bolusList = InfusionData.EmergencyBoluses(patient.Age);
-                if (bolusList.Any())
+                Ward dpt = InfusionData.GetWard();
+                var section = CreateHeadFoot(doc, patient, url, dpt.IsNicu);
+                if (chartType == SelectedChart.bolusOnly || chartType == SelectedChart.bolusPlusInfusion)
                 {
-                    dpt = InfusionData.GetWard();
-                    CreateBolusTable(section, dpt.BolusChartHeader, bolusList, InfusionData.ETT(), dpt.PaddingInCm);
+                    var bolusList = InfusionData.EmergencyBoluses(patient.Age);
+                    if (bolusList.Any())
+                    {
+                        CreateBolusTable(section, dpt.BolusChartHeader, dpt.BolusChartFooter, bolusList, dpt.IsNicu, InfusionData.CalculateETT(), dpt.PaddingInCm);
+                    }
                 }
-            }
-            if (chartType == SelectedChart.bolusPlusInfusion)
-            {
-                var stdInf = InfusionData.StandardInfusions();
-                if (stdInf.Any())
+                if (chartType == SelectedChart.bolusPlusInfusion)
                 {
-                    section = doc.AddSection();
-                    CreateStandardInfusionTable(section, (dpt ?? InfusionData.GetWard()).InfusionChartHeader, stdInf);
+                    var stdInf = InfusionData.StandardInfusions();
+                    if (stdInf.Any())
+                    {
+                        section = doc.AddSection();
+                        CreateStandardInfusionTable(section, dpt.InfusionChartHeader, stdInf);
+                    }
                 }
-            } 
-            else if (chartType == SelectedChart.singleInfusion)
-            {
-                CreateFixedDurationInfusionTable(section, InfusionData.FixedInfusion(drug));
+                else if (chartType == SelectedChart.singleInfusion)
+                {
+                    CreateFixedDurationInfusionTable(section, InfusionData.FixedInfusion(drug));
+                }
             }
 
             return doc;
@@ -160,7 +157,7 @@ namespace PICUdrugs.Code.Utilities
             style.ParagraphFormat.Alignment = ParagraphAlignment.Center;
             */
         }
-        private static Section CreateHeadFoot(Document doc, PatientDrugChartDetails patient, string Url)
+        private static Section CreateHeadFoot(Document doc, PatientDrugChartDetails patient, string Url, bool isNicu)
         {
             Section section = doc.AddSection();
             section.PageSetup.TopMargin = Unit.FromCentimeter(4.7); 
@@ -196,7 +193,8 @@ namespace PICUdrugs.Code.Utilities
             para.AddFormattedText(DateTime.Today.ToString("MMMMM dd, yyyy"), detail.Font);
             para.AddTab();
             para.AddText("Weight: ");
-            string str = (patient.ActualWeight > 20) ? patient.ActualWeight.ToString("###") : patient.ActualWeight.ToString("#0.#");
+            string str = isNicu ? patient.ActualWeight.ToString()
+                :(patient.ActualWeight > 20) ? patient.ActualWeight.ToString("###") : patient.ActualWeight.ToString("#0.#");
             para.AddFormattedText(str, detail.Font);
             para.AddText(" kg ");
             if (patient.WeightEstimate) {para.AddText("(estimate only)");}
@@ -340,7 +338,7 @@ namespace PICUdrugs.Code.Utilities
         }
         //const int NewLineCharLimit = 32;
         //currently 1cm per row via 0.05 cm top and bottom padding all cells, + 0.1cm top & bottom in rows which do not have route specified
-        private static void CreateBolusTable(Section section, string header,IEnumerable<BolusDrugListItem> bolusList, Ett ett = null, double defaultPaddingCm=0)
+        private static void CreateBolusTable(Section section, string header, string footer, IEnumerable<BolusDrugListItem> bolusList, bool isNicu, Ett ett = null, double defaultPaddingCm=0)
         {
             // Each MigraDoc document needs at least one section.
             AddParaFromHtml(section, header);
@@ -380,20 +378,20 @@ namespace PICUdrugs.Code.Utilities
                 switch (bolus.ItemType)
                 {
                     case BolusListItemType.Header:
-                        if (bolus.RowTitle == PICUdrugs.BLL.BolusSortingBL.ETTsize)
+                        if (bolus.RowTitle == BLL.BolusSortingBL.ETTsize)
                         {
                             if (ett == null) { break; }
                             row = tbl.AddRow();
-                            var para = row.Cells[0].AddParagraph(PICUdrugs.BLL.BolusSortingBL.ETTsize);
+                            var para = row.Cells[0].AddParagraph(BLL.BolusSortingBL.ETTsize);
                             para.Format.SpaceBefore = para.Format.SpaceAfter = extraPad;
                             var fmt = para.AddFormattedText("(internal diameter)", TextFormat.Italic);
                             fmt.Size = 9;
                             para = row.Cells[1].AddParagraph();
                             if (ett.InternalDiameter.HasValue) { para.AddText(ett.InternalDiameter.Value.ToString("0.0")); }
-                            fmt = para.AddFormattedText(String.Format(" ({0}) mm", ett.InternalDiameterRange.ToString(1, NumericRange.Rounding.FixedDecimalPlaces)));
-                            if (!String.IsNullOrEmpty(ett.Note)) { fmt.AddText("\n" + ett.Note); }
+                            fmt = para.AddFormattedText(string.Format(" ({0}) mm", ett.InternalDiameterRange.ToString(1, NumericRange.Rounding.FixedDecimalPlaces)));
+                            if (!string.IsNullOrEmpty(ett.Note)) { fmt.AddText("\n" + ett.Note); }
                             fmt.Size = 10;
-                            row.Cells[2].AddParagraph(String.Format("{0} cm @ lips\n{1} cm @ nose", ett.LengthAtLip, ett.LengthAtNose));
+                            row.Cells[2].AddParagraph(string.Format("{0} cm @ lips\n{1} cm @ nose", ett.LengthAtLip, ett.LengthAtNose));
                         }
                         else
                         {
@@ -412,7 +410,11 @@ namespace PICUdrugs.Code.Utilities
 
                         if (bolus.DoseUnits == BolusDrugListItem.DefaultAdministrationUnits || bolus.DoseUnits == BolusDrugListItem.EnergyUnits || bolus.Conc_ml == null)
                         {
-                            notePara = row.Cells[2].AddParagraph(String.Format("{0} {1}/kg\nmax {2} {3}", bolus.DosePerKg, bolus.DoseUnits, bolus.AdultMax, bolus.MaxDoseUnits));
+                            notePara = row.Cells[2].AddParagraph(string.Format("{0} {1}/kg", bolus.DosePerKg, bolus.DoseUnits));
+                            if (!isNicu)
+                            {
+                                notePara.AddText(string.Format("\nmax {0} {1}", bolus.AdultMax, bolus.MaxDoseUnits));
+                            }
                         }
                         else
                         {
@@ -427,7 +429,10 @@ namespace PICUdrugs.Code.Utilities
                                 notePara = row.Cells[2].AddParagraph(dosePerKg + "\n= ");
                             }
                             notePara.AddFormattedText(doseTotal, TextFormat.Bold);
-                            notePara.AddText(string.Format("\nmax {0} {1}", bolus.AdultMax, bolus.MaxDoseUnits));
+                            if (!isNicu)
+                            {
+                                notePara.AddText(string.Format("\nmax {0} {1}", bolus.AdultMax, bolus.MaxDoseUnits));
+                            }
                         }
                         break;
                     case BolusListItemType.FixedDose:
@@ -440,9 +445,41 @@ namespace PICUdrugs.Code.Utilities
                 }
             }
 
-            //now add ETT info if present
-            //tbl.SetEdge(0, 0, 6, 2, Edge.Box, BorderStyle.Single, 0.75, Color.Empty);
+            if (footer != null)
+            {
+                footer = ReplaceExpires(footer);
+                AddParaFromHtml(section, footer);
+            }
         }
+
+        public static string ReplaceExpires(string inStr)
+        {
+            const string expireLocator = "[expires+";
+            const int expireLocatorlen = 9;
+            int expPos = inStr.IndexOf(expireLocator);
+            if (expPos != -1)
+            {
+                int startPos = expPos + expireLocatorlen;
+                int stopPos = inStr.IndexOf(']', startPos);
+                int colPos = inStr.IndexOf(':', startPos, stopPos - startPos);
+                string expireDate;
+                if (colPos == -1)
+                {
+                    string addDays = inStr.Substring(startPos, stopPos - startPos);
+                    expireDate = DateTime.Today.AddDays(int.Parse(addDays)).ToString();
+                }
+                else
+                {
+                    string addDays = inStr.Substring(startPos, colPos - startPos);
+                    string dateFmt = inStr.Substring(colPos + 1, stopPos - colPos - 1);
+                    expireDate = DateTime.Today.AddDays(int.Parse(addDays)).ToString(dateFmt);
+                }
+
+                inStr = inStr.Substring(0, expPos) + expireDate + inStr.Substring(stopPos + 1);
+            }
+            return inStr;
+        }
+
         private static void CreateStandardInfusionTable(Section section, string header, IEnumerable<StandardInfusion> standardInfusions)
         {
             AddParaFromHtml(section, header);
@@ -657,8 +694,8 @@ namespace PICUdrugs.Code.Utilities
             para = row.Cells[1].AddParagraph("\tstart time+" + singleDrug.InfusionData.Last().StopTimeStr(false));
             para.Format.Font.Color = (alternateBknd) ? white : lightGrey;
         }
-        static HashSet<string> BlockEls;
-        static HashSet<string> UsedHtmlTags ;
+        readonly static string[] BlockEls;
+        readonly static string[] UsedHtmlTags ;
         static void AddParaFromHtml(Section section, string html)
         {
             AddParaFromHtml(section, html, isNewPageRequest=>{
@@ -761,42 +798,40 @@ namespace PICUdrugs.Code.Utilities
                                 if (!isFirstParagraphOfNewPage)
                                 {
                                     para = createNewParagraph(false);
-                                    currentFont = para.Format.Font;
+                                    currentFont = para.Format.Font.Clone();
+                                    fontStack.Push(currentFont);
                                 }
-                                string attr = reader.GetAttribute("class");
-                                para.Style = string.IsNullOrEmpty(attr)?"Heading" + reader.Name[1]:attr;
-                                goto case "_attr";
+                                para.Style = "Heading" + reader.Name[1];
+                                break;
                             case "p":
                             case "div":
                                 if (!isFirstParagraphOfNewPage)
                                 {
                                     para = createNewParagraph(false);
                                 }
-                                currentFont = para.Format.Font;
-                                attr = reader.GetAttribute("class");
-                                if (!string.IsNullOrEmpty(attr))
-                                {
-                                    para.Style = attr;
-                                }
-                                goto case "_attr";
-                            case "span":
-                                attr = reader.GetAttribute("class");
-                                currentFont = string.IsNullOrEmpty(attr)?fontStack.Peek():section.Document.Styles[attr].Font;
-                                goto case "_attr";
-                            case "_attr":
-                                attr = reader.GetAttribute("style");
-                                if (attr!=null)
-                                {
-                                    var styleProps = attr.Split(StyleSeperator, StringSplitOptions.RemoveEmptyEntries).Map(s=>new CssStyleProperty(s));
-                                    currentFont = currentFont.Clone();
-                                    UpdateFontFromStyle(styleProps, currentFont);
-                                    if (BlockEls.Contains(reader.Name))
-                                    {
-                                        UpdateFormatFromStyle(styleProps, para.Format);
-                                    }
-                                }
+                                currentFont = para.Format.Font.Clone();
                                 fontStack.Push(currentFont);
                                 break;
+                            case "span":
+                                currentFont = fontStack.Peek().Clone();
+                                fontStack.Push(currentFont);
+                                break;
+                        }
+                        string cls = reader.GetAttribute("class");
+                        if (cls != null)
+                        {
+                            currentFont.ApplyFont(section.Document.Styles[cls].Font);
+                        }
+
+                        string style = reader.GetAttribute("style");
+                        if (style != null)
+                        {
+                            var styleProps = style.Split(StyleSeperator, StringSplitOptions.RemoveEmptyEntries).Map(s => new CssStyleProperty(s));
+                            UpdateFontFromStyle(styleProps, currentFont);
+                            if (BlockEls.Contains(reader.Name))
+                            {
+                                UpdateFormatFromStyle(styleProps, para.Format);
+                            }
                         }
                         break;
                         /*

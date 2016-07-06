@@ -1,10 +1,9 @@
 namespace PICUdrugs.DAL
 {
-    using System;
     using System.Collections.Generic;
     using System.ComponentModel.DataAnnotations;
     using System.ComponentModel.DataAnnotations.Schema;
-    
+
     public partial class Ward
     {
         [Key]
@@ -21,8 +20,11 @@ namespace PICUdrugs.DAL
         [StringLength(512, MinimumLength = 3)]
         public string BolusChartHeader { get; set; }
         [StringLength(512, MinimumLength = 3)]
+        public string BolusChartFooter { get; set; }
+        [StringLength(512, MinimumLength = 3)]
         public string InfusionChartHeader { get; set; }
         public bool DefaultBolusOnly { get; set; }
+        public bool IsNicu { get; set; }
     
         public virtual ICollection<BolusSortOrdering> BolusSortOrderings { get; set; }
         public virtual DefibModel DefibModel { get; set; }

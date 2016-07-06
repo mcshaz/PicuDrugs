@@ -1,10 +1,8 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Web;
 using PICUdrugs.DAL;
 using PICUdrugs.Code.Utilities;
-using PICUdrugs.Utils;
 using PICUdrugs.Html.Utilities;
 namespace PICUdrugs.BLL
 {
@@ -13,6 +11,7 @@ namespace PICUdrugs.BLL
         public int? Id { get; set; }
         public string DrugName { get; set; }
         public int? SortOrder { get; set; }
+        public string SpecificWard { get; set; }
     }
     public class InfusionSortingBL:IDisposable
     {
@@ -54,6 +53,7 @@ namespace PICUdrugs.BLL
             foreach (var drug in drugs)
             {
                 var item = new SortingDrugItem { DrugName = drug.Fullname, Id= drug.InfusionDrugId };
+                if (drug.SpecificWard != null) { item.SpecificWard = drug.SpecificWard.Abbrev; }
                 var so = drug.InfusionSortOrderings.FirstOrDefault(s => s.WardId == WardId);
                 if (so != null) { item.SortOrder = so.SortOrder; }
                 returnVal.Add(item);
@@ -63,14 +63,14 @@ namespace PICUdrugs.BLL
         private bool disposedValue = false;
         protected virtual void Dispose(bool disposing)
         {
-            if (!this.disposedValue)
+            if (!disposedValue)
             {
                 if (disposing)
                 {
                     infSortRepository.Dispose();
                 }
             }
-            this.disposedValue = true;
+            disposedValue = true;
         }
         public void Dispose()
         {
@@ -94,6 +94,7 @@ namespace PICUdrugs.BLL
                     DrugName = drug.DrugName, 
                     Id= drug.BolusDrugId 
                 };
+                if (drug.SpecificWard != null) { item.SpecificWard = drug.SpecificWard.Abbrev; }
                 var so = drug.BolusSortOrderings.FirstOrDefault(s=>s.WardId == WardId);
                 if (so!=null) {item.SortOrder=so.SortOrder;}
                 returnVar.Add(item);
@@ -131,8 +132,7 @@ namespace PICUdrugs.BLL
             for (int i = 0; i < newOrder.Length; i++)
             {
                 int drugId;
-                var isInt = int.TryParse(newOrder[i], out drugId);
-                if (isInt)
+                if (int.TryParse(newOrder[i], out drugId))
                 {
                     sort[i] = new BolusSortOrdering
                     {
@@ -198,14 +198,14 @@ namespace PICUdrugs.BLL
         private bool disposedValue = false;
         protected virtual void Dispose(bool disposing)
         {
-            if (!this.disposedValue)
+            if (!disposedValue)
             {
                 if (disposing)
                 {
                     bolusSortRepository.Dispose();
                 }
             }
-            this.disposedValue = true;
+            disposedValue = true;
         }
         public void Dispose()
         {

@@ -25,6 +25,7 @@ namespace PICUdrugs.Pages
                 //if wanting an editable copy during development, uncomment below:
                 //CreatePDFReport.CreateRtf(PreviousPage.PatientDetails(), PreviousPage.ChartSelected, PreviousPage.InfusionSelected, Request.UrlReferrer.AbsoluteUri);
                 // Send PDF to browser
+
                 MemoryStream stream = new MemoryStream();
                 doc.Save(stream, false);
                 Response.Clear();

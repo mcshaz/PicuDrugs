@@ -155,16 +155,14 @@
     </fieldset>
 
     <div id="departmentNotes">
-        <p>
-            We are always looking for motivated and appropriately experienced registrars to spend 6 to 12 months working with us in <a title="About Starship PICU" href="http://www.adhb.govt.nz/picu/">Starship PICU</a>. 
-            Registrars have come from all over the world to be a part of our team.
-        </p>
-        <p>
-            If you are interested or have queries about when positions are available 
-            (or when might be a good time to integrate a Starship PICU run into your training pathway), 
-            please <a href="mailto:contactpicu@adhb.govt.nz?Subject=Enquiry%20regarding%20Starship%20registrar%20positions">send us an email</a>.
-        </p>
-
+        <p>Changes are afoot. This page will be undergoing some changes over the coming months, including:</p>
+        <ul>
+            <li>more mobile friendly layout</li>
+            <li>option to choose between PDF (better for printer) and web layout (better for mobile devices)</li>
+            <li>secure (https) connection</li>
+            <li>including drugs which require dilution to be given to small children in sensible doses, for example naloxone</li>
+        </ul>
+        <p>The only downside will be dropping support for Internet Explorer 6. If you still use IE6 and also this site, please let me know.</p>
     </div>
     <div id="drugSelect">
         <span class="drugListHeader">Please select a drug or click <span id="cancelList" class="cancelDialog">Cancel</span> to close this window.</span>

@@ -12,6 +12,7 @@ namespace PICUdrugs.DAL
         public IEnumerable<BolusDrug> GetBolusDrugs()
         {
             return (from d in _db.BolusDrugs.Include("BolusDoses")
+                    orderby d.DrugName
                     select d).ToList();
         }
         public void InsertBolusDrug(BolusDrug drug)

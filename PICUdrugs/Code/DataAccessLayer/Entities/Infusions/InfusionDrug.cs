@@ -9,11 +9,10 @@
 
 namespace PICUdrugs.DAL
 {
-    using System;
     using System.Collections.Generic;
     using System.ComponentModel.DataAnnotations;
     using System.ComponentModel.DataAnnotations.Schema;
-    
+
     public partial class InfusionDrug
     {
         [Key]
@@ -28,11 +27,14 @@ namespace PICUdrugs.DAL
         public int InfusionDiluentId { get; set; }
         public string Note { get; set; }
         [ForeignKey("DrugReferenceSource")]
-        public Nullable<int> DrugReferenceId { get; set; }
+        public int? DrugReferenceId { get; set; }
         [ForeignKey("DrugRoute")]
-        public Nullable<int> RouteId { get; set; }
+        public int? RouteId { get; set; }
         public bool IsTitratable { get; set; }
-    
+        [ForeignKey("SpecificWard")]
+        public int? SpecificWardId { get; set; }
+
+        public virtual Ward SpecificWard { get; set; }
         public virtual ICollection<DrugAmpuleConcentration> DrugAmpuleConcentrations { get; set; }
         public virtual DrugReferenceSource DrugReferenceSource { get; set; }
         public virtual DrugRoute DrugRoute { get; set; }

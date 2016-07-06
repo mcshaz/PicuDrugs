@@ -21,6 +21,7 @@ namespace PICUdrugs.DAL
         public int WardId { get; set; }
         public bool? IsMale { get; set; }
         public bool WeightEstimate { get; set; }
+        public double GestationAtBirth { get; set; }
     }
     public class LinkReference
     {
@@ -104,10 +105,10 @@ namespace PICUdrugs.DAL
             }
             return returnList;
         }
-        public Ett ETT()
+        public Ett CalculateETT()
         {
             if (_ptDetail.Age == null) { return null; }
-            return PatientCalculations.ETT(_ptDetail.Age.TotalMonthsEstimate, _ptDetail.WorkingWeight);
+            return PatientCalculations.ETT(_ptDetail.Age.TotalMonthsEstimate, _ptDetail.WorkingWeight, _ptDetail.GestationAtBirth);
         }
         private FixedTimeDilution GetDilution(int drugId)
         {
@@ -127,10 +128,10 @@ namespace PICUdrugs.DAL
         {
             return FixedDurationInfusion(drugId, GetDilution(drugId) ,ampConc);
         }
-        public IEnumerable<FixedDurationInfusion> FixedDurationInfusion(int drugId,FixedTimeDilution Dilution ,double ampConc = 0)
+        public IEnumerable<FixedDurationInfusion> FixedDurationInfusion(int drugId,FixedTimeDilution dilution ,double ampConc = 0)
         {
             var concList = (from c in _db.FixedTimeConcentrations
-                            where c.InfusionDilutionId==Dilution.InfusionDilutionId
+                            where c.InfusionDilutionId==dilution.InfusionDilutionId
                             orderby c.StopMinutes
                             select c).ToList();
             var returnList = new List<FixedDurationInfusion>(concList.Count);
@@ -142,21 +143,21 @@ namespace PICUdrugs.DAL
                     weight: _ptDetail.WorkingWeight,
                     concentration: timedRow.Concentration,
                     volume: timedRow.Volume,
-                    infusionPrefix: Dilution.SiPrefixVal,
-                    ampPrefix: Dilution.InfusionDrug.SiPrefixVal,
-                    unitMeasure: Dilution.InfusionDrug.SiUnit.Measure,
-                    isPerKg: Dilution.DilutionMethod.IsPerKg,
-                    isPerMin: Dilution.IsPerMin,
-                    isVaryConcentration: Dilution.DilutionMethod.IsVaryConcentration,
-                    isVaryVolume: Dilution.DilutionMethod.IsVaryVolume,
-                    isNeat: Dilution.DilutionMethod.IsNeat,
+                    infusionPrefix: dilution.SiPrefixVal,
+                    ampPrefix: dilution.InfusionDrug.SiPrefixVal,
+                    unitMeasure: dilution.InfusionDrug.SiUnit.Measure,
+                    isPerKg: dilution.DilutionMethod.IsPerKg,
+                    isPerMin: dilution.IsPerMin,
+                    isVaryConcentration: dilution.DilutionMethod.IsVaryConcentration,
+                    isVaryVolume: dilution.DilutionMethod.IsVaryVolume,
+                    isNeat: dilution.DilutionMethod.IsNeat,
                     doseRate: timedRow.Rate,
                     minsDuration: timedRow.StopMinutes - priorStopTime,
                     ampConcentration:ampConc);
                 if (hasConc) calculatedRow.AmpuleConcentration = ampConc;
                 calculatedRow.StartTime = priorStopTime;
                 priorStopTime = timedRow.StopMinutes;
-                calculatedRow.DiluentFluid = Dilution.InfusionDrug.InfusionDiluent.DiluentType;
+                calculatedRow.DiluentFluid = dilution.InfusionDrug.InfusionDiluent.DiluentType;
                 returnList.Add(calculatedRow);
             }
             return returnList;

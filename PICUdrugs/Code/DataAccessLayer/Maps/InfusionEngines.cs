@@ -410,7 +410,7 @@ namespace PICUdrugs.DAL
             _doseTotal = dose;
             bool pleuraliseTotalUits;
             _doseTotalUnits = Formulas.UnitString(siPrefix, unitMeasure, out pleuraliseTotalUits);
-            _doseTotalUnits += pleuraliseTotalUits?"s":string.Empty + _perKg;
+            _doseTotalUnits += (pleuraliseTotalUits?"s":string.Empty) + _perKg;
 
         }
         private double _unitsPerMin;

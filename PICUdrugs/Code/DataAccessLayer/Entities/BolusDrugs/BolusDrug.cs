@@ -1,10 +1,9 @@
 
 namespace PICUdrugs.DAL
 {
-    using System;
     using System.Collections.Generic;
     using System.ComponentModel.DataAnnotations;
-    
+    using System.ComponentModel.DataAnnotations.Schema;
     public class BolusDrug
     {
         [Key]
@@ -23,7 +22,10 @@ namespace PICUdrugs.DAL
         public double AdultMax { get; set; }
         [Range(0, 1000000, ErrorMessage = "Minimum dose must be between 0 and 1 000 000 [units of measure]")]
         public double Min { get; set; }
-    
+        [ForeignKey("SpecificWard")]
+        public int? SpecificWardId { get; set; }
+
+        public virtual Ward SpecificWard { get; set; }
         public virtual ICollection<BolusDose> BolusDoses { get; set; }
         public virtual ICollection<BolusSortOrdering> BolusSortOrderings { get; set; }
     }

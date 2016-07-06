@@ -40,6 +40,12 @@
                 <td>
                     <asp:TextBox ID="abbrevTB" runat="server" Text='<%# Bind("Abbrev") %>' CssClass="abbrev" />
                 </td>
+                <td runat="server">
+                    <asp:DropDownList ID="WardDropDown" runat="server"
+                        DataTextField="Value" OnDataBinding="WardDropDown_DataBinding"
+                        DataValueField="Key"
+                        SelectedValue='<%# Bind("SpecificWardId") %>' />
+                </td>
                 <td>
                     <asp:DropDownList ID="prefixDropDown" runat="server" 
                             DataSourceID="SiPrefixesObjDataSrc" DataTextField="Value" 
@@ -110,6 +116,12 @@
                 <td>
                     <asp:TextBox ID="abbrevTB" runat="server" Text='<%# Bind("Abbrev") %>' CssClass="abbrev"/>
                 </td>
+                <td runat="server">
+                    <asp:DropDownList ID="WardDropDown" runat="server"
+                        DataTextField="Value" OnDataBinding="WardDropDown_DataBinding"
+                        DataValueField="Key"
+                        SelectedValue='<%# Bind("SpecificWardId") %>' />
+                </td>
                 <td>
                     <asp:DropDownList ID="prefixDropDown" runat="server" 
                             DataSourceID="SiPrefixesObjDataSrc" DataTextField="Value" 
@@ -174,6 +186,12 @@
                 <td>
                     <asp:Label ID="abbrevLabel" runat="server" Text='<%# Eval("Abbrev") %>' />
                 </td>
+                <td runat="server">
+                    <asp:DropDownList ID="WardDropDown" runat="server"
+                        DataTextField="Value" OnDataBinding="WardDropDown_DataBinding"
+                        DataValueField="Key" Enabled="false"
+                        SelectedValue='<%# Bind("SpecificWardId") %>' />
+                </td>
                 <td>
                     <asp:Label ID="SiPrefixValLabel" runat="server" />
                 </td>
@@ -206,6 +224,9 @@
                             Drug Name</th>
                         <th>
                             Abbreviation</th>
+                        <th>
+                            Ward
+                        </th>
                         <th>
                             prefix</th>
                         <th>

@@ -36,6 +36,12 @@
                     <asp:HiddenField runat="server" ID="BolusDrugId" Value='<%# Bind("BolusDrugId") %>' />
                     <asp:DynamicControl runat="server" DataField="DrugName" Mode="Edit" CssClass="rich" HtmlEncode="false"/>
                 </td>
+                <td runat="server">
+                    <asp:DropDownList ID="WardDropDown" runat="server"
+                        DataTextField="Value" OnDataBinding="WardDropDown_DataBinding"
+                        DataValueField="Key"
+                        SelectedValue='<%# Bind("SpecificWardId") %>' />
+                </td>
                 <td>
                     <asp:DynamicControl runat="server" DataField="Conc_ml" Mode="Edit" />
                 </td>
@@ -71,6 +77,12 @@
                     <asp:DynamicControl runat="server" DataField="DrugName" Mode="Insert" CssClass="rich" HtmlEncode="false" 
                         ValidationGroup="insert" />
                 </td>
+                <td runat="server">
+                    <asp:DropDownList ID="WardDropDown" runat="server"
+                        DataTextField="Value" OnDataBinding="WardDropDown_DataBinding"
+                        DataValueField="Key"
+                        SelectedValue='<%# Bind("SpecificWardId") %>' />
+                </td>
                 <td>
                     <asp:DynamicControl runat="server" DataField="Conc_ml" Mode="Insert" 
                         ValidationGroup="insert" />
@@ -99,6 +111,12 @@
                 <td runat="server">
                     <asp:HiddenField runat="server" ID="BolusDrugId" Value='<%# Eval("BolusDrugId") %>'  />
                     <asp:DynamicControl runat="server" DataField="DrugName" Mode="ReadOnly" HtmlEncode="false" />
+                </td>
+                <td runat="server">
+                    <asp:DropDownList ID="WardDropDown" runat="server"
+                        DataTextField="Value" OnDataBinding="WardDropDown_DataBinding"
+                        DataValueField="Key" Enabled="false"
+                        SelectedValue='<%# Bind("SpecificWardId") %>' />
                 </td>
                 <td runat="server">
                     <asp:Label ID="Conc_ml_Lbl" runat="server" />
@@ -210,6 +228,8 @@
                     </th>
                     <th rowspan="2">
                         Drug<br />Name</th>
+                    <th rowspan="2">
+                        Dpt</th>
                     <th rowspan="2">
                         Conc.</th>
                     <th rowspan="2">

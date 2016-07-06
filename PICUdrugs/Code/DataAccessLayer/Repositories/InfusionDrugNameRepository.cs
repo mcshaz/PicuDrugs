@@ -41,7 +41,7 @@ namespace PICUdrugs.DAL
         private bool disposedValue = false;
         protected virtual void Dispose(bool disposing)
         {
-            if (!this.disposedValue)
+            if (!disposedValue)
             {
                 if (disposing)
                 {
@@ -49,7 +49,7 @@ namespace PICUdrugs.DAL
                 }
                 _db = null;
             }
-            this.disposedValue = true;
+            disposedValue = true;
         }
         public void Dispose()
         {

@@ -29,7 +29,7 @@ namespace PICUdrugs.WardAdmin
             if (WardList.CanModifySelectedWard)
             {
                 bolusHeader.MaxLength = BolusSortOrdering.maxBolusSubHeaderLength;
-                bolusHeader.ClientIDMode = System.Web.UI.ClientIDMode.Static;
+                bolusHeader.ClientIDMode = ClientIDMode.Static;
             }
             else
             {
