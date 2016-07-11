@@ -263,9 +263,6 @@
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
     <Content Include="packages.config" />
-    <None Include="..\..\..\..\publishingProfiles\picudrugs\Web.openhost.config">
-      <Link>Web.openhost.config</Link>
-    </None>
     <None Include="Properties\PublishProfiles\openhost.pubxml" />
     <None Include="Scripts\jquery-2.1.0.intellisense.js" />
     <Content Include="Scripts\jquery-1.12.4.min.js" />
@@ -496,6 +493,7 @@
     <Content Include="Scripts\tinymce\tinymce.min.js" />
     <Content Include="Scripts\WardManagement.js" />
     <Content Include="Scripts\WtForAge.js" />
+    <Content Include="TestEmail.aspx" />
     <Content Include="WardAdmin\DepartmentListOrder.aspx" />
     <Content Include="WardAdmin\WardManagement.ascx" />
     <Content Include="Web.config">
@@ -532,6 +530,10 @@
     <Content Include="Site.Master" />
     <None Include="Web.Debug.config">
       <DependentUpon>Web.config</DependentUpon>
+    </None>
+    <None Include="Web.openhost.config">
+      <DependentUpon>Web.config</DependentUpon>
+      <SubType>Designer</SubType>
     </None>
     <None Include="Web.Release.config">
       <DependentUpon>Web.config</DependentUpon>
@@ -753,6 +755,13 @@
     </Compile>
     <Compile Include="Site.Master.designer.cs">
       <DependentUpon>Site.Master</DependentUpon>
+    </Compile>
+    <Compile Include="TestEmail.aspx.cs">
+      <DependentUpon>TestEmail.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="TestEmail.aspx.designer.cs">
+      <DependentUpon>TestEmail.aspx</DependentUpon>
     </Compile>
     <Compile Include="ViewModels\UserData.cs" />
     <Compile Include="WardAdmin\DepartmentListOrder.aspx.cs">

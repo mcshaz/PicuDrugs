@@ -199,7 +199,10 @@
             })
         }
         return $.map($selectedDrugs, function (el) {
-            return el.getAttribute("data-id") || el.innerHTML.replace(/-- pagebreak --/g, '<!-- pagebreak -->'); //wont work if id of 0 is used
+            var at = (el.getAttribute("data-id") || "").trim();
+            return at === "" 
+                ?el.innerHTML.trim().replace(/-- pagebreak --/g, '<!-- pagebreak -->')
+                :at;
         })
     }
     function GetAntiForgeryToken() {

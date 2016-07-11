@@ -89,6 +89,7 @@
     <Compile Include="ExistingWardChartsTest.cs" />
     <Compile Include="ReplaceExpiresTests.cs" />
     <Compile Include="TestCreateRtf.cs" />
+    <Compile Include="TestSortOrder.cs" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\PICUdrugs\PICUdrugs2013.csproj">

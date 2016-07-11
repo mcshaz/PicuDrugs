@@ -44,9 +44,9 @@ namespace PICUdrugs.WardAdmin
                 sortingDrugs = bolusBL.GetAllDrugs(selectedWard).ToLookup(b => b.SortOrder != null);
                 emptywards = bolusBL.GetWardsWithoutBoluses();
             }
-            bolusSortOrderLV.DataSource = sortingDrugs[true].OrderBy(b=>b.SortOrder).ToList();
+            bolusSortOrderLV.DataSource = sortingDrugs[true].OrderBy(b=>b.SortOrder);
             bolusSortOrderLV.DataBind();
-            remainingBolusLV.DataSource = sortingDrugs[false];
+            remainingBolusLV.DataSource = sortingDrugs[false].OrderBy(b=>b.DrugName);
             remainingBolusLV.DataBind();
 
 
@@ -150,25 +150,6 @@ namespace PICUdrugs.WardAdmin
             using (BolusSortingBL bolusBL = new BolusSortingBL())
             {
                 bolusBL.CloneWard(cloneFromId, cloneToId);
-            }
-        }
-        protected void bolusLV_itemDataBound(object sender, ListViewItemEventArgs e)
-        {
-            var dataItem = (ListViewDataItem)e.Item;
-            var drugItem = (SortingDrugItem)dataItem.DataItem;
-            
-            var li = (HtmlGenericControl)e.Item.FindControl("bolusItem");
-            if (drugItem.Id.HasValue)
-            {
-                li.Attributes.Add("data-id",drugItem.Id.ToString());
-                var route = drugItem.DrugName;
-                li.InnerHtml = drugItem.DrugName;
-            }
-            else
-            {
-                li.Attributes.Add("data-id",drugItem.Id.ToString());
-                li.InnerHtml = drugItem.DrugName;
-                li.Attributes.Add("class", li.Attributes["class"] + " bolusSubHeader");
             }
         }
 

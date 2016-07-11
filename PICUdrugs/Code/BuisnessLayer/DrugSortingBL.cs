@@ -94,7 +94,11 @@ namespace PICUdrugs.BLL
                     DrugName = drug.DrugName, 
                     Id= drug.BolusDrugId 
                 };
-                if (drug.SpecificWard != null) { item.SpecificWard = drug.SpecificWard.Abbrev; }
+
+                System.Diagnostics.Debug.Write(drug);
+                if (drug.SpecificWard != null) {
+                    item.SpecificWard = drug.SpecificWard.Abbrev;
+                }
                 var so = drug.BolusSortOrderings.FirstOrDefault(s=>s.WardId == WardId);
                 if (so!=null) {item.SortOrder=so.SortOrder;}
                 returnVar.Add(item);

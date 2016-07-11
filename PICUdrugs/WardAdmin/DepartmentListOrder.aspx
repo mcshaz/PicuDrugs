@@ -75,9 +75,14 @@
         <div id="bolusListAndSubmit" class="druglist">
             <div id="includedBoluses">
                 <h5>Used:</h5>  
-                <asp:ListView ID="bolusSortOrderLV" runat="server" OnItemDataBound="bolusLV_itemDataBound">
+                <asp:ListView ID="bolusSortOrderLV" runat="server" >
                     <ItemTemplate>
-                        <li  ID="bolusItem" class="stdItem" runat="server" />
+                    <li class='<%# Eval("Id") == null ? "stdItem bolusSubHeader":"stdItem" %>' runat="server" data-id='<%# Eval("Id") %>' >
+                        <%# Eval("DrugName") %>
+                        <span runat="server" class="specificWard" visible='<%# Eval("SpecificWard") !=null %>' >
+                            <%# Eval("SpecificWard") %>
+                        </span>
+                    </li>
                     </ItemTemplate>
                     <LayoutTemplate>
                         <ol ID="includedBolusList" runat="server" class="listOrder">
@@ -104,9 +109,14 @@
         </div>
         <div id="unusedBolus" class="druglist">
             <h5>Unused:</h5>
-            <asp:ListView ID="remainingBolusLV" runat="server" OnItemDataBound="bolusLV_itemDataBound">
+            <asp:ListView ID="remainingBolusLV" runat="server" >
                 <ItemTemplate>
-                    <li  ID="bolusItem" class="stdItem" runat="server" />
+                    <li class='<%# Eval("Id") == null ? "stdItem bolusSubHeader":"stdItem" %>' runat="server" data-id='<%# Eval("Id") %>' >
+                        <%# Eval("DrugName") %>
+                        <span runat="server" class="specificWard" visible='<%# Eval("SpecificWard") !=null %>' >
+                            <%# Eval("SpecificWard") %>
+                        </span>
+                    </li>
                 </ItemTemplate>
                 <LayoutTemplate>
                     <ul ID="unusedList" runat="server" class="listOrder">

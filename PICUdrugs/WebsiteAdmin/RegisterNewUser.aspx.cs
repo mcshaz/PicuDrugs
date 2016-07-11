@@ -1,21 +1,18 @@
 ﻿using System;
-using System.Collections.Generic;
 using System.Collections.Specialized;
 using System.Net.Mail;
-using System.Linq;
-using System.Web;
 using System.Web.Security;
 using System.Web.UI;
 using System.Web.UI.WebControls;
 
 namespace PICUdrugs.websiteAdmin
 {
-    public partial class RegisterNewUser : System.Web.UI.Page
+    public partial class RegisterNewUser : Page
     {
         protected void Page_Load(object sender, EventArgs e)
         {
             Master.AddJQuery();
-            Type csType = this.GetType();
+            Type csType = GetType();
             if (!Page.ClientScript.IsStartupScriptRegistered(csType, "newUserControlNames"))
             {
                 string nameStr = string.Format("var PICU={{}};PICU.userNameId='{0}';PICU.emailId='{1}';",
@@ -60,8 +57,10 @@ namespace PICUdrugs.websiteAdmin
                     MailMessage message = mail.CreateMailMessage(newUser.Email, replacements, this);
                     message.ReplyToList.Add(Membership.GetUser().Email);
 
-                    SmtpClient picuClient = new SmtpClient();
-                    picuClient.Send(message);
+                    using (SmtpClient picuClient = new SmtpClient())
+                    {
+                        picuClient.Send(message);
+                    }
                 }
                 else
                 {
