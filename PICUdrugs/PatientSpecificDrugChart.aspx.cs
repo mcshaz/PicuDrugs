@@ -26,15 +26,17 @@ namespace PICUdrugs.Pages
                 //CreatePDFReport.CreateRtf(PreviousPage.PatientDetails(), PreviousPage.ChartSelected, PreviousPage.InfusionSelected, Request.UrlReferrer.AbsoluteUri);
                 // Send PDF to browser
 
-                MemoryStream stream = new MemoryStream();
-                doc.Save(stream, false);
-                Response.Clear();
-                Response.ContentType = "application/pdf";
-                Response.AddHeader("content-length", stream.Length.ToString());
-                Response.BinaryWrite(stream.ToArray());
-                Response.Flush();
-                stream.Close();
-                Response.End();
+                using (MemoryStream stream = new MemoryStream())
+                {
+                    doc.Save(stream, false);
+                    Response.Clear();
+                    Response.ContentType = "application/pdf";
+                    Response.AddHeader("content-length", stream.Length.ToString());
+                    Response.BinaryWrite(stream.ToArray());
+                    Response.Flush();
+                    stream.Close();
+                    Response.End();
+                }
             }
         }
     } 

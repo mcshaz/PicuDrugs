@@ -14,7 +14,7 @@ namespace PICUdrugs.DAL
     using System.ComponentModel.DataAnnotations;
     using System.ComponentModel.DataAnnotations.Schema;
 
-    public partial class VariableTimeDilution : IInfusionDilution
+    public partial class VariableTimeDilution : IInfusionDilution, IDateModified
     {
         [Key]
         public int InfusionDilutionId { get; set; }
@@ -33,6 +33,7 @@ namespace PICUdrugs.DAL
         public double RateMax { get; set; }
         public bool IsPerMin { get; set; }
         public string ReferencePage { get; set; }
+        public DateTime DateModified { get; set; }
         [NotMapped]
         public string InfusionUnits { get; set; }
     

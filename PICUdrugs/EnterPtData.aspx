@@ -154,16 +154,6 @@
         </div>
     </fieldset>
 
-    <div id="departmentNotes">
-        <p>Changes are afoot. This page will be undergoing some changes over the coming months, including:</p>
-        <ul>
-            <li>more mobile friendly layout</li>
-            <li>option to choose between PDF (better for printer) and web layout (better for mobile devices)</li>
-            <li>secure (https) connection</li>
-            <li>including drugs which require dilution to be given to small children in sensible doses, for example naloxone</li>
-        </ul>
-        <p>The only downside will be dropping support for Internet Explorer 6. If you still use IE6 and also this site, please let me know.</p>
-    </div>
     <div id="drugSelect">
         <span class="drugListHeader">Please select a drug or click <span id="cancelList" class="cancelDialog">Cancel</span> to close this window.</span>
         <div id="listScroll"><ul id="drugList"></ul></div>
@@ -172,7 +162,7 @@
         </div>
     </div>
 </asp:Content>
-<asp:Content ID="MyScripts" ContentPlaceHolderId="masterScripts" runat="server">
+<asp:Content ID="MyScripts" ContentPlaceHolderId="MasterScripts" runat="server">
     <script src="/Scripts/json2.min.js" type="text/javascript"></script>
     <script src="/Scripts/PICUdrugUtils-0.5.js" type="text/javascript"></script>
     <script src="/Scripts/DobAgePageManagement-0.2.js" type="text/javascript"></script>

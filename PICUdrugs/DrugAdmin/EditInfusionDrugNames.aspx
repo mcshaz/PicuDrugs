@@ -286,7 +286,7 @@
     </asp:ObjectDataSource>
 </asp:Content>
 
-<asp:Content ID="MyScripts" ContentPlaceHolderId="masterScripts" runat="server">
+<asp:Content ID="MyScripts" ContentPlaceHolderId="MasterScripts" runat="server">
     <script type="text/javascript">
         $(document).ready(function () {
             $('.listItemTable tr:even').css({ 'background-color': '#E0FFFF', 'color': '#333333' });

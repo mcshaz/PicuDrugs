@@ -13,7 +13,7 @@ namespace PICUdrugs.DAL
     using System.ComponentModel.DataAnnotations;
     using System.ComponentModel.DataAnnotations.Schema;
 
-    public partial class InfusionDrug
+    public partial class InfusionDrug : IDateModified
     {
         [Key]
         public int InfusionDrugId { get; set; }
@@ -33,6 +33,7 @@ namespace PICUdrugs.DAL
         public bool IsTitratable { get; set; }
         [ForeignKey("SpecificWard")]
         public int? SpecificWardId { get; set; }
+        public DateTime DateModified { get; set; }
 
         public virtual Ward SpecificWard { get; set; }
         public virtual ICollection<DrugAmpuleConcentration> DrugAmpuleConcentrations { get; set; }

@@ -31,6 +31,15 @@ namespace PICUdrugs {
         protected global::System.Web.UI.WebControls.ContentPlaceHolder masterStyles;
         
         /// <summary>
+        /// SiteMapDataSource1 control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::System.Web.UI.WebControls.SiteMapDataSource SiteMapDataSource1;
+        
+        /// <summary>
         /// mainForm control.
         /// </summary>
         /// <remarks>
@@ -49,15 +58,6 @@ namespace PICUdrugs {
         protected global::System.Web.UI.WebControls.Menu sideMenu;
         
         /// <summary>
-        /// SiteMapDataSource1 control.
-        /// </summary>
-        /// <remarks>
-        /// Auto-generated field.
-        /// To modify move field declaration from designer file to code-behind file.
-        /// </remarks>
-        protected global::System.Web.UI.WebControls.SiteMapDataSource SiteMapDataSource1;
-        
-        /// <summary>
         /// LoginStatus1 control.
         /// </summary>
         /// <remarks>
@@ -65,15 +65,6 @@ namespace PICUdrugs {
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
         protected global::System.Web.UI.WebControls.LoginStatus LoginStatus1;
-        
-        /// <summary>
-        /// dateFileMod control.
-        /// </summary>
-        /// <remarks>
-        /// Auto-generated field.
-        /// To modify move field declaration from designer file to code-behind file.
-        /// </remarks>
-        protected global::System.Web.UI.WebControls.Label dateFileMod;
         
         /// <summary>
         /// headings control.
@@ -94,21 +85,21 @@ namespace PICUdrugs {
         protected global::System.Web.UI.WebControls.ContentPlaceHolder MainContent;
         
         /// <summary>
-        /// jqueryScripts control.
+        /// MasterScripts control.
         /// </summary>
         /// <remarks>
         /// Auto-generated field.
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
-        protected global::System.Web.UI.WebControls.ContentPlaceHolder jqueryScripts;
+        protected global::System.Web.UI.WebControls.ContentPlaceHolder MasterScripts;
         
         /// <summary>
-        /// masterScripts control.
+        /// ScriptManager1 control.
         /// </summary>
         /// <remarks>
         /// Auto-generated field.
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
-        protected global::System.Web.UI.WebControls.ContentPlaceHolder masterScripts;
+        protected global::System.Web.UI.ScriptManager ScriptManager1;
     }
 }

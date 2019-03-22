@@ -5,7 +5,7 @@ using System.ComponentModel.DataAnnotations.Schema;
 namespace PICUdrugs.DAL
 {
     
-    public class BolusDose
+    public class BolusDose : IDateModified
     {
         [Key]
         public int BolusDoseId { get; set; }
@@ -19,7 +19,8 @@ namespace PICUdrugs.DAL
         public double WeightMin { get; set; }
         [Range(FieldConst.minWeight, FieldConst.maxWeight, ErrorMessage = FieldConst.wtErr)]
         public double WeightMax { get; set; }
-    
+        public DateTime DateModified { get; set; }
+
         public virtual BolusDrug BolusDrug { get; set; }
     }
 }

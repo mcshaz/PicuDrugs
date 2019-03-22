@@ -38,8 +38,12 @@
         </div>
     </div>
 </asp:Content>
-<asp:Content ID="MyScripts" ContentPlaceHolderId="masterScripts" runat="server">
-    <script type="text/javascript" src="<%# ResolveUrl("~/Scripts/PICUdrugUtils-0.5.js")%>"></script>
+<asp:Content ID="MyScripts" ContentPlaceHolderId="MasterScripts" runat="server">
+<asp:ScriptManagerProxy runat="server" EnableViewState="false">
+        <Scripts>
+            <asp:ScriptReference Path="~/Scripts/PICUdrugUtils-0.5.js" />
+        </Scripts>
+    </asp:ScriptManagerProxy>
     <script type="text/javascript">
         pic.util.addEvent(window, 'load', function () {
             var bolus = document.getElementById('bolusDrugs'),

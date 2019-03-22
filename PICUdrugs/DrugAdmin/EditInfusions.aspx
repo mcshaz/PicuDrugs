@@ -159,12 +159,12 @@
                             <div class="fieldInputs">
                                 <label class="minMax">
                                     <asp:DynamicControl Mode="Edit" ID="WeightMinTextBox" runat="server" DataField="WeightMin" ValidationGroup="editDilution" />
-                                    <span class="describe">(&lt;min)</span>
+                                    <span class="describe">weight &gt;</span>
                                 </label>
                                 <span class="midVert"> - &nbsp</span>
                                 <label class="minMax">
                                     <asp:DynamicControl Mode="Edit" ID="WeightMaxTextBox" runat="server" DataField="WeightMax" ValidationGroup="editDilution" />
-                                    <span class="describe">(&ge;max)</span>
+                                    <span class="describe">weight &le;</span>
                                 </label>
                             </div>
                         </li>
@@ -175,13 +175,13 @@
                                     <asp:DynamicControl Mode="Edit" ID="AgeMinMonthsTextBox" runat="server" 
                                         DataField="AgeMinMonths" ValidationGroup="editDilution" CssClass="ageMonths"/>
                                 </span>
-                                <span class="describe">(&le;min)</span>
+                                <span class="describe">age &ge;</span>
                                 <span class="midVert"> - &nbsp</span>
                                 <span class="minMax">
                                     <asp:DynamicControl Mode="Edit" ID="AgeMaxMonthsTextBox" runat="server" 
                                         DataField="AgeMaxMonths" ValidationGroup="editDilution" CssClass="ageMonths"/>
                                 </span>
-                                <span class="describe">(&ge;max)</span>
+                                <span class="describe">age &le;</span>
                             </div>
                         </li>
                         <li>
@@ -635,6 +635,10 @@
         </LayoutTemplate>
     </asp:ListView>
 </asp:Content>
-<asp:Content ID="MyScripts" ContentPlaceHolderId="masterScripts" runat="server">
-    <script src="<%# ResolveUrl("~/Scripts/editInfusion.js")%>" type="text/javascript"></script>
+<asp:Content ID="MyScripts" ContentPlaceHolderId="MasterScripts" runat="server">
+    <asp:ScriptManagerProxy runat="server" EnableViewState="false">
+        <Scripts>
+            <asp:ScriptReference Path="~/Scripts/editInfusion.js" />
+        </Scripts>
+    </asp:ScriptManagerProxy>
 </asp:Content>

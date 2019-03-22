@@ -116,9 +116,8 @@ namespace PICUdrugs
         protected void Page_Load(object sender, EventArgs e)
         {
             string thisPath = Request.PhysicalPath;
-            dateFileMod.Text = System.IO.File.GetLastWriteTime(thisPath).ToString("d");
+            //dateFileMod.Text = System.IO.File.GetLastWriteTime(thisPath).ToString("d");
             Page.Header.DataBind();
-            masterScripts.DataBind();
             //sideMenu.StaticSelectedStyle.CssClass = "activeMenuItem";
         }
         private bool _jHtmlAreaIncluded;
@@ -181,16 +180,21 @@ namespace PICUdrugs
             CreateStyle("//ajax.googleapis.com/ajax/libs/jqueryui/1.10.4/themes/ui-lightness/jquery-ui.min.css");
             _jQueryUIScriptIncluded = true;
         }
-        public System.Web.UI.HtmlControls.HtmlGenericControl CreateScript(string src)
+        public ScriptReference CreateScript(string src)
         {
             return CreateScript(src, false);
         }
-        private System.Web.UI.HtmlControls.HtmlGenericControl CreateScript(string src, bool jQuery)
+        private ScriptReference CreateScript(string src, bool jQuery)
         {
-            var ctrl = new System.Web.UI.HtmlControls.HtmlGenericControl("script");
-            ctrl.Attributes.Add("type", @"text/javascript");
-            ctrl.Attributes.Add("src", ResolveUrl(src));
-            (jQuery?jqueryScripts:masterScripts).Controls.Add(ctrl);
+            var ctrl = new ScriptReference('~' + src);
+            if (jQuery)
+            {
+                ScriptManager1.Scripts.Insert(0, ctrl);
+            } else
+            {
+                ScriptManager1.Scripts.Add(ctrl);
+            }
+            
             return ctrl;
         }
         public HtmlLink CreateStyle(string src)

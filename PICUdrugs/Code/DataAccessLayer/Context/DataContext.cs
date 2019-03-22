@@ -8,6 +8,7 @@ namespace PICUdrugs.DAL
     using System;
     using System.Data.Entity;
     using System.Data.Entity.Infrastructure;
+    using System.Threading.Tasks;
 
     public partial class DataContext : DbContext
     {
@@ -46,5 +47,29 @@ namespace PICUdrugs.DAL
         public virtual DbSet<VariableTimeConcentration> VariableTimeConcentrations { get; set; }
         public virtual DbSet<VariableTimeDilution> VariableTimeDilutions { get; set; }
         public virtual DbSet<Ward> Wards { get; set; }
+
+        public override int SaveChanges()
+        {
+            AddModifiedDate();
+            return base.SaveChanges();
+        }
+
+        public override Task<int> SaveChangesAsync()
+        {
+            AddModifiedDate();
+            return base.SaveChangesAsync();
+        }
+
+        private void AddModifiedDate()
+        {
+            var now = DateTime.UtcNow;
+            foreach(var e in ChangeTracker.Entries().Where(e => e.State == EntityState.Added || e.State == EntityState.Modified))
+            {
+                if (e is IDateModified d)
+                {
+                    d.DateModified = now;
+                }
+            }
+        }
     }
 }

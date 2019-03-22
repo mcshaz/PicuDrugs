@@ -13,7 +13,7 @@
     <AppDesignerFolder>Properties</AppDesignerFolder>
     <RootNamespace>PICUdrugs2013</RootNamespace>
     <AssemblyName>PICUdrugs2013</AssemblyName>
-    <TargetFrameworkVersion>v4.6</TargetFrameworkVersion>
+    <TargetFrameworkVersion>v4.6.1</TargetFrameworkVersion>
     <UseIISExpress>true</UseIISExpress>
     <IISExpressSSLPort />
     <IISExpressAnonymousAuthentication />
@@ -21,11 +21,12 @@
     <IISExpressUseClassicPipelineMode />
     <TargetFrameworkProfile />
     <UseGlobalApplicationHostFile />
+    <Use64BitIISExpress />
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
     <DebugSymbols>true</DebugSymbols>
     <DebugType>full</DebugType>
-    <Optimize>true</Optimize>
+    <Optimize>false</Optimize>
     <OutputPath>bin\</OutputPath>
     <DefineConstants>DEBUG;TRACE</DefineConstants>
     <ErrorReport>prompt</ErrorReport>
@@ -54,8 +55,8 @@
       <HintPath>..\packages\EntityFramework.6.1.3\lib\net45\EntityFramework.SqlServer.dll</HintPath>
       <Private>True</Private>
     </Reference>
-    <Reference Include="HtmlAgilityPack, Version=1.4.9.4, Culture=neutral, PublicKeyToken=bd319b19eaf3b43a, processorArchitecture=MSIL">
-      <HintPath>..\packages\HtmlAgilityPack.1.4.9.4\lib\Net45\HtmlAgilityPack.dll</HintPath>
+    <Reference Include="HtmlAgilityPack, Version=1.4.9.5, Culture=neutral, PublicKeyToken=bd319b19eaf3b43a, processorArchitecture=MSIL">
+      <HintPath>..\packages\HtmlAgilityPack.1.4.9.5\lib\Net45\HtmlAgilityPack.dll</HintPath>
       <Private>True</Private>
     </Reference>
     <Reference Include="Microsoft.CSharp" />
@@ -119,10 +120,16 @@
     <Content Include="Contact.aspx" />
     <Content Include="Content\accordion_bg.png" />
     <Content Include="Content\BolusDrugs.css" />
+    <Content Include="Content\bootstrap-theme.css" />
+    <Content Include="Content\bootstrap-theme.min.css" />
+    <Content Include="Content\bootstrap.css" />
+    <Content Include="Content\bootstrap.min.css" />
     <Content Include="Content\ChartHeader.css" />
     <Content Include="Content\CurrentDrugList.css" />
     <Content Include="Content\departmentListOrder.css" />
     <Content Include="Content\EnterPtData-0.5.css" />
+    <Content Include="Content\font-awesome.css" />
+    <Content Include="Content\font-awesome.min.css" />
     <Content Include="Content\ie6and7DataEntry.css" />
     <Content Include="Content\InfusionCharts.css" />
     <Content Include="Content\infusionDilution.css" />
@@ -227,6 +234,8 @@
     <Content Include="EnterPtData.aspx" />
     <Content Include="Errors\Error404.aspx" />
     <Content Include="Errors\OtherErrors.aspx" />
+    <Content Include="fonts\fontawesome-webfont.svg" />
+    <Content Include="fonts\glyphicons-halflings-regular.svg" />
     <Content Include="Images\accent.png" />
     <Content Include="Images\bullet.png" />
     <Content Include="Images\heroAccent.png" />
@@ -249,6 +258,8 @@
     <Content Include="PersonalAccount\ChangePassword.aspx" />
     <Content Include="PersonalAccount\ChangePasswordSuccess.aspx" />
     <Content Include="robots.txt" />
+    <Content Include="Scripts\bootstrap.js" />
+    <Content Include="Scripts\bootstrap.min.js" />
     <Content Include="Scripts\DobAgePageManagement-0.2.js" />
     <Content Include="Scripts\drugCharts.js" />
     <Content Include="Scripts\editBolus.js" />
@@ -263,13 +274,31 @@
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
     <Content Include="packages.config" />
+    <Content Include="fonts\glyphicons-halflings-regular.woff2" />
+    <Content Include="fonts\glyphicons-halflings-regular.woff" />
+    <Content Include="fonts\glyphicons-halflings-regular.ttf" />
+    <Content Include="fonts\glyphicons-halflings-regular.eot" />
+    <Content Include="Content\bootstrap.min.css.map" />
+    <Content Include="Content\bootstrap.css.map" />
+    <Content Include="Content\bootstrap-theme.min.css.map" />
+    <Content Include="Content\bootstrap-theme.css.map" />
+    <Content Include="fonts\FontAwesome.otf" />
+    <Content Include="fonts\fontawesome-webfont.woff2" />
+    <Content Include="fonts\fontawesome-webfont.woff" />
+    <Content Include="fonts\fontawesome-webfont.ttf" />
+    <Content Include="fonts\fontawesome-webfont.eot" />
     <None Include="Properties\PublishProfiles\openhost.pubxml" />
+    <None Include="Scripts\jquery-1.12.4.intellisense.js" />
+    <Content Include="Scripts\jquery-1.12.4.js" />
+    <Content Include="Scripts\jquery-1.12.4.min.map" />
     <None Include="Scripts\jquery-2.1.0.intellisense.js" />
     <Content Include="Scripts\jquery-1.12.4.min.js" />
     <Content Include="Scripts\jquery-2.1.0.js" />
     <Content Include="Scripts\jquery-2.1.0.min.js" />
     <Content Include="Scripts\jquery-ui-1.10.4.js" />
     <Content Include="Scripts\jquery-ui-1.10.4.min.js" />
+    <Content Include="Scripts\jquery.cookie-1.4.1.min.js" />
+    <Content Include="Scripts\jquery.cookie.js" />
     <Content Include="Scripts\json2.min.js" />
     <Content Include="Scripts\manageUser.js" />
     <Content Include="Scripts\modernizr-2.7.2.js" />
@@ -432,59 +461,6 @@
     <Content Include="Scripts\tinymce\skins\lightgray\img\trans.gif" />
     <Content Include="Scripts\tinymce\skins\lightgray\skin.ie7.min.css" />
     <Content Include="Scripts\tinymce\skins\lightgray\skin.min.css" />
-    <Content Include="Scripts\tinymce\themes\inlite\config\bolt\atomic.js" />
-    <Content Include="Scripts\tinymce\themes\inlite\config\bolt\bootstrap-atomic.js" />
-    <Content Include="Scripts\tinymce\themes\inlite\config\bolt\bootstrap-browser.js" />
-    <Content Include="Scripts\tinymce\themes\inlite\config\bolt\bootstrap-demo.js" />
-    <Content Include="Scripts\tinymce\themes\inlite\config\bolt\bootstrap-prod.js" />
-    <Content Include="Scripts\tinymce\themes\inlite\config\bolt\browser.js" />
-    <Content Include="Scripts\tinymce\themes\inlite\config\bolt\demo.js" />
-    <Content Include="Scripts\tinymce\themes\inlite\config\bolt\prod.js" />
-    <Content Include="Scripts\tinymce\themes\inlite\config\dent\depend.js" />
-    <Content Include="Scripts\tinymce\themes\inlite\scratch\compile\bootstrap.js" />
-    <Content Include="Scripts\tinymce\themes\inlite\scratch\compile\theme.js" />
-    <Content Include="Scripts\tinymce\themes\inlite\scratch\inline\theme.js" />
-    <Content Include="Scripts\tinymce\themes\inlite\scratch\inline\theme.raw.js" />
-    <Content Include="Scripts\tinymce\themes\inlite\src\demo\css\demo.css" />
-    <Content Include="Scripts\tinymce\themes\inlite\src\demo\html\demo.html" />
-    <Content Include="Scripts\tinymce\themes\inlite\src\demo\js\tinymce\inlite\Demo.js" />
-    <Content Include="Scripts\tinymce\themes\inlite\src\main\js\tinymce\inlite\alien\Arr.js" />
-    <Content Include="Scripts\tinymce\themes\inlite\src\main\js\tinymce\inlite\alien\Bookmark.js" />
-    <Content Include="Scripts\tinymce\themes\inlite\src\main\js\tinymce\inlite\alien\Unlink.js" />
-    <Content Include="Scripts\tinymce\themes\inlite\src\main\js\tinymce\inlite\alien\Uuid.js" />
-    <Content Include="Scripts\tinymce\themes\inlite\src\main\js\tinymce\inlite\core\Actions.js" />
-    <Content Include="Scripts\tinymce\themes\inlite\src\main\js\tinymce\inlite\core\Convert.js" />
-    <Content Include="Scripts\tinymce\themes\inlite\src\main\js\tinymce\inlite\core\ElementMatcher.js" />
-    <Content Include="Scripts\tinymce\themes\inlite\src\main\js\tinymce\inlite\core\Layout.js" />
-    <Content Include="Scripts\tinymce\themes\inlite\src\main\js\tinymce\inlite\core\Matcher.js" />
-    <Content Include="Scripts\tinymce\themes\inlite\src\main\js\tinymce\inlite\core\Measure.js" />
-    <Content Include="Scripts\tinymce\themes\inlite\src\main\js\tinymce\inlite\core\PredicateId.js" />
-    <Content Include="Scripts\tinymce\themes\inlite\src\main\js\tinymce\inlite\core\SelectionMatcher.js" />
-    <Content Include="Scripts\tinymce\themes\inlite\src\main\js\tinymce\inlite\core\SkinLoader.js" />
-    <Content Include="Scripts\tinymce\themes\inlite\src\main\js\tinymce\inlite\core\UrlType.js" />
-    <Content Include="Scripts\tinymce\themes\inlite\src\main\js\tinymce\inlite\file\Conversions.js" />
-    <Content Include="Scripts\tinymce\themes\inlite\src\main\js\tinymce\inlite\file\Picker.js" />
-    <Content Include="Scripts\tinymce\themes\inlite\src\main\js\tinymce\inlite\Theme.js" />
-    <Content Include="Scripts\tinymce\themes\inlite\src\main\js\tinymce\inlite\ui\Buttons.js" />
-    <Content Include="Scripts\tinymce\themes\inlite\src\main\js\tinymce\inlite\ui\Forms.js" />
-    <Content Include="Scripts\tinymce\themes\inlite\src\main\js\tinymce\inlite\ui\Panel.js" />
-    <Content Include="Scripts\tinymce\themes\inlite\src\main\js\tinymce\inlite\ui\Toolbar.js" />
-    <Content Include="Scripts\tinymce\themes\inlite\src\test\js\atomic\alien\ArrTest.js" />
-    <Content Include="Scripts\tinymce\themes\inlite\src\test\js\atomic\alien\UuidTest.js" />
-    <Content Include="Scripts\tinymce\themes\inlite\src\test\js\atomic\core\ConvertTest.js" />
-    <Content Include="Scripts\tinymce\themes\inlite\src\test\js\atomic\core\MatcherTest.js" />
-    <Content Include="Scripts\tinymce\themes\inlite\src\test\js\atomic\core\UrlTypeTest.js" />
-    <Content Include="Scripts\tinymce\themes\inlite\src\test\js\browser\alien\BookmarkTest.js" />
-    <Content Include="Scripts\tinymce\themes\inlite\src\test\js\browser\alien\UnlinkTest.js" />
-    <Content Include="Scripts\tinymce\themes\inlite\src\test\js\browser\core\ActionsTest.js" />
-    <Content Include="Scripts\tinymce\themes\inlite\src\test\js\browser\core\ElementMatcher.js" />
-    <Content Include="Scripts\tinymce\themes\inlite\src\test\js\browser\core\LayoutTest.js" />
-    <Content Include="Scripts\tinymce\themes\inlite\src\test\js\browser\core\MeasureTest.js" />
-    <Content Include="Scripts\tinymce\themes\inlite\src\test\js\browser\core\PredicateIdTest.js" />
-    <Content Include="Scripts\tinymce\themes\inlite\src\test\js\browser\core\SelectionMatcherTest.js" />
-    <Content Include="Scripts\tinymce\themes\inlite\src\test\js\browser\file\ConversionsTest.js" />
-    <Content Include="Scripts\tinymce\themes\inlite\src\test\js\browser\file\SelectionMatcher.js" />
-    <Content Include="Scripts\tinymce\themes\inlite\src\test\js\browser\ThemeTest.js" />
     <Content Include="Scripts\tinymce\themes\inlite\theme.js" />
     <Content Include="Scripts\tinymce\themes\inlite\theme.min.js" />
     <Content Include="Scripts\tinymce\themes\modern\theme.js" />
@@ -514,6 +490,7 @@
     <Content Include="Content\JQueryUI\Thumbs.db" />
     <Content Include="Scripts\jquery-1.11.0.min.map" />
     <Content Include="Scripts\jquery-2.1.0.min.map" />
+    <Content Include="Scripts\jquery-2.2.4.min.js" />
     <Content Include="Scripts\tinymce\skins\lightgray\fonts\tinymce.woff" />
     <Content Include="Scripts\tinymce\skins\lightgray\fonts\tinymce.ttf" />
     <Content Include="Scripts\tinymce\skins\lightgray\fonts\tinymce.json" />
@@ -524,7 +501,6 @@
     <Content Include="Scripts\tinymce\skins\lightgray\fonts\tinymce-small.eot" />
     <Content Include="Scripts\tinymce\skins\lightgray\fonts\readme.md" />
     <Content Include="Scripts\tinymce\langs\readme.md" />
-    <Content Include="Scripts\jquery-2.2.4.min.js" />
     <None Include="Scripts\_references.js" />
     <Content Include="WardAdmin\web.config" />
     <Content Include="Site.Master" />
@@ -573,6 +549,7 @@
     <Compile Include="Code\DataAccessLayer\Entities\BolusDrugs\BolusSortOrdering.cs" />
     <Compile Include="Code\DataAccessLayer\Entities\BolusDrugs\DefibJoule.cs" />
     <Compile Include="Code\DataAccessLayer\Entities\BolusDrugs\DefibModel.cs" />
+    <Compile Include="Code\DataAccessLayer\Entities\IDateModified.cs" />
     <Compile Include="Code\DataAccessLayer\Entities\Infusions\DilutionMethod.cs" />
     <Compile Include="Code\DataAccessLayer\Entities\Infusions\DoseCat.cs" />
     <Compile Include="Code\DataAccessLayer\Entities\Infusions\DrugAmpuleConcentration.cs" />
@@ -611,9 +588,10 @@
     <Compile Include="Code\DataAccessLayer\Repositories\VariableInfusionsProcedure.cs" />
     <Compile Include="Code\DataAccessLayer\Repositories\WardRepository.cs" />
     <Compile Include="Code\Utilities\ExtensionMethods.cs" />
+    <Compile Include="Code\Utilities\Fluid.cs" />
     <Compile Include="Code\Utilities\FormUtilities.cs" />
     <Compile Include="Code\Utilities\HtmlSanitiser.cs" />
-    <Compile Include="Code\Utilities\PatientCalculations.cs" />
+    <Compile Include="Code\Utilities\ETT.cs" />
     <Compile Include="Code\Utilities\PdfChartGeneration.cs" />
     <Compile Include="Code\Utilities\CssStyleProperty.cs" />
     <Compile Include="Code\Utilities\TrueFalseTable.cs" />

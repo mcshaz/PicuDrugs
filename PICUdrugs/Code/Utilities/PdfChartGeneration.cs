@@ -76,7 +76,7 @@ namespace PICUdrugs.Code.Utilities
             using (var InfusionData = new PatientSpecificDrugData(patient))
             {
                 Ward dpt = InfusionData.GetWard();
-                var section = CreateHeadFoot(doc, patient, url, dpt.IsNicu);
+                var section = CreateHeadFoot(doc, patient, url, dpt?.IsNicu ?? false);
                 if (chartType == SelectedChart.bolusOnly || chartType == SelectedChart.bolusPlusInfusion)
                 {
                     var bolusList = InfusionData.EmergencyBoluses(patient.Age);

@@ -14,7 +14,7 @@ namespace PICUdrugs.DAL
     using System.ComponentModel.DataAnnotations;
     using System.ComponentModel.DataAnnotations.Schema;
     [Table("InfusionSortOrdering")]
-    public partial class InfusionSortOrdering
+    public partial class InfusionSortOrdering : IDateModified
     {
         [Key]
         public int InfusionSortOrderId { get; set; }
@@ -23,7 +23,8 @@ namespace PICUdrugs.DAL
         [ForeignKey("InfusionDrug")]
         public int InfusionDrugId { get; set; }
         public int SortOrder { get; set; }
-    
+        public DateTime DateModified { get; set; }
+
         public virtual InfusionDrug InfusionDrug { get; set; }
         public virtual Ward Ward { get; set; }
     }

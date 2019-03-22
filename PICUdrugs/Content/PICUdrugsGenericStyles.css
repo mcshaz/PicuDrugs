@@ -1,4 +1,5 @@
-﻿.validationError, .DDValidator
+﻿@media (min-width: 981px) { body { padding-top: 60px; } } 
+.validationError, .DDValidator
 {
     color:Red;
 }
@@ -101,4 +102,8 @@ fieldset {
 }
 #resultSet {
     min-width:25em;
+}
+
+#navbar > div{
+    clear: none!important;
 }

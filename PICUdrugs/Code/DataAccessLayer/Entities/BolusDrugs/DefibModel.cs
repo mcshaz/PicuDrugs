@@ -13,12 +13,13 @@ namespace PICUdrugs.DAL
     using System.Collections.Generic;
     using System.ComponentModel.DataAnnotations;
     
-    public partial class DefibModel
+    public partial class DefibModel : IDateModified
     {
         [Key]
         public int Id { get; set; }
         public string Name { get; set; }
-    
+        public DateTime DateModified { get; set; }
+
         public virtual ICollection<DefibJoule> DefibJoules { get; set; }
         public virtual ICollection<Ward> Wards { get; set; }
     }

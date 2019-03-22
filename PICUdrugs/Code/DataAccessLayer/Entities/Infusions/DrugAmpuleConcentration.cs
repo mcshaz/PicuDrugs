@@ -14,7 +14,7 @@ namespace PICUdrugs.DAL
     using System.ComponentModel.DataAnnotations;
     using System.ComponentModel.DataAnnotations.Schema;
     
-    public partial class DrugAmpuleConcentration
+    public partial class DrugAmpuleConcentration : IDateModified
     {
         [Key]
         public int AmpuleConcentrationId { get; set; }
@@ -22,7 +22,8 @@ namespace PICUdrugs.DAL
         public int InfusionDrugId { get; set; }
         public double Concentration { get; set; }
         public Nullable<double> Volume { get; set; }
-    
+        public DateTime DateModified { get; set; }
+
         public virtual InfusionDrug InfusionDrug { get; set; }
     }
 }

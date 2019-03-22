@@ -5,7 +5,7 @@ namespace PICUdrugs.DAL
     using System.ComponentModel.DataAnnotations;
     using System.ComponentModel.DataAnnotations.Schema;
     [Table("BolusSortOrdering")]
-    public class BolusSortOrdering
+    public class BolusSortOrdering : IDateModified
     {
         public const int maxBolusSubHeaderLength = 512;
         [Key]
@@ -19,6 +19,7 @@ namespace PICUdrugs.DAL
         public int SortOrder { get; set; }
         [StringLength(maxBolusSubHeaderLength)]
         public string SectionHeader { get; set; }
+        public DateTime DateModified { get; set; }
 
         public virtual FixedDrug FixedDrug { get; set; }
         public virtual BolusDrug BolusDrug { get; set; }

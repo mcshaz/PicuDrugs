@@ -66,8 +66,7 @@ namespace PICUdrugs.Utils
 
         public static double ToPrecision(this double d, int sigFigures)
         {
-            int unneededRoundingPosition;
-            return ToPrecision(d, sigFigures, out unneededRoundingPosition);
+            return ToPrecision(d, sigFigures, out int unneededRoundingPosition);
         }
         /// <summary>
         /// As per ToPrecison, but will round the next digit after The precision to 0.5 if it lies >0.25 & <0.75
@@ -77,8 +76,7 @@ namespace PICUdrugs.Utils
         /// <returns></returns>
         public static double ToPrecisionAndHalf(this double d, int sigFigures)
         {
-            int roundingPosition;
-            var newVal = ToPrecision(d, sigFigures, out roundingPosition);
+            var newVal = ToPrecision(d, sigFigures, out int roundingPosition);
             var accuracy = (d - newVal) * Math.Pow(10, roundingPosition);
             if (accuracy > 0.25) { newVal += 0.5 * Math.Pow(10, -roundingPosition); }
             else if (accuracy < -0.25) { newVal -= 0.5 * Math.Pow(10, -roundingPosition); }
@@ -129,8 +127,7 @@ namespace PICUdrugs.Utils
                 return currentInfo.NegativeInfinitySymbol;
             }
 
-            int roundingPosition = 0;
-            double roundedValue = ToPrecision(d, sigFigures, out roundingPosition);
+            double roundedValue = ToPrecision(d, sigFigures, out int roundingPosition);
 
             // If the above rounding evaluates to zero, just return zero without padding.
             // Todo:  Might want to compare with epsilon here

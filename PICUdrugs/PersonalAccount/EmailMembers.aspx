@@ -23,6 +23,10 @@
     </label>
     <input type="button" id ="emailSelected" value="Create Email" />
 </asp:Content>
-<asp:Content ID="MyScripts" ContentPlaceHolderId="masterScripts" runat="server">
-    <script src="<%# ResolveUrl("~/Scripts/emailGridUtilities.js")%>" type="text/javascript"></script>
+<asp:Content ID="MyScripts" ContentPlaceHolderId="MasterScripts" runat="server">
+    <asp:ScriptManagerProxy runat="server" EnableViewState="false">
+        <Scripts>
+            <asp:ScriptReference Path="~/Scripts/emailGridUtilities.js" />
+        </Scripts>
+    </asp:ScriptManagerProxy>
 </asp:Content>

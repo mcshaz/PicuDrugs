@@ -1,6 +1,6 @@
 ﻿<%@ PreviousPageType VirtualPath="~/EnterPtAnthropometry.aspx" %>
 <%@ Page Title="Anthropometry" Language="C#" MasterPageFile="~/Site.Master" AutoEventWireup="true" CodeBehind="DisplayAnthropometry.aspx.cs" Inherits="PICUdrugs.DisplayAnthropometry" %>
-<asp:Content ID="Content1" ContentPlaceHolderID="masterScripts" runat="server">
+<asp:Content ID="Content1" ContentPlaceHolderID="MasterScripts" runat="server">
 </asp:Content>
 <asp:Content ID="Content2" ContentPlaceHolderID="HeadContent" runat="server">
 </asp:Content>

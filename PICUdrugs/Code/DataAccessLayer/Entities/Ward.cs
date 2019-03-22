@@ -1,10 +1,11 @@
 namespace PICUdrugs.DAL
 {
+    using System;
     using System.Collections.Generic;
     using System.ComponentModel.DataAnnotations;
     using System.ComponentModel.DataAnnotations.Schema;
 
-    public partial class Ward
+    public partial class Ward : IDateModified
     {
         [Key]
         public int WardId { get; set; }
@@ -29,5 +30,6 @@ namespace PICUdrugs.DAL
         public virtual ICollection<BolusSortOrdering> BolusSortOrderings { get; set; }
         public virtual DefibModel DefibModel { get; set; }
         public virtual ICollection<InfusionSortOrdering> InfusionSortOrderings { get; set; }
+        public DateTime DateModified { get; set; }
     }
 }

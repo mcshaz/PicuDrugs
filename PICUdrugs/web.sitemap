@@ -1,6 +1,7 @@
 ﻿<?xml version="1.0" encoding="utf-8" ?>
 <siteMap xmlns="http://schemas.microsoft.com/AspNet/SiteMap-File-1.0" >
   <siteMapNode url="//www.adhb.govt.nz/picu/Default.htm" title="PICU Homepage" description="resources for families, health care professionals and staff" roles="*">
+    <siteMapNode url="//www.adhb.govt.nz/picu/Contacts.htm" title="Contact Us" description="contact Starship PICU" roles="*"/>
     <siteMapNode url="//www.adhb.govt.nz/picu/GuidelinesAndProtocols.htm" title="Clinical Resources" description="recomended best practice guidelines and calculators" roles="*"/>
     <siteMapNode url="~/EnterPtData.aspx" title="Drug Calculator" description="enter patient data to automatically generate calculated drug worksheets" />
     <siteMapNode url="~/EnterPtAnthropometry.aspx" title="Anthropometry" description="enter patient age, weight and length to calculate centiles and BSA" />

@@ -5,19 +5,20 @@ namespace PICUdrugs.DAL
     using System.ComponentModel.DataAnnotations;
     using System.ComponentModel.DataAnnotations.Schema;
     
-    public class FixedDrug
+    public class FixedDrug : IDateModified
     {
         [Key]
         public int FixedDrugId { get; set; }
         [StringLength(256, MinimumLength = 3, ErrorMessage = "Drug name must be between 3 and 256 characters long")]
         [Required(ErrorMessage = "Drug name must be provided")]
         public string DrugName { get; set; }
+        public DateTime DateModified { get; set; }
 
         public virtual ICollection<BolusSortOrdering> BolusSortOrderings { get; set; }
         public virtual ICollection<FixedDose> FixedDoses { get; set; }
     }
 
-    public class FixedDose
+    public class FixedDose : IDateModified
     {
         [Key]
         public int FixedDoseId { get; set; }
@@ -31,5 +32,6 @@ namespace PICUdrugs.DAL
         public int FixedDrugId { get; set; }
         [ForeignKey("FixedDrugId")]
         public virtual FixedDrug Drug { get; set; }
+        public DateTime DateModified { get; set; }
     }
 }

@@ -4,7 +4,7 @@ namespace PICUdrugs.DAL
     using System.Collections.Generic;
     using System.ComponentModel.DataAnnotations;
     using System.ComponentModel.DataAnnotations.Schema;
-    public class BolusDrug
+    public class BolusDrug : IDateModified
     {
         [Key]
         public int BolusDrugId { get; set; }
@@ -24,6 +24,7 @@ namespace PICUdrugs.DAL
         public double Min { get; set; }
         [ForeignKey("SpecificWard")]
         public int? SpecificWardId { get; set; }
+        public DateTime DateModified { get; set; }
 
         public virtual Ward SpecificWard { get; set; }
         public virtual ICollection<BolusDose> BolusDoses { get; set; }

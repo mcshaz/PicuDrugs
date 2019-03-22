@@ -13,13 +13,14 @@ namespace PICUdrugs.DAL
     using System.Collections.Generic;
     using System.ComponentModel.DataAnnotations;
     
-    public partial class DoseCat
+    public partial class DoseCat : IDateModified
     {
         [Key]
         public int DoseCatId { get; set; }
         public string Category { get; set; }
         public byte SortOrder { get; set; }
-    
+        public DateTime DateModified { get; set; }
+
         public virtual ICollection<VariableTimeConcentration> VariableTimeConcentrations { get; set; }
     }
 }

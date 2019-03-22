@@ -13,14 +13,15 @@ namespace PICUdrugs.DAL
     using System.Collections.Generic;
     using System.ComponentModel.DataAnnotations;
     
-    public partial class DrugReferenceSource
+    public partial class DrugReferenceSource : IDateModified
     {
         [Key]
         public int DrugReferenceId { get; set; }
         public string ReferenceDescription { get; set; }
         public string Abbrev { get; set; }
         public string Hyperlink { get; set; }
-    
+        public DateTime DateModified { get; set; }
+
         public virtual ICollection<InfusionDrug> InfusionDrugs { get; set; }
     }
 }

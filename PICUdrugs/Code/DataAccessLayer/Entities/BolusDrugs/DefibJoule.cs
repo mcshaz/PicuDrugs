@@ -14,14 +14,15 @@ namespace PICUdrugs.DAL
     using System.ComponentModel.DataAnnotations;
     using System.ComponentModel.DataAnnotations.Schema;
     
-    public partial class DefibJoule
+    public partial class DefibJoule : IDateModified
     {
         [Key]
         public int Id { get; set; }
         [ForeignKey("DefibModel")]
         public int DefibId { get; set; }
         public int Joules { get; set; }
-    
+        public DateTime DateModified { get; set; }
+
         public virtual DefibModel DefibModel { get; set; }
     }
 }

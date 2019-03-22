@@ -102,7 +102,11 @@
     </fieldset>
     <p>*Height is required if using calculator to assist in estimating appropriate weight or lean body mass to use in drug calculations for obese patients.</p>
 </asp:Content>
-<asp:Content ID="MyScripts" ContentPlaceHolderId="masterScripts" runat="server">
-    <script src="<%# ResolveUrl("~/Scripts/DobAgePageManagement-0.2.js")%>" type="text/javascript"></script>
+<asp:Content ID="MyScripts" ContentPlaceHolderId="MasterScripts" runat="server">
+<asp:ScriptManagerProxy runat="server" EnableViewState="false">
+        <Scripts>
+            <asp:ScriptReference Path="~/Scripts/DobAgePageManagement-0.2.js" />
+        </Scripts>
+    </asp:ScriptManagerProxy>
     <script src="<%= ResolveUrl("Scripts/EnterAnthropometry.js")%>" type="text/javascript"></script>
 </asp:Content>

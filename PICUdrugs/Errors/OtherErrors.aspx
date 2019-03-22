@@ -1,5 +1,5 @@
 ﻿<%@ Page Title="" Language="C#" MasterPageFile="~/Site.Master" AutoEventWireup="true" CodeBehind="OtherErrors.aspx.cs" Inherits="PICUdrugs.errors.OtherErrors" %>
-<asp:Content ID="Content1" ContentPlaceHolderId="masterScripts" runat="server">
+<asp:Content ID="Content1" ContentPlaceHolderId="MasterScripts" runat="server">
 </asp:Content>
 <asp:Content ID="Content2" ContentPlaceHolderId="HeadContent" runat="server">
 </asp:Content>

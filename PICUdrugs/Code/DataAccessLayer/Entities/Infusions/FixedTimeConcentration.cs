@@ -14,7 +14,7 @@ namespace PICUdrugs.DAL
     using System.ComponentModel.DataAnnotations;
     using System.ComponentModel.DataAnnotations.Schema;
     
-    public partial class FixedTimeConcentration
+    public partial class FixedTimeConcentration : IDateModified
     {
         [Key]
         public int InfusionConcentrationId { get; set; }
@@ -24,7 +24,8 @@ namespace PICUdrugs.DAL
         public Nullable<int> Volume { get; set; }
         public int StopMinutes { get; set; }
         public double Rate { get; set; }
-    
+        public DateTime DateModified { get; set; }
+
         public virtual FixedTimeDilution FixedTimeDilution { get; set; }
     }
 }

@@ -57,6 +57,10 @@
         </fieldset>
     </div>
 </asp:Content>
-<asp:Content ID="MyScripts" ContentPlaceHolderId="masterScripts" runat="server">
-    <script src="<%# ResolveUrl("~/Scripts/manageUser.js")%>" type="text/javascript"></script>
+<asp:Content ID="MyScripts" ContentPlaceHolderId="MasterScripts" runat="server">
+    <asp:ScriptManagerProxy runat="server" EnableViewState="false">
+        <Scripts>
+            <asp:ScriptReference Path="~/Scripts/manageUser.js" />
+        </Scripts>
+    </asp:ScriptManagerProxy>
 </asp:Content>

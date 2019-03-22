@@ -30,6 +30,7 @@ namespace PICUdrugs.DAL
         public int AgeMaxMonths { get; set; }
         public bool IsPerMin { get; set; }
         public string ReferencePage { get; set; }
+        public DateTime DateModified { get; set; }
         [NotMapped]
         public string InfusionUnits { get; set; }
     

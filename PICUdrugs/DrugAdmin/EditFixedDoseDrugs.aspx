@@ -178,6 +178,9 @@
         </LayoutTemplate>
     </asp:ListView>
 </asp:Content>
-<asp:Content ID="MyScripts" ContentPlaceHolderId="masterScripts" runat="server">
-    <script src="<%# ResolveUrl("~/Scripts/editBolus.js")%>" type="text/javascript" ></script>
-</asp:Content>
+<asp:Content ID="MyScripts" ContentPlaceHolderId="MasterScripts" runat="server">
+<asp:ScriptManagerProxy runat="server" EnableViewState="false">
+        <Scripts>
+            <asp:ScriptReference Path="~/Scripts/editBolus.js" />
+        </Scripts>
+    </asp:ScriptManagerProxy></asp:Content>
