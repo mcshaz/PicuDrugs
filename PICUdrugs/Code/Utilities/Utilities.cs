@@ -351,8 +351,7 @@ namespace PICUdrugs.Utils
         }
         static int? ToNullableInt(string val)
         {
-            int result;
-            if (int.TryParse(val, out result))
+            if (int.TryParse(val, out int result))
             {
                 return result;
             }

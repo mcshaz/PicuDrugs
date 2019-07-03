@@ -9,6 +9,7 @@
 
 namespace PICUdrugs.DAL
 {
+    using System;
     using System.Collections.Generic;
     using System.ComponentModel.DataAnnotations;
     using System.ComponentModel.DataAnnotations.Schema;
@@ -36,13 +37,14 @@ namespace PICUdrugs.DAL
         public DateTime DateModified { get; set; }
 
         public virtual Ward SpecificWard { get; set; }
-        public virtual ICollection<DrugAmpuleConcentration> DrugAmpuleConcentrations { get; set; }
         public virtual DrugReferenceSource DrugReferenceSource { get; set; }
         public virtual DrugRoute DrugRoute { get; set; }
         public virtual ICollection<FixedTimeDilution> FixedTimeDilutions { get; set; }
         public virtual InfusionDiluent InfusionDiluent { get; set; }
         public virtual SiPrefix SiPrefix { get; set; }
         public virtual SiUnit SiUnit { get; set; }
+
+        public virtual ICollection<DrugAmpuleConcentration> DrugAmpuleConcentrations { get; set; }
         public virtual ICollection<InfusionSortOrdering> InfusionSortOrderings { get; set; }
         public virtual ICollection<VariableTimeDilution> VariableTimeDilutions { get; set; }
     }

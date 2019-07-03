@@ -81,7 +81,7 @@ namespace PICUdrugs.Utils
                                       select conc).ToList();
                 return concentrations.Select(c => new AmpuleDetail() 
                         {   Concentration=c.Concentration, 
-                            Volume=(c.Volume.HasValue)?c.Volume.Value:0,
+                            Volume=c.Volume ?? 0,
                         }).ToArray();
             }
         }
@@ -161,8 +161,7 @@ namespace PICUdrugs.DAL
                     }
                 }
             }
-            bool pleuralise;
-            DrawingUpUnits = Formulas.UnitString(ampPrefix, unitMeasure, out pleuralise);
+            DrawingUpUnits = Formulas.UnitString(ampPrefix, unitMeasure, out bool pleuralise);
             if (pleuralise && Math.Round(DrawingUpDose, closeTo1) != 1) { DrawingUpUnits += "s"; }
             _infusionUnits = Formulas.UnitString(infusionPrefix, unitMeasure, out _pleuraliseInfusionUnits);
             _perKg = (isPerKg ? "/kg" : "");
@@ -185,8 +184,8 @@ namespace PICUdrugs.DAL
         public double FinalConcentration { get; private set; }
         public string FinalConcentrationUnits { get; private set; }
         protected readonly string _perKg;
-        private string _infusionUnits;
-        private bool _pleuraliseInfusionUnits;
+        private readonly string _infusionUnits;
+        private readonly bool _pleuraliseInfusionUnits;
         protected string GetRateUnits(double value)
         {
             if (_pleuraliseInfusionUnits && Math.Round(value, closeTo1) != 1)
@@ -200,15 +199,15 @@ namespace PICUdrugs.DAL
         }
         public double AmpuleConcentration { get; set; }
 
-        public double? diluentVolume
+        public double? DiluentVolume
         {
             get
             {
                 if (AmpuleConcentration == 0) return null;
-                return DilutionVolume - ampuleVolume.Value;
+                return DilutionVolume - AmpuleVolume.Value;
             }
         }
-        public double? ampuleVolume
+        public double? AmpuleVolume
         {
             get
             {
@@ -224,18 +223,18 @@ namespace PICUdrugs.DAL
             string outputDrug = drugName == "" ? " " : " " + drugName + " ";
             if (DiluentFluid == "")
                 return string.Format("dilute {0}mL of {1} ({2}{3}/mL) in {4}mL (total Volume of solution {5})",
-                                        ampuleVolume,
+                                        AmpuleVolume,
                                         outputDrug,
                                         AmpuleConcentration,
                                         DrawingUpUnits,
-                                        diluentVolume,
+                                        DiluentVolume,
                                         DilutionVolume);
             return string.Format("dilute {0}mL of {1} ({2}{3}/mL) in {4}mL of {5} (total Volume of solution {6})",
-                    ampuleVolume,
+                    AmpuleVolume,
                     outputDrug,
                     AmpuleConcentration,
                     DrawingUpUnits,
-                    diluentVolume,
+                    DiluentVolume,
                     DiluentFluid,
                     DilutionVolume);
         }
@@ -348,9 +347,11 @@ namespace PICUdrugs.DAL
             }
             if (Conc_ml.HasValue)
             {
-                BolusVolume = new NumericRange();
-                BolusVolume.LowerBound = BolusDose.LowerBound / Conc_ml.Value;
-                BolusVolume.UpperBound = BolusDose.UpperBound / Conc_ml.Value;
+                BolusVolume = new NumericRange
+                {
+                    LowerBound = BolusDose.LowerBound / Conc_ml.Value,
+                    UpperBound = BolusDose.UpperBound / Conc_ml.Value
+                };
             }
         }
     }
@@ -388,9 +389,9 @@ namespace PICUdrugs.DAL
                 doseRate)
         {
             if (doseRate > FieldConst.maxRate || doseRate < FieldConst.minRate) throw new Exception(FieldConst.rateErr);
-            _doseRate = doseRate;
-            _flowRate = doseRate/FinalConcentration;
-            _unitsPerMin = (_doseRate*Math.Pow(10,infusionPrefix))/ (isPerMin?1:60);
+            DoseRate = doseRate;
+            FlowRate = doseRate/FinalConcentration;
+            _unitsPerMin = (DoseRate*Math.Pow(10,infusionPrefix))/ (isPerMin?1:60);
             _unitMeasure = unitMeasure + (isPerKg?"/kg":"");
 
             if (minsDuration > FieldConst.maxStop || minsDuration < FieldConst.minStop) throw new Exception(FieldConst.stopErr);
@@ -407,27 +408,16 @@ namespace PICUdrugs.DAL
             {
                 siPrefix = 0;  //not usually talking kilograms or kilounits
             }
-            _doseTotal = dose;
-            bool pleuraliseTotalUits;
-            _doseTotalUnits = Formulas.UnitString(siPrefix, unitMeasure, out pleuraliseTotalUits);
-            _doseTotalUnits += (pleuraliseTotalUits?"s":string.Empty) + _perKg;
+            DoseTotal = dose;
+            DoseTotalUnits = Formulas.UnitString(siPrefix, unitMeasure, out bool pleuraliseTotalUits);
+            DoseTotalUnits += (pleuraliseTotalUits?"s":string.Empty) + _perKg;
 
         }
-        private double _unitsPerMin;
-        private string _unitMeasure;
-        private double _doseTotal;
-        public double DoseTotal { get { return _doseTotal; } }
-        private string _doseTotalUnits;
-        public string DoseTotalUnits
-        {
-            get
-            {
-                return _doseTotalUnits;
-            }
-        }
-
-        private double _flowRate;
-        public double FlowRate { get { return _flowRate; } }
+        private readonly double _unitsPerMin;
+        private readonly string _unitMeasure;
+        public double DoseTotal { get; }
+        public string DoseTotalUnits { get; }
+        public double FlowRate { get; }
         public int MinsDuration { get; private set; }
         public string DurationStr
         {
@@ -458,10 +448,6 @@ namespace PICUdrugs.DAL
                 _startTime = value;
             }
         }
-        private double _doseRate;
-        public double DoseRate
-        {
-            get { return _doseRate; }
-        }
+        public double DoseRate { get; }
     }
 }

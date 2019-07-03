@@ -58,7 +58,7 @@ namespace PICUdrugs.DAL
         }
         public IEnumerable<StandardInfusion> StandardInfusions()
         {
-            var rowData = new pVariableTimeInfusions(_db).GetRowData(_ptDetail.WardId, _ptDetail.WorkingWeight, _ptDetail.Age.TotalMonthsEstimate);
+            var rowData = new PVariableTimeInfusions(_db).GetRowData(_ptDetail.WardId, _ptDetail.WorkingWeight, _ptDetail.Age.TotalMonthsEstimate);
             return rowData
                 .Select(dil => new StandardInfusion(
                     weight: _ptDetail.WorkingWeight,

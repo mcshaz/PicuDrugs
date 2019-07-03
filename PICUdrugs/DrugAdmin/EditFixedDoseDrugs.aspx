@@ -81,8 +81,8 @@
                         </SelectParameters>
                 </asp:ObjectDataSource>
                 <asp:ListView ID="FixedDoseLV" runat="server" DataSourceID="FixedDoseObjDataSource" ItemPlaceholderId="dosePlaceholder" ViewStateMode="Disabled" DataKeyNames="FixedDoseId"
-                OnInit="FixedDoseLV_init" OnItemDataBound="FixedDoseLV_ItemBound" OnDataBound="FixedDose_allDataBound" InsertItemPosition="None" OnItemInserted="FixedDoseLV_Inserted"
-                OnItemDeleted="FixedDoseLV_Deleted" >
+                        OnInit="FixedDoseLV_init" OnItemDataBound="FixedDoseLV_ItemBound" OnDataBound="FixedDose_allDataBound" InsertItemPosition="None" OnItemInserted="FixedDoseLV_Inserted"
+                        OnItemDeleted="FixedDoseLV_Deleted" >
                     <ItemTemplate>
                         <asp:PlaceHolder runat="server" ID="rowStart">
             <tr>

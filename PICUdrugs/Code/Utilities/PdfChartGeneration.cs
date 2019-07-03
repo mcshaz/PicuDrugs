@@ -58,8 +58,10 @@ namespace PICUdrugs.Code.Utilities
         public static PdfDocument CreatePdf(PatientDrugChartDetails patient, SelectedChart chartType, UserSelectedInfusion.SelectedInfusion drug=null, string url = hostUrl )
         {
             //return testHyperlinks();
-            PdfDocumentRenderer renderer = new PdfDocumentRenderer(true, PdfSharp.Pdf.PdfFontEmbedding.Always);
-            renderer.Document = CreateDocument(patient, chartType, drug, url);
+            PdfDocumentRenderer renderer = new PdfDocumentRenderer(true, PdfFontEmbedding.Always)
+            {
+                Document = CreateDocument(patient, chartType, drug, url)
+            };
             renderer.RenderDocument();
             return renderer.PdfDocument;
         }
@@ -677,8 +679,8 @@ namespace PICUdrugs.Code.Utilities
                 para.Format.Font.Color = (alternateBknd) ? white : lightGrey;
 
                 row[2].AddParagraph(d.DrawingUpDose.ToPrecisionAndHalf(2).ToClarityString() + " " + d.DrawingUpUnits);
-                row[3].AddParagraph(d.ampuleVolume.Value.AsDrawingUpVolume() + " mL");
-                row[4].AddParagraph(d.diluentVolume.Value.AsDrawingUpVolume() + " mL");
+                row[3].AddParagraph(d.AmpuleVolume.Value.AsDrawingUpVolume() + " mL");
+                row[4].AddParagraph(d.DiluentVolume.Value.AsDrawingUpVolume() + " mL");
                 row[5].AddParagraph(d.DilutionVolume.ToString() + " mL");
                 row[6].AddParagraph(d.FlowRate.ToString("#.#") + " mL/hr");
             }
@@ -983,7 +985,7 @@ namespace PICUdrugs.Code.Utilities
         /// <summary>
         /// Creates a RTF file from the current document.
         /// </summary>
-        public static PdfDocument testHyperlinks()
+        public static PdfDocument TestHyperlinks()
         {
             PdfDocumentRenderer renderer = new PdfDocumentRenderer(true, PdfSharp.Pdf.PdfFontEmbedding.Always);
             var doc = renderer.Document = new Document() ;

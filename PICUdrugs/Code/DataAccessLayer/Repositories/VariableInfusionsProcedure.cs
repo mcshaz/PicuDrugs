@@ -27,13 +27,13 @@ namespace PICUdrugs.DAL
         public string HrefBase { get; set; }
         public string HrefLink { get; set; }
     }
-    public class pVariableTimeInfusions : IDisposable
+    public class PVariableTimeInfusions : IDisposable
     {
         private DataContext _db;
-        public pVariableTimeInfusions():this(new DataContext())
+        public PVariableTimeInfusions():this(new DataContext())
         {
         }
-        public pVariableTimeInfusions(DataContext db)
+        public PVariableTimeInfusions(DataContext db)
         {
             _db = db;
         }
