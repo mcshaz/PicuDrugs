@@ -2,12 +2,14 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Web;
+using DBToJSON;
+using DBToJSON.SqlEntities.Infusions;
 using PICUdrugs.Utils;
 namespace PICUdrugs.DAL
 {
     public class DrugAmpuleRepository : IDisposable
     {
-        private DataContext _db = new DataContext();
+        private DrugSqlContext _db = new DrugSqlContext();
         public IEnumerable<DrugAmpuleConcentration> GetAmpules(int drugId)
         {
             return (from d in _db.DrugAmpuleConcentrations  //.Include(".DoseCat")

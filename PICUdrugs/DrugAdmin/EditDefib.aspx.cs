@@ -1,16 +1,12 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Web;
 using System.Web.UI;
 using System.Web.UI.WebControls;
+using DBToJSON.SqlEntities.BolusDrugs;
 using PICUdrugs.BLL;
-using PICUdrugs.DAL;
-using PICUdrugs.Utils;
 
 namespace PICUdrugs.drugAdmin
 {
-    public partial class editDefib : System.Web.UI.Page
+    public partial class EditDefib : System.Web.UI.Page
     {
         protected void Page_Init(object sender, EventArgs e)
         {
@@ -26,8 +22,10 @@ namespace PICUdrugs.drugAdmin
             Exception outerExcept = e.Exception;
             if (outerExcept != null)
             {
-                var customVal = new CustomValidator();
-                customVal.IsValid = false;
+                var customVal = new CustomValidator
+                {
+                    IsValid = false
+                };
                 if (outerExcept is BLexception)
                 {
                     customVal.ErrorMessage = "Cannot update as the following rule would be broken: " + outerExcept.InnerException.Message;
@@ -42,8 +40,7 @@ namespace PICUdrugs.drugAdmin
             else if (((ObjectDataSourceView)sender).DataObjectTypeName == selectedDefib.DataObjectTypeName)
             {
                 DefibDropDownList.DataBind();
-                var model = e.ReturnValue as DefibModel;
-                if (model != null) { DefibDropDownList.SelectedValue = model.Id.ToString(); }
+                if (e.ReturnValue is DefibModel model) { DefibDropDownList.SelectedValue = model.Id.ToString(); }
             }
         }
         protected void ModelDetailViewPreRender(object sender, EventArgs e)

@@ -5,6 +5,10 @@ using PICUdrugs.Utils;
 using System.Text.RegularExpressions;
 using System.ComponentModel.DataAnnotations;
 using PICUdrugs.BLL;
+using DBToJSON.SqlEntities;
+using DBToJSON;
+using DBToJSON.SqlEntities.Infusions;
+
 namespace PICUdrugs.DAL
 {
     public enum SelectedChart {bolusOnly,bolusPlusInfusion,singleInfusion,noneSelected}
@@ -41,13 +45,13 @@ namespace PICUdrugs.DAL
     public class PatientSpecificDrugData : IDisposable
     {
         private readonly PatientDrugChartDetails _ptDetail;
-        private readonly DataContext _db;
-        public PatientSpecificDrugData(DataContext picuDrugEntities, PatientDrugChartDetails patientDetails)
+        private readonly DrugSqlContext _db;
+        public PatientSpecificDrugData(DrugSqlContext picuDrugEntities, PatientDrugChartDetails patientDetails)
         {
             _ptDetail = patientDetails;
             _db = picuDrugEntities;
         }
-        public PatientSpecificDrugData(PatientDrugChartDetails patientDetails) :this(new DataContext(), patientDetails)
+        public PatientSpecificDrugData(PatientDrugChartDetails patientDetails) :this(new DrugSqlContext(), patientDetails)
         {
         }
         public Ward GetWard()
@@ -59,28 +63,33 @@ namespace PICUdrugs.DAL
         public IEnumerable<StandardInfusion> StandardInfusions()
         {
             var rowData = new PVariableTimeInfusions(_db).GetRowData(_ptDetail.WardId, _ptDetail.WorkingWeight, _ptDetail.Age.TotalMonthsEstimate);
+
             return rowData
-                .Select(dil => new StandardInfusion(
-                    weight: _ptDetail.WorkingWeight,
-                    Concentration: dil.Concentration,
-                    Volume: dil.Volume,
-                    InfusionPrefix: dil.DilutionPrefix,
-                    ampPrefix: dil.AmpulePrefix,
-                    unitMeasure: dil.Measure,
-                    IsPerKg: dil.IsPerKg,
-                    IsPerMin: dil.IsPerMin,
-                    IsVaryConcentration: dil.IsVaryConcentration,
-                    IsVaryVolume: dil.IsVaryVolume,
-                    neat: dil.IsNeat,
-                    minDoseRate: dil.RateMin,
-                    maxDoseRate: dil.RateMax)
-                    {
-                        DrugId = dil.InfusionDrugId,
-                        DrugName = dil.Fullname,
-                        SubHeader = Formulas.FirstNonEmptyString(dil.Category, dil.Abbrev),
-                        Note = dil.Note,
-                        Href = (dil.HrefBase == null || dil.HrefLink == null) ? null : (dil.HrefBase.ReferenceBase(true) + dil.HrefLink)
+                .Select(dil => {
+                    var method = DilutionLogic.GetMethod(dil.DilutionMethod);
+                    return new StandardInfusion(
+                        weight: _ptDetail.WorkingWeight,
+                        concentration: dil.Concentration,
+                        volume: dil.Volume,
+                        ampulePrefix: dil.AmpulePrefix,
+                        infusionPrefix: dil.InfusionPrefix,
+                        unit: dil.SiUnitId,
+                        isPerKg: method.IsPerKg,
+                        isPerMin: dil.IsPerMin,
+                        isVaryConcentration: method.IsVaryConcentration,
+                        isVaryVolume: method.IsVaryVolume,
+                        neat: method.IsNeat,
+                        minDoseRate: dil.RateMin,
+                        maxDoseRate: dil.RateMax)
+                        {
+                            DrugId = dil.InfusionDrugId,
+                            DrugName = dil.Fullname,
+                            SubHeader = Formulas.FirstNonEmptyString(dil.Category, dil.Abbrev),
+                            Note = dil.Note,
+                            Href = (dil.HrefBase == null || dil.HrefLink == null) ? null : (dil.HrefBase.ReferenceBase(true) + dil.HrefLink)
+                        };
                     });
+
         }
         public IEnumerable<BolusDrugListItem> EmergencyBoluses(ChildAge age=null)
         {
@@ -114,9 +123,7 @@ namespace PICUdrugs.DAL
         private FixedTimeDilution GetDilution(int drugId)
         {
             return (from d in _db.FixedTimeDilutions
-                        .Include("DilutionMethod")
                         .Include("InfusionDrug")
-                        .Include("InfusionDrug.SiUnit")
                         .Include("InfusionDrug.DrugReferenceSource")
                         .Include("InfusionDrug.InfusionDiluent")
                         .Include("InfusionDrug.DrugRoute")
@@ -138,20 +145,21 @@ namespace PICUdrugs.DAL
             var returnList = new List<FixedDurationInfusion>(concList.Count);
             int priorStopTime = 0;
             bool hasConc = ampConc != 0;
+            var dilutionMethod = DilutionLogic.GetMethod(dilution.DilutionMethodId);
             foreach (FixedTimeConcentration timedRow in concList)
             {
                 FixedDurationInfusion calculatedRow = new FixedDurationInfusion(
                     weight: _ptDetail.WorkingWeight,
                     concentration: timedRow.Concentration,
                     volume: timedRow.Volume,
-                    infusionPrefix: dilution.SiPrefixVal,
-                    ampPrefix: dilution.InfusionDrug.SiPrefixVal,
-                    unitMeasure: dilution.InfusionDrug.SiUnit.Measure,
-                    isPerKg: dilution.DilutionMethod.IsPerKg,
+                    infusionPrefix: dilution.SiPrefix,
+                    ampulePrefix: dilution.InfusionDrug.SiPrefix,
+                    unit: dilution.InfusionDrug.SiUnitId,
+                    isPerKg: dilutionMethod.IsPerKg,
                     isPerMin: dilution.IsPerMin,
-                    isVaryConcentration: dilution.DilutionMethod.IsVaryConcentration,
-                    isVaryVolume: dilution.DilutionMethod.IsVaryVolume,
-                    isNeat: dilution.DilutionMethod.IsNeat,
+                    isVaryConcentration: dilutionMethod.IsVaryConcentration,
+                    isVaryVolume: dilutionMethod.IsVaryVolume,
+                    isNeat: dilutionMethod.IsNeat,
                     doseRate: timedRow.Rate,
                     minsDuration: timedRow.StopMinutes - priorStopTime,
                     ampConcentration:ampConc);

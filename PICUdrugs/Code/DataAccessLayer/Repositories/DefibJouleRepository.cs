@@ -1,4 +1,6 @@
-﻿using System;
+﻿using DBToJSON;
+using DBToJSON.SqlEntities.BolusDrugs;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Web;
@@ -7,7 +9,7 @@ namespace PICUdrugs.DAL
 {
     public class DefibJouleRepository : IDisposable
     {
-        private DataContext _db = new DataContext();
+        private DrugSqlContext _db = new DrugSqlContext();
         public IEnumerable<DefibJoule> GetDefibJoules()
         {
             return _db.DefibJoules.ToList();

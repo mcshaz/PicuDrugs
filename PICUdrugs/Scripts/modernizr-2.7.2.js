@@ -1028,7 +1028,7 @@ window.Modernizr = (function( window, document, undefined ) {
         var expando = '_html5shiv';
 
         /** The id for the the documents expando */
-        var expanID = 0;
+        var expanId = 0;
 
         /** Cached data for each document */
         var expandoData = {};
@@ -1098,9 +1098,9 @@ window.Modernizr = (function( window, document, undefined ) {
           var data = expandoData[ownerDocument[expando]];
           if (!data) {
             data = {};
-            expanID++;
-            ownerDocument[expando] = expanID;
-            expandoData[expanID] = data;
+            expanId++;
+            ownerDocument[expando] = expanId;
+            expandoData[expanId] = data;
           }
           return data;
         }

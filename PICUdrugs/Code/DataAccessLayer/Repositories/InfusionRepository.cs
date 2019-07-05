@@ -1,4 +1,6 @@
-﻿using System;
+﻿using DBToJSON;
+using DBToJSON.SqlEntities.Infusions;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Web;
@@ -7,7 +9,7 @@ namespace PICUdrugs.DAL
 {
     public class InfusionRepository : IDisposable, IInfusionRepository
     {
-        private DataContext _db = new DataContext();
+        private DrugSqlContext _db = new DrugSqlContext();
 
         public IEnumerable<VariableTimeDilution> GetVariableTimeDilutions(int drugId)
         {
@@ -259,14 +261,6 @@ namespace PICUdrugs.DAL
             return (from d in _db.DoseCats
                     where d.DoseCatId == DoseCatId.Value
                     select d).First();
-        }
-        public IEnumerable<DilutionMethod> GetDilutionMethods()
-        {
-            return _db.DilutionMethods.ToList();
-        }
-        public DilutionMethod GetDilutionMethod(int dilutionMethodId)
-        {
-            return _db.DilutionMethods.Where(d=>d.DilutionMethodId == dilutionMethodId).FirstOrDefault();
         }
 
         //disposing

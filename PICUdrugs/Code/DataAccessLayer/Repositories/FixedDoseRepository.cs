@@ -3,12 +3,14 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text.RegularExpressions;
 using System.Web;
+using DBToJSON;
+using DBToJSON.SqlEntities.BolusDrugs;
 using PICUdrugs.Utils;
 namespace PICUdrugs.DAL
 {
     public class FixedDoseRepository : IDisposable
     {
-        private DataContext _db = new DataContext();
+        private DrugSqlContext _db = new DrugSqlContext();
         public IEnumerable<FixedDrug> GetFixedDrugs()
         {
             return (from d in _db.FixedDrugs.Include("FixedDoses")

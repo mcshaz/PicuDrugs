@@ -1,6 +1,6 @@
 ﻿<%@ Page Title="Contact" Language="C#" MasterPageFile="~/Site.Master" AutoEventWireup="true" CodeBehind="Contact.aspx.cs" Inherits="PICUdrugs2013.Contact" %>
 
-<asp:Content runat="server" ID="BodyContent" ContentPlaceHolderID="MainContent">
+<asp:Content runat="server" ID="BodyContent" ContentPlaceHolderId="MainContent">
     <hgroup class="title">
         <h1><%: Title %>.</h1>
         <h2>Your contact page.</h2>

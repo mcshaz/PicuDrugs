@@ -1,0 +1,174 @@
+﻿<error errorId="10f0e561-c0e9-44c5-8aeb-c6aaf59b6002" application="/LM/W3SVC/2/ROOT" host="OEM-VAIO" type="System.NullReferenceException" message="Object reference not set to an instance of an object." source="PICUdrugs2013" detail="System.Web.HttpUnhandledException (0x80004005): Exception of type 'System.Web.HttpUnhandledException' was thrown. ---&gt; System.NullReferenceException: Object reference not set to an instance of an object.&#xD;&#xA;   at PICUdrugs.SiteMaster.CreateScript(String src, Boolean jQuery) in C:\Users\OEM\Documents\Visual Studio 2013\Projects\PICUdrugs2013\PICUdrugs\Site.Master.cs:line 192&#xD;&#xA;   at PICUdrugs.SiteMaster.AddJQuery() in C:\Users\OEM\Documents\Visual Studio 2013\Projects\PICUdrugs2013\PICUdrugs\Site.Master.cs:line 153&#xD;&#xA;   at PICUdrugs.drugAdmin.editInfusionDrugNames.Page_Load(Object sender, EventArgs e) in C:\Users\OEM\Documents\Visual Studio 2013\Projects\PICUdrugs2013\PICUdrugs\DrugAdmin\EditInfusionDrugNames.aspx.cs:line 17&#xD;&#xA;   at System.Web.Util.CalliEventHandlerDelegateProxy.Callback(Object sender, EventArgs e)&#xD;&#xA;   at System.Web.UI.Control.OnLoad(EventArgs e)&#xD;&#xA;   at System.Web.UI.Control.LoadRecursive()&#xD;&#xA;   at System.Web.UI.Page.ProcessRequestMain(Boolean includeStagesBeforeAsyncPoint, Boolean includeStagesAfterAsyncPoint)&#xD;&#xA;   at System.Web.UI.Page.HandleError(Exception e)&#xD;&#xA;   at System.Web.UI.Page.ProcessRequestMain(Boolean includeStagesBeforeAsyncPoint, Boolean includeStagesAfterAsyncPoint)&#xD;&#xA;   at System.Web.UI.Page.ProcessRequest(Boolean includeStagesBeforeAsyncPoint, Boolean includeStagesAfterAsyncPoint)&#xD;&#xA;   at System.Web.UI.Page.ProcessRequest()&#xD;&#xA;   at System.Web.UI.Page.ProcessRequestWithNoAssert(HttpContext context)&#xD;&#xA;   at System.Web.UI.Page.ProcessRequest(HttpContext context)&#xD;&#xA;   at ASP.drugadmin_editinfusiondrugnames_aspx.ProcessRequest(HttpContext context) in c:\Users\OEM\AppData\Local\Temp\Temporary ASP.NET Files\vs\a3073e20\d2d3002e\App_Web_ndkdhipz.0.cs:line 0&#xD;&#xA;   at System.Web.HttpApplication.CallHandlerExecutionStep.System.Web.HttpApplication.IExecutionStep.Execute()&#xD;&#xA;   at System.Web.HttpApplication.ExecuteStepImpl(IExecutionStep step)&#xD;&#xA;   at System.Web.HttpApplication.ExecuteStep(IExecutionStep step, Boolean&amp; completedSynchronously)" user="brentm" time="2019-07-05T05:51:42.9658047Z" statusCode="500" webHostHtmlMessage="&lt;!DOCTYPE html&gt;&#xD;&#xA;&lt;html&gt;&#xD;&#xA;    &lt;head&gt;&#xD;&#xA;        &lt;title&gt;Object reference not set to an instance of an object.&lt;/title&gt;&#xD;&#xA;        &lt;meta name=&quot;viewport&quot; content=&quot;width=device-width&quot; /&gt;&#xD;&#xA;        &lt;style&gt;&#xD;&#xA;         body {font-family:&quot;Verdana&quot;;font-weight:normal;font-size: .7em;color:black;} &#xD;&#xA;         p {font-family:&quot;Verdana&quot;;font-weight:normal;color:black;margin-top: -5px}&#xD;&#xA;         b {font-family:&quot;Verdana&quot;;font-weight:bold;color:black;margin-top: -5px}&#xD;&#xA;         H1 { font-family:&quot;Verdana&quot;;font-weight:normal;font-size:18pt;color:red }&#xD;&#xA;         H2 { font-family:&quot;Verdana&quot;;font-weight:normal;font-size:14pt;color:maroon }&#xD;&#xA;         pre {font-family:&quot;Consolas&quot;,&quot;Lucida Console&quot;,Monospace;font-size:11pt;margin:0;padding:0.5em;line-height:14pt}&#xD;&#xA;         .marker {font-weight: bold; color: black;text-decoration: none;}&#xD;&#xA;         .version {color: gray;}&#xD;&#xA;         .error {margin-bottom: 10px;}&#xD;&#xA;         .expandable { text-decoration:underline; font-weight:bold; color:navy; cursor:hand; }&#xD;&#xA;         @media screen and (max-width: 639px) {&#xD;&#xA;          pre { width: 440px; overflow: auto; white-space: pre-wrap; word-wrap: break-word; }&#xD;&#xA;         }&#xD;&#xA;         @media screen and (max-width: 479px) {&#xD;&#xA;          pre { width: 280px; }&#xD;&#xA;         }&#xD;&#xA;        &lt;/style&gt;&#xD;&#xA;    &lt;/head&gt;&#xD;&#xA;&#xD;&#xA;    &lt;body bgcolor=&quot;white&quot;&gt;&#xD;&#xA;&#xD;&#xA;            &lt;span&gt;&lt;H1&gt;Server Error in '/' Application.&lt;hr width=100% size=1 color=silver&gt;&lt;/H1&gt;&#xD;&#xA;&#xD;&#xA;            &lt;h2&gt; &lt;i&gt;Object reference not set to an instance of an object.&lt;/i&gt; &lt;/h2&gt;&lt;/span&gt;&#xD;&#xA;&#xD;&#xA;            &lt;font face=&quot;Arial, Helvetica, Geneva, SunSans-Regular, sans-serif &quot;&gt;&#xD;&#xA;&#xD;&#xA;            &lt;b&gt; Description: &lt;/b&gt;An unhandled exception occurred during the execution of the current web request. Please review the stack trace for more information about the error and where it originated in the code.&#xD;&#xA;&#xD;&#xA;            &lt;br&gt;&lt;br&gt;&#xD;&#xA;&#xD;&#xA;            &lt;b&gt; Exception Details: &lt;/b&gt;System.NullReferenceException: Object reference not set to an instance of an object.&lt;br&gt;&lt;br&gt;&#xD;&#xA;&#xD;&#xA;            &lt;b&gt;Source Error:&lt;/b&gt; &lt;br&gt;&lt;br&gt;&#xD;&#xA;&#xD;&#xA;            &lt;table width=100% bgcolor=&quot;#ffffcc&quot;&gt;&#xD;&#xA;               &lt;tr&gt;&#xD;&#xA;                  &lt;td&gt;&#xD;&#xA;                      &lt;code&gt;&lt;pre&gt;&#xD;&#xA;&#xD;&#xA;Line 190:            if (jQuery)&#xD;&#xA;Line 191:            {&#xD;&#xA;&lt;font color=red&gt;Line 192:                ScriptManager1.Scripts.Insert(0, ctrl);&#xD;&#xA;&lt;/font&gt;Line 193:            } else&#xD;&#xA;Line 194:            {&lt;/pre&gt;&lt;/code&gt;&#xD;&#xA;&#xD;&#xA;                  &lt;/td&gt;&#xD;&#xA;               &lt;/tr&gt;&#xD;&#xA;            &lt;/table&gt;&#xD;&#xA;&#xD;&#xA;            &lt;br&gt;&#xD;&#xA;&#xD;&#xA;            &lt;b&gt; Source File: &lt;/b&gt; C:\Users\OEM\Documents\Visual Studio 2013\Projects\PICUdrugs2013\PICUdrugs\Site.Master.cs&lt;b&gt; &amp;nbsp;&amp;nbsp; Line: &lt;/b&gt; 192&#xD;&#xA;            &lt;br&gt;&lt;br&gt;&#xD;&#xA;&#xD;&#xA;            &lt;b&gt;Stack Trace:&lt;/b&gt; &lt;br&gt;&lt;br&gt;&#xD;&#xA;&#xD;&#xA;            &lt;table width=100% bgcolor=&quot;#ffffcc&quot;&gt;&#xD;&#xA;               &lt;tr&gt;&#xD;&#xA;                  &lt;td&gt;&#xD;&#xA;                      &lt;code&gt;&lt;pre&gt;&#xD;&#xA;&#xD;&#xA;[NullReferenceException: Object reference not set to an instance of an object.]&#xD;&#xA;   PICUdrugs.SiteMaster.CreateScript(String src, Boolean jQuery) in C:\Users\OEM\Documents\Visual Studio 2013\Projects\PICUdrugs2013\PICUdrugs\Site.Master.cs:192&#xD;&#xA;   PICUdrugs.SiteMaster.AddJQuery() in C:\Users\OEM\Documents\Visual Studio 2013\Projects\PICUdrugs2013\PICUdrugs\Site.Master.cs:153&#xD;&#xA;   PICUdrugs.drugAdmin.editInfusionDrugNames.Page_Load(Object sender, EventArgs e) in C:\Users\OEM\Documents\Visual Studio 2013\Projects\PICUdrugs2013\PICUdrugs\DrugAdmin\EditInfusionDrugNames.aspx.cs:17&#xD;&#xA;   System.Web.Util.CalliEventHandlerDelegateProxy.Callback(Object sender, EventArgs e) +51&#xD;&#xA;   System.Web.UI.Control.OnLoad(EventArgs e) +95&#xD;&#xA;   System.Web.UI.Control.LoadRecursive() +59&#xD;&#xA;   System.Web.UI.Page.ProcessRequestMain(Boolean includeStagesBeforeAsyncPoint, Boolean includeStagesAfterAsyncPoint) +678&#xD;&#xA;&lt;/pre&gt;&lt;/code&gt;&#xD;&#xA;&#xD;&#xA;                  &lt;/td&gt;&#xD;&#xA;               &lt;/tr&gt;&#xD;&#xA;            &lt;/table&gt;&#xD;&#xA;&#xD;&#xA;            &lt;br&gt;&#xD;&#xA;&#xD;&#xA;    &lt;/body&gt;&#xD;&#xA;&lt;/html&gt;&#xD;&#xA;">
+  <serverVariables>
+    <item name="ALL_HTTP">
+      <value string="HTTP_CONNECTION:keep-alive&#xD;&#xA;HTTP_ACCEPT:text/html,application/xhtml+xml,application/xml;q=0.9,image/webp,image/apng,*/*;q=0.8,application/signed-exchange;v=b3&#xD;&#xA;HTTP_ACCEPT_ENCODING:gzip, deflate, br&#xD;&#xA;HTTP_ACCEPT_LANGUAGE:en-NZ,en-AU;q=0.9,en-GB;q=0.8,en;q=0.7,en-US;q=0.6&#xD;&#xA;HTTP_COOKIE:ward=1; report=list; __AntiXsrfToken=f8a77970893f406b9592930d55307f32; .ASPXAUTH=AF8E7EB11C952B00A09C512D00D8CE577F5940EB1A1AE1DD2AD91910D26D9ECA32FA8E6E6D7C643756A33F732C467F61D6BF3881D6C91CDE646C4FE8A956FD299BDF7C997D1472DF4B3AA279B97737C9C7C0B3055B3FAEDDBB2C463F9A29790A95DAAE9E9E0FEBBCE55FF90AB6379B1D844AD60CD12B7777DB69ECD90188928A7352AC8BA20F66E221CCC7B9DE64373A&#xD;&#xA;HTTP_HOST:localhost:51247&#xD;&#xA;HTTP_REFERER:http://localhost:51247/EnterPtData.aspx&#xD;&#xA;HTTP_USER_AGENT:Mozilla/5.0 (Windows NT 6.1; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/75.0.3770.100 Safari/537.36&#xD;&#xA;HTTP_UPGRADE_INSECURE_REQUESTS:1&#xD;&#xA;" />
+    </item>
+    <item name="ALL_RAW">
+      <value string="Connection: keep-alive&#xD;&#xA;Accept: text/html,application/xhtml+xml,application/xml;q=0.9,image/webp,image/apng,*/*;q=0.8,application/signed-exchange;v=b3&#xD;&#xA;Accept-Encoding: gzip, deflate, br&#xD;&#xA;Accept-Language: en-NZ,en-AU;q=0.9,en-GB;q=0.8,en;q=0.7,en-US;q=0.6&#xD;&#xA;Cookie: ward=1; report=list; __AntiXsrfToken=f8a77970893f406b9592930d55307f32; .ASPXAUTH=AF8E7EB11C952B00A09C512D00D8CE577F5940EB1A1AE1DD2AD91910D26D9ECA32FA8E6E6D7C643756A33F732C467F61D6BF3881D6C91CDE646C4FE8A956FD299BDF7C997D1472DF4B3AA279B97737C9C7C0B3055B3FAEDDBB2C463F9A29790A95DAAE9E9E0FEBBCE55FF90AB6379B1D844AD60CD12B7777DB69ECD90188928A7352AC8BA20F66E221CCC7B9DE64373A&#xD;&#xA;Host: localhost:51247&#xD;&#xA;Referer: http://localhost:51247/EnterPtData.aspx&#xD;&#xA;User-Agent: Mozilla/5.0 (Windows NT 6.1; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/75.0.3770.100 Safari/537.36&#xD;&#xA;Upgrade-Insecure-Requests: 1&#xD;&#xA;" />
+    </item>
+    <item name="APPL_MD_PATH">
+      <value string="/LM/W3SVC/2/ROOT" />
+    </item>
+    <item name="APPL_PHYSICAL_PATH">
+      <value string="C:\Users\OEM\Documents\Visual Studio 2013\Projects\PICUdrugs2013\PICUdrugs\" />
+    </item>
+    <item name="AUTH_TYPE">
+      <value string="Forms" />
+    </item>
+    <item name="AUTH_USER">
+      <value string="brentm" />
+    </item>
+    <item name="AUTH_PASSWORD">
+      <value string="*****" />
+    </item>
+    <item name="LOGON_USER">
+      <value string="brentm" />
+    </item>
+    <item name="REMOTE_USER">
+      <value string="brentm" />
+    </item>
+    <item name="CERT_COOKIE">
+      <value string="" />
+    </item>
+    <item name="CERT_FLAGS">
+      <value string="" />
+    </item>
+    <item name="CERT_ISSUER">
+      <value string="" />
+    </item>
+    <item name="CERT_KEYSIZE">
+      <value string="" />
+    </item>
+    <item name="CERT_SECRETKEYSIZE">
+      <value string="" />
+    </item>
+    <item name="CERT_SERIALNUMBER">
+      <value string="" />
+    </item>
+    <item name="CERT_SERVER_ISSUER">
+      <value string="" />
+    </item>
+    <item name="CERT_SERVER_SUBJECT">
+      <value string="" />
+    </item>
+    <item name="CERT_SUBJECT">
+      <value string="" />
+    </item>
+    <item name="CONTENT_LENGTH">
+      <value string="0" />
+    </item>
+    <item name="CONTENT_TYPE">
+      <value string="" />
+    </item>
+    <item name="GATEWAY_INTERFACE">
+      <value string="CGI/1.1" />
+    </item>
+    <item name="HTTPS">
+      <value string="off" />
+    </item>
+    <item name="HTTPS_KEYSIZE">
+      <value string="" />
+    </item>
+    <item name="HTTPS_SECRETKEYSIZE">
+      <value string="" />
+    </item>
+    <item name="HTTPS_SERVER_ISSUER">
+      <value string="" />
+    </item>
+    <item name="HTTPS_SERVER_SUBJECT">
+      <value string="" />
+    </item>
+    <item name="INSTANCE_ID">
+      <value string="2" />
+    </item>
+    <item name="INSTANCE_META_PATH">
+      <value string="/LM/W3SVC/2" />
+    </item>
+    <item name="LOCAL_ADDR">
+      <value string="::1" />
+    </item>
+    <item name="PATH_INFO">
+      <value string="/DrugAdmin/EditInfusionDrugNames.aspx" />
+    </item>
+    <item name="PATH_TRANSLATED">
+      <value string="C:\Users\OEM\Documents\Visual Studio 2013\Projects\PICUdrugs2013\PICUdrugs\DrugAdmin\EditInfusionDrugNames.aspx" />
+    </item>
+    <item name="QUERY_STRING">
+      <value string="" />
+    </item>
+    <item name="REMOTE_ADDR">
+      <value string="::1" />
+    </item>
+    <item name="REMOTE_HOST">
+      <value string="::1" />
+    </item>
+    <item name="REMOTE_PORT">
+      <value string="59479" />
+    </item>
+    <item name="REQUEST_METHOD">
+      <value string="GET" />
+    </item>
+    <item name="SCRIPT_NAME">
+      <value string="/DrugAdmin/EditInfusionDrugNames.aspx" />
+    </item>
+    <item name="SERVER_NAME">
+      <value string="localhost" />
+    </item>
+    <item name="SERVER_PORT">
+      <value string="51247" />
+    </item>
+    <item name="SERVER_PORT_SECURE">
+      <value string="0" />
+    </item>
+    <item name="SERVER_PROTOCOL">
+      <value string="HTTP/1.1" />
+    </item>
+    <item name="SERVER_SOFTWARE">
+      <value string="Microsoft-IIS/10.0" />
+    </item>
+    <item name="URL">
+      <value string="/DrugAdmin/EditInfusionDrugNames.aspx" />
+    </item>
+    <item name="HTTP_CONNECTION">
+      <value string="keep-alive" />
+    </item>
+    <item name="HTTP_ACCEPT">
+      <value string="text/html,application/xhtml+xml,application/xml;q=0.9,image/webp,image/apng,*/*;q=0.8,application/signed-exchange;v=b3" />
+    </item>
+    <item name="HTTP_ACCEPT_ENCODING">
+      <value string="gzip, deflate, br" />
+    </item>
+    <item name="HTTP_ACCEPT_LANGUAGE">
+      <value string="en-NZ,en-AU;q=0.9,en-GB;q=0.8,en;q=0.7,en-US;q=0.6" />
+    </item>
+    <item name="HTTP_COOKIE">
+      <value string="ward=1; report=list; __AntiXsrfToken=f8a77970893f406b9592930d55307f32; .ASPXAUTH=AF8E7EB11C952B00A09C512D00D8CE577F5940EB1A1AE1DD2AD91910D26D9ECA32FA8E6E6D7C643756A33F732C467F61D6BF3881D6C91CDE646C4FE8A956FD299BDF7C997D1472DF4B3AA279B97737C9C7C0B3055B3FAEDDBB2C463F9A29790A95DAAE9E9E0FEBBCE55FF90AB6379B1D844AD60CD12B7777DB69ECD90188928A7352AC8BA20F66E221CCC7B9DE64373A" />
+    </item>
+    <item name="HTTP_HOST">
+      <value string="localhost:51247" />
+    </item>
+    <item name="HTTP_REFERER">
+      <value string="http://localhost:51247/EnterPtData.aspx" />
+    </item>
+    <item name="HTTP_USER_AGENT">
+      <value string="Mozilla/5.0 (Windows NT 6.1; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/75.0.3770.100 Safari/537.36" />
+    </item>
+    <item name="HTTP_UPGRADE_INSECURE_REQUESTS">
+      <value string="1" />
+    </item>
+  </serverVariables>
+  <cookies>
+    <item name="ward">
+      <value string="1" />
+    </item>
+    <item name="report">
+      <value string="list" />
+    </item>
+    <item name="__AntiXsrfToken">
+      <value string="f8a77970893f406b9592930d55307f32" />
+    </item>
+    <item name=".ASPXAUTH">
+      <value string="AF8E7EB11C952B00A09C512D00D8CE577F5940EB1A1AE1DD2AD91910D26D9ECA32FA8E6E6D7C643756A33F732C467F61D6BF3881D6C91CDE646C4FE8A956FD299BDF7C997D1472DF4B3AA279B97737C9C7C0B3055B3FAEDDBB2C463F9A29790A95DAAE9E9E0FEBBCE55FF90AB6379B1D844AD60CD12B7777DB69ECD90188928A7352AC8BA20F66E221CCC7B9DE64373A" />
+    </item>
+  </cookies>
+</error>

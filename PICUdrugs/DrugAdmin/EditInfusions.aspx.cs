@@ -7,6 +7,10 @@ using System.Web.DynamicData;
 using PICUdrugs.DAL;
 using PICUdrugs.BLL;
 using PICUdrugs.Utils;
+using DBToJSON.SqlEntities.Infusions;
+using DBToJSON.SqlEntities.Enums;
+using DBToJSON;
+using DBToJSON.SqlEntities;
 
 namespace PICUdrugs.drugAdmin
 {
@@ -16,7 +20,6 @@ namespace PICUdrugs.drugAdmin
         private readonly string[] ConcDynamicControls = { "ConcentrationDynamicControl", "volumeDynamicControl", "rateDynamicControl", "stopTimeDynamicControl" };
         protected InfusionDrug CurrentDrug;
         protected bool IsfixedTimeInfusion;
-        private IEnumerable<DilutionMethod> DilutionMethods;
         //private IEnumerable<double> uniqueConcentrations;
         private IEnumerable<DoseCat> DoseCategories;
 
@@ -53,30 +56,26 @@ namespace PICUdrugs.drugAdmin
         }
         protected void SetPageGlobals(int drugId)
         {
-            using (DataContext myEntities = new DataContext())
+            using (DrugSqlContext myEntities = new DrugSqlContext())
             {
-                DilutionMethods = (from dm in myEntities.DilutionMethods
-                                  select dm).ToList();
-
-                CurrentDrug = (from d in myEntities.InfusionDrugs.Include("DrugReferenceSource").Include("SiUnit")
+                CurrentDrug = (from d in myEntities.InfusionDrugs.Include("DrugReferenceSource")
                                where d.InfusionDrugId == drugId
                                select d).First();
 
                 DoseCategories = (from c in myEntities.DoseCats
                                   select c).ToList();
-
             }
 
             //create ECMAscript objects
-            Type csType = this.GetType();
+            Type csType = GetType();
             if (!Page.ClientScript.IsStartupScriptRegistered(csType, "editInfusionObjArray"))
             {
                 string returnVar = string.Format("var dilMethod = [{0}], currentDrug={{prefix:{1}}};",
-                    string.Join(",", DilutionMethods.Select(d => string.Format("{{ isPerKg:{0}, isVaryVolume:{1}, isVaryConcentration:{2}}}",
+                    string.Join(",", DilutionLogic._allLogic.Values.Select(d => string.Format("{{ isPerKg:{0}, isVaryVolume:{1}, isVaryConcentration:{2}}}",
                         d.IsPerKg.ToString().ToLower(), 
                         d.IsVaryVolume.ToString().ToLower(), 
                         d.IsVaryConcentration.ToString().ToLower()))),
-                    CurrentDrug.SiPrefixVal);
+                    CurrentDrug.SiPrefix);
                 Page.ClientScript.RegisterStartupScript(csType, "editInfusionObjArray", returnVar, true);
             }
         }
@@ -121,10 +120,10 @@ namespace PICUdrugs.drugAdmin
                 ListViewDataItem dataItem = (ListViewDataItem)e.Item;
                 {
                     IInfusionDilution infDil = (IInfusionDilution)dataItem.DataItem;
-                    Label dilMethod = (Label)e.Item.FindControl("DilutionMethodIDLabel");
-                    if (dilMethod != null && infDil.DilutionMethod != null)
+                    Label dilMethod = (Label)e.Item.FindControl("DilutionMethodIdLabel");
+                    if (dilMethod != null)
                     {
-                        dilMethod.Text = infDil.DilutionMethod.Description;
+                        dilMethod.Text = DilutionLogic.AsDescription(infDil.DilutionMethodId);
                     }
                 }
                 ObjectDataSource infConcObjDataSrc = e.Item.FindControl("objConcentrations") as ObjectDataSource;
@@ -150,9 +149,9 @@ namespace PICUdrugs.drugAdmin
                         varTimeLbl = (Label)e.Item.FindControl("rateMaxLabel");
                         varTimeLbl.Text = varyDil.RateMax.ToString();
                         varTimeLbl = (Label)e.Item.FindControl("volumeLabel");
-                        varTimeLbl.Text = (varyDil.DilutionMethod.IsVaryVolume)?"N/A (vary by weight)":(varyDil.Volume.ToString() + " mL");
+                        var dilution = DilutionLogic.GetMethod(varyDil.DilutionMethodId);
+                        varTimeLbl.Text = (dilution.IsVaryVolume)?"N/A (vary by weight)":(varyDil.Volume.ToString() + " mL");
                         varTimeLbl = (Label)e.Item.FindControl("rangeUnitLabel");
-                        varyDil.SetDrugMeasure(CurrentDrug.SiUnit.Measure);
                         varTimeLbl.Text = varyDil.RateUnits();
                         infDil = (IInfusionDilution)varyDil;
                     }
@@ -185,16 +184,16 @@ namespace PICUdrugs.drugAdmin
                     if (IsfixedTimeInfusion)
                     {
                         FixedTimeDilution infDil = (FixedTimeDilution)dataItem.DataItem;
-                        infDil.SetDrugMeasure(CurrentDrug.SiUnit.Measure);
                         subHead.Text = "(" + infDil.ConcentrationUnits() + ")";
                         subHead = embeddedLV.FindControl("DilutionUnits") as Label;
                         subHead.Text = "(" + infDil.VolumeUnits() + ")"; //ie dilute to ? mL | mL/kg
                         subHead = embeddedLV.FindControl("rateUnits") as Label;
                         subHead.Text = "(" + infDil.RateUnits() + ")";
                         subHead = embeddedLV.FindControl("drugUnits") as Label;
+                        var dilutionMethod = DilutionLogic.GetMethod(infDil.DilutionMethodId);
                         if (subHead != null)
                         {
-                            subHead.Text = "(" + CurrentDrug.DrugUnits() + (infDil.DilutionMethod.DrawUpPerKg ? "/kg" : "") + ")"; //not infDil.InfusionUnits() as we want the drug used in Dilution!
+                            subHead.Text = "(" + CurrentDrug.DrugUnits() + (dilutionMethod.DrawUpPerKg ? "/kg" : "") + ")"; //not infDil.InfusionUnits() as we want the drug used in Dilution!
                         }
                         PlaceHolder varyTimeHolder = (PlaceHolder)embeddedLV.FindControl("variableTimeSpecific");
                         varyTimeHolder.Visible = false;
@@ -204,7 +203,6 @@ namespace PICUdrugs.drugAdmin
                     else
                     {
                         VariableTimeDilution infDil = (VariableTimeDilution)dataItem.DataItem;
-                        infDil.SetDrugMeasure(CurrentDrug.SiUnit.Measure);
                         subHead.Text = "(" + infDil.ConcentrationUnits() + ")";
                         PlaceHolder fixTimeHolder = (PlaceHolder)embeddedLV.FindControl("fixedTimeSpecific");
                         fixTimeHolder.Visible = false;
@@ -221,7 +219,7 @@ namespace PICUdrugs.drugAdmin
                         perHr.Checked = !infDil.IsPerMin;
                     }
                     Label unitLabel = e.Item.FindControl("unitLabel") as Label;
-                    if (unitLabel != null) unitLabel.Text = CurrentDrug.SiUnit.Measure;
+                    if (unitLabel != null) unitLabel.Text = CurrentDrug.SiUnitId.ToString();
 
                     Label hrefLabel = e.Item.FindControl("refHref") as Label;
                     if (hrefLabel != null) hrefLabel.Text=HrefLabelVal();
@@ -235,7 +233,7 @@ namespace PICUdrugs.drugAdmin
             HiddenField drugId = (HiddenField)infDilutnLV.InsertItem.FindControl("InsertHiddenDrugId");
             if (drugId != null && drugId.Value == "") drugId.Value = CurrentDrug.InfusionDrugId.ToString();
             Label unitLabel = infDilutnLV.InsertItem.FindControl("unitLabel") as Label;
-            if (unitLabel != null) unitLabel.Text = CurrentDrug.SiUnit.Measure;
+            if (unitLabel != null) unitLabel.Text = CurrentDrug.SiUnitId.ToString();
             //if (isfixedTimeInfusion) { }
             Label hrefLabel = infDilutnLV.InsertItem.FindControl("refHref") as Label;
             if (hrefLabel != null) hrefLabel.Text = HrefLabelVal();
@@ -336,7 +334,7 @@ namespace PICUdrugs.drugAdmin
             {
                 var infDil = (IInfusionDilution)infDilutionLVitem.DataItem;
                 //var dilMethod = DilutionMethods.FirstOrDefault(m => m.DilutionMethodId == infDil.DilutionMethodId);
-                if (IsfixedTimeInfusion && infDil.DilutionMethodId==2) 
+                if (IsfixedTimeInfusion && infDil.DilutionMethodId==DilutionMethod.NeatVaryFlowByWeight) 
                 {
                     concLV.FindControl("drugUnits").Visible = false;
                     //I need to think about this with less time pressure
@@ -361,7 +359,7 @@ namespace PICUdrugs.drugAdmin
 
         protected void DilutionMethodDropDown_DataBinding(object sender, EventArgs e)
         {
-            ((DropDownList)sender).DataSource = DilutionMethods;
+            ((DropDownList)sender).DataSource = Enum.GetValues(typeof(DilutionMethod)).Cast<DilutionMethod>().Select(m=> new { Value = (int)m, Text = m.ToString()  });
         }
         protected void DoseCatDDL_DataBinding(object sender, EventArgs e)
         {

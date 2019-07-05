@@ -9,6 +9,7 @@ using PICUdrugs.BLL;
 using System.Web.UI.HtmlControls;
 using System.Web.Security;
 using PICUdrugs.Utils;
+using DBToJSON.SqlEntities;
 
 namespace PICUdrugs.websiteAdmin
 {
@@ -36,9 +37,11 @@ namespace PICUdrugs.websiteAdmin
             Exception outerExcept = e.Exception;
             if (outerExcept != null)
             {
-                var customVal = new CustomValidator();
-                customVal.ValidationGroup = "WardVal";
-                customVal.IsValid = false;
+                var customVal = new CustomValidator
+                {
+                    ValidationGroup = "WardVal",
+                    IsValid = false
+                };
                 if (outerExcept is BLexception)
                 {
                     customVal.ErrorMessage = "Cannot update as the following rule would be broken: " + outerExcept.InnerException.Message;
@@ -110,8 +113,7 @@ namespace PICUdrugs.websiteAdmin
         protected void DptDropDownList_PreRender(object sender, EventArgs e)
         {
             CanModifySelectedWard = CurrentUser.HasEditPermission(int.Parse(DptDropDownList.SelectedValue));
-            CommandField cmdField = DptDetailView.Fields[DptDetailView.Fields.Count - 1] as CommandField;
-            if (cmdField != null)
+            if (DptDetailView.Fields[DptDetailView.Fields.Count - 1] is CommandField cmdField)
             {
                 cmdField.ShowEditButton = CanModifySelectedWard;
                 cmdField.ShowInsertButton = cmdField.ShowDeleteButton = CurrentUser.Roles.Contains("websiteAdmin");
@@ -152,10 +154,7 @@ namespace PICUdrugs.websiteAdmin
             {
                 DptDetailView.ChangeMode(DetailsViewMode.ReadOnly);
             };
-            if (WardIndexChanged != null)
-            {
-                WardIndexChanged(sender, e);
-            }
+            WardIndexChanged?.Invoke(sender, e);
         }
 
         protected void DptDetailView_ItemCommand(object sender, DetailsViewCommandEventArgs e)

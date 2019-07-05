@@ -3,6 +3,8 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Web;
 using PICUdrugs.Utils;
+
+/*
 namespace PICUdrugs.DAL
 {
     using PICUdrugs.BLL;
@@ -20,9 +22,10 @@ namespace PICUdrugs.DAL
         public double S { get; set; }
     }
 }
+*/
 namespace PICUdrugs.BLL
 {
-    public interface StatisticalData
+    public interface IStatisticalData
     {
         double L { get; }
         double M { get; }
@@ -30,15 +33,15 @@ namespace PICUdrugs.BLL
     }
     public static class StatisticalDataExtensions
     {
-        public static double ZfromX(this StatisticalData stat, double X)
+        public static double ZfromX(this IStatisticalData stat, double X)
         {
             return StatisticalMethods.ZfromParams(X, stat.M, stat.S, stat.L);
         }
-        public static double XfromZ(this StatisticalData stat, double Z)
+        public static double XfromZ(this IStatisticalData stat, double Z)
         {
             return StatisticalMethods.XfromParams(Z, stat.M, stat.S, stat.L);
         }
-        public static double Centile(this StatisticalData stat, double X)
+        public static double Centile(this IStatisticalData stat, double X)
         {
             double Z = StatisticalMethods.ZfromParams(X, stat.M, stat.S, stat.L);
             return (StatisticalMethods.CumSnorm(Z) * 100);
@@ -51,7 +54,7 @@ namespace PICUdrugs.BLL
             else { returnVal = ((int)(centile + 0.5)).ToRanking(asHtml); }
             return returnVal + centileText;
         }
-        public static string CentileString(this StatisticalData stat, double X, bool asHtml = false)
+        public static string CentileString(this IStatisticalData stat, double X, bool asHtml = false)
         {
             return CentileToString(stat.Centile(X), asHtml);
         }

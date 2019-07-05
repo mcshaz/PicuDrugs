@@ -23,8 +23,8 @@ namespace PICUdrugs
                 selectInfusions = d.SelectableInfusions();
             }
             string thisUrl = ResolveUrl("~/EnterPtData.aspx");
-            bolusGrid.Text = bolusTbl.toHtml(thead: bolusGrid.Text, id: "bolusGrid", colHeadFormat: string.Format(colHeadFmtConst, thisUrl + "?ward={0}&amp;bolusOnly=true", "{1}"));
-            titratableInfusionGrid.Text = infusionTbl.toHtml(thead: titratableInfusionGrid.Text, id: "titratableInfusionGrid", colHeadFormat: string.Format(colHeadFmtConst, thisUrl + "?ward={0}", "{1}"));
+            bolusGrid.Text = bolusTbl.ToHtml(thead: bolusGrid.Text, id: "bolusGrid", colHeadFormat: string.Format(colHeadFmtConst, thisUrl + "?ward={0}&amp;bolusOnly=true", "{1}"));
+            titratableInfusionGrid.Text = infusionTbl.ToHtml(thead: titratableInfusionGrid.Text, id: "titratableInfusionGrid", colHeadFormat: string.Format(colHeadFmtConst, thisUrl + "?ward={0}", "{1}"));
             selectDrugList.DataSource = selectInfusions.Select(s => new { Name = s, EncodedName = HttpUtility.UrlPathEncode(s) });
             selectDrugList.DataBind();
         }

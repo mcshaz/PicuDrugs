@@ -1,4 +1,6 @@
-﻿using System;
+﻿using DBToJSON;
+using DBToJSON.SqlEntities;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Web;
@@ -7,7 +9,7 @@ namespace PICUdrugs.DAL
 {
     public class WardRepository : IDisposable
     {
-        private DataContext _db = new DataContext();
+        private DrugSqlContext _db = new DrugSqlContext();
         public IEnumerable<Ward> GetDepartments()
         {
             return _db.Wards.ToList();

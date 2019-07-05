@@ -1,4 +1,6 @@
-﻿using System;
+﻿using DBToJSON;
+using DBToJSON.SqlEntities.Infusions;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Web;
@@ -6,7 +8,7 @@ namespace PICUdrugs.DAL
 {
     public class DrugReferenceRepository : IDisposable
     {
-        private DataContext _db = new DataContext();
+        private DrugSqlContext _db = new DrugSqlContext();
         public DrugReferenceSource GetReference(int refId)
         {
             return (from d in _db.DrugReferenceSources 

@@ -1,5 +1,5 @@
 ﻿<%@ MasterType VirtualPath="~/Site.Master" %>
-<%@ Page Title="" Language="C#" MasterPageFile="~/Site.Master" AutoEventWireup="true" CodeBehind="EditDefib.aspx.cs" Inherits="PICUdrugs.drugAdmin.editDefib" %>
+<%@ Page Title="" Language="C#" MasterPageFile="~/Site.Master" AutoEventWireup="true" CodeBehind="EditDefib.aspx.cs" Inherits="PICUdrugs.drugAdmin.EditDefib" %>
 <asp:Content ID="Content1" ContentPlaceHolderId="HeadContent" runat="server">
     <link href="<%# ResolveUrl("~/Content/WardManagement.css")%>" rel="stylesheet" type="text/css" />
 </asp:Content>

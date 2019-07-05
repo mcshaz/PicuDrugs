@@ -12,8 +12,8 @@
   <DataSets>
     <DataSet Name="infusionDataSet">
       <Fields>
-        <Field Name="drugID">
-          <DataField>drugID</DataField>
+        <Field Name="drugId">
+          <DataField>drugId</DataField>
           <rd:TypeName>System.Int32</rd:TypeName>
         </Field>
         <Field Name="minimumRate">
@@ -993,6 +993,6 @@ Fields!rateRange.Value</Value>
     <ColumnSpacing>0.13cm</ColumnSpacing>
     <Style />
   </Page>
-  <rd:ReportID>2fd0da11-feaa-45aa-b856-6480918d63fa</rd:ReportID>
+  <rd:ReportId>2fd0da11-feaa-45aa-b856-6480918d63fa</rd:ReportId>
   <rd:ReportUnitType>Cm</rd:ReportUnitType>
 </Report>

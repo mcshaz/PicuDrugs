@@ -1,5 +1,7 @@
 ﻿//this code replaces the sql stored procedure pVariableTimeInfusions in order to run under sql compact (CE), which does not support stored procedures. 
-//If moving up to sql server, would recomend this code be made obscolete for reason of computational efficiency and query optimisation, and call DataContext.pVariableTimeInfusions
+//If moving up to sql server, would recomend this code be made obscolete for reason of computational efficiency and query optimisation, and call DrugSqlContext.pVariableTimeInfusions
+using DBToJSON;
+using DBToJSON.SqlEntities.Enums;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -11,14 +13,11 @@ namespace PICUdrugs.DAL
         public string Fullname {get; set;} 
         public string Abbrev {get; set;} 
         public int AmpulePrefix {get; set;} 
-		public string Note {get; set;} 
-        public string Measure {get; set;} 
+		public string Note {get; set;}
+        public DilutionMethod DilutionMethod { get; set; }
+        public SiUnit SiUnitId {get; set;} 
         public string Category {get; set;} 
-        public bool IsNeat {get; set;} 
-        public bool IsVaryConcentration {get; set;} 
-        public bool IsVaryVolume {get; set;} 
-		public bool IsPerKg {get; set;}
-        public int DilutionPrefix { get; set; }
+        public int InfusionPrefix { get; set; }
         public int? Volume {get; set;}
 		public double RateMin {get; set;} 
         public double RateMax {get; set;} 
@@ -29,18 +28,18 @@ namespace PICUdrugs.DAL
     }
     public class PVariableTimeInfusions : IDisposable
     {
-        private DataContext _db;
-        public PVariableTimeInfusions():this(new DataContext())
+        private DrugSqlContext _db;
+        public PVariableTimeInfusions():this(new DrugSqlContext())
         {
         }
-        public PVariableTimeInfusions(DataContext db)
+        public PVariableTimeInfusions(DrugSqlContext db)
         {
             _db = db;
         }
 
         public IEnumerable<VariableInfusionRowData> GetRowData(int wardId, double weight, int ageMonths)
         {
-            return _db.Database.SqlQuery<VariableInfusionRowData>("EXEC sp_GetVariableInfusions @WardId={0}, @AgeMonths={1}, @WeightKg={2}",
+            return _db.Database.SqlQuery<VariableInfusionRowData>("EXEC sp_GetVariableInfusions2 @WardId={0}, @AgeMonths={1}, @WeightKg={2}",
                 wardId, ageMonths, weight).ToList();
             /*
             return (from c in _db.VariableTimeConcentrations
@@ -52,15 +51,15 @@ namespace PICUdrugs.DAL
                     {
                         Fullname = c.VariableTimeDilution.InfusionDrug.Fullname,
                         Abbrev = c.VariableTimeDilution.InfusionDrug.Abbrev,
-                        AmpulePrefix = c.VariableTimeDilution.InfusionDrug.SiPrefixVal, 
+                        AmpulePrefix = c.VariableTimeDilution.InfusionDrug.SiPrefix, 
 		                Note = c.VariableTimeDilution.InfusionDrug.Note, 
-                        Measure = c.VariableTimeDilution.InfusionDrug.SiUnit.Measure, 
+                        Measure = c.VariableTimeDilution.InfusionDrug.SiUnitId.ToString(), 
                         Category = c.DoseCat.Category, 
                         IsNeat = c.VariableTimeDilution.DilutionMethod.IsNeat, 
                         IsVaryConcentration = c.VariableTimeDilution.DilutionMethod.IsVaryConcentration, 
                         IsVaryVolume = c.VariableTimeDilution.DilutionMethod.IsVaryVolume, 
 		                IsPerKg = c.VariableTimeDilution.DilutionMethod.IsPerKg,
-                        DilutionPrefix = c.VariableTimeDilution.SiPrefixVal,
+                        DilutionPrefix = c.VariableTimeDilution.SiPrefix,
                         Volume = c.VariableTimeDilution.Volume,
 		                RateMin = c.VariableTimeDilution.RateMin , 
                         RateMax = c.VariableTimeDilution.RateMax, 
@@ -114,8 +113,8 @@ BEGIN
 	SET NOCOUNT ON;
 
     -- Insert statements for procedure here
-	SELECT drug.InfusionDrugId, drug.Fullname, drug.Abbrev, drug.SiPrefixVal AS AmpulePrefix, drug.Note, unit.Measure, cat.Category, dm.IsNeat, dm.IsVaryConcentration, 
-                      dm.IsVaryVolume, dm.IsPerKg, dil.SiPrefixVal AS DilutionPrefix, dil.Volume, dil.RateMin, dil.RateMax, dil.IsPerMin, conc.Concentration, ref.Hyperlink, 
+	SELECT drug.InfusionDrugId, drug.Fullname, drug.Abbrev, drug.SiPrefix AS AmpulePrefix, drug.Note, unit.Measure, cat.Category, dm.IsNeat, dm.IsVaryConcentration, 
+                      dm.IsVaryVolume, dm.IsPerKg, dil.SiPrefix AS DilutionPrefix, dil.Volume, dil.RateMin, dil.RateMax, dil.IsPerMin, conc.Concentration, ref.Hyperlink, 
                       dil.ReferencePage
 FROM         dbo.InfusionDrugs AS drug INNER JOIN
                       dbo.SiUnits AS unit ON drug.SiUnitId = unit.SiUnitId INNER JOIN

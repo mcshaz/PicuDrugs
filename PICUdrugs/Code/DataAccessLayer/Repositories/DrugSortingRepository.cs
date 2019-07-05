@@ -1,4 +1,7 @@
-﻿using System;
+﻿using DBToJSON;
+using DBToJSON.SqlEntities.BolusDrugs;
+using DBToJSON.SqlEntities.Infusions;
+using System;
 using System.Collections.Generic;
 using System.Data.SqlClient;
 using System.Linq;
@@ -8,7 +11,7 @@ namespace PICUdrugs.DAL
 {
     public class InfusionSortingRepository : IDisposable
     {
-        private DataContext _db = new DataContext();
+        private DrugSqlContext _db = new DrugSqlContext();
         public IEnumerable<InfusionDrug> GetInfDrugsAndOrders()
         {
             return (from d in _db.InfusionDrugs.Include("InfusionSortOrderings").Include("SpecificWard")
@@ -27,15 +30,15 @@ namespace PICUdrugs.DAL
                 throw;
             }
         }
-        public void InsertSortOrder(int WardId, int[] InfusionIDs)
+        public void InsertSortOrder(int WardId, int[] InfusionIds)
         {
             try
             {
-                for (int i = 0; i < InfusionIDs.Length; i++)
+                for (int i = 0; i < InfusionIds.Length; i++)
                 {
                      _db.InfusionSortOrderings.Add(new InfusionSortOrdering(){WardId = WardId,
                                                                                         SortOrder = i + 1,
-                                                                                        InfusionDrugId = InfusionIDs[i]});
+                                                                                        InfusionDrugId = InfusionIds[i]});
                 }
                 _db.SaveChanges();
             }
@@ -128,7 +131,7 @@ namespace PICUdrugs.DAL
     }
     public class BolusSortingRepository : IDisposable
     {
-        private DataContext _db = new DataContext();
+        private DrugSqlContext _db = new DrugSqlContext();
         public IEnumerable<BolusDrug> GetBolusDrugsAndOrders()
         {
             return (from d in _db.BolusDrugs.Include("BolusSortOrderings").Include("SpecificWard")

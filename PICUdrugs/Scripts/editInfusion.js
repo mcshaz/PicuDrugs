@@ -101,16 +101,17 @@
         } else {
             $(this).closest('.templateBlock').find('span.perKg').hide();
         }
+        var $volInput;
         if (dilMethod[indexVal].varyVolume) {
-            var $volInput = $(this).closest('.templateBlock').find('.volume:input');
+            $volInput = $(this).closest('.templateBlock').find('.volume:input');
             oldDilutionVol = $.trim($volInput.val());
             $volInput.val('');
             $volInput.attr('disabled', 'disabled');
         } else {
-            var $volInput = $(this).closest('.templateBlock').find('input.volume');
+            $volInput = $(this).closest('.templateBlock').find('input.volume');
             $volInput.removeAttr('disabled');
-            if (oldDilutionVol == '') { oldDilutionVol = 50 };
-            if ($.trim($volInput.val()) == '') { $volInput.val(oldDilutionVol) };
+            if (oldDilutionVol === '') { oldDilutionVol = 50 };
+            if ($.trim($volInput.val()) === '') { $volInput.val(oldDilutionVol); }
         }
     };
     function mthOrYr_change(e) {

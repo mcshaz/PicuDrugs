@@ -2,6 +2,7 @@
 using System.Web.Security;
 using PICUdrugs.DAL;
 using System.Linq;
+using DBToJSON.SqlEntities;
 
 namespace PICUdrugs.Utils
 {

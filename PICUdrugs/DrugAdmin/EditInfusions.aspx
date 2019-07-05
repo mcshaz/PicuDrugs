@@ -189,8 +189,8 @@
                             <div class="fieldInputs">
                                 <span class="midVert">
                                     <asp:DropDownList ID="DilutionMethodDropDown" runat="server"
-                                        DataTextField="Description" OnDataBinding="DilutionMethodDropDown_DataBinding"
-                                        DataValueField="DilutionMethodId" CssClass="DilutionDropDown" 
+                                        DataTextField="Text" OnDataBinding="DilutionMethodDropDown_DataBinding"
+                                        DataValueField="Value" CssClass="DilutionDropDown" 
                                         SelectedValue='<%# Bind("DilutionMethodId") %>' />
                                 </span>
                             </div>
@@ -211,7 +211,7 @@
                                 </div>
                             </li>
                             <li>
-                                <div class="fieldLabel"><asp:Label runat="server" ID="volumeLabel" AssociatedControlID="volumeDC" >Final Volume:</asp:Label></div>
+                                <div class="fieldLabel"><asp:Label runat="server" ID="volumeLabel" AssociatedControlId="volumeDC" >Final Volume:</asp:Label></div>
                                 <div class="fieldInputs">
                                     <asp:DynamicControl Mode="Edit" ID="volumeDC" DataField="Volume" runat="server" ValidationGroup="editDilution" CssClass="singleInput"/>
                                     <span class="units"> mL</span>
@@ -225,7 +225,7 @@
                                     <asp:DropDownList ID="prefixDropDown" runat="server" 
                                         DataSourceID="SiPrefixesObjDataSrc" DataTextField="Value" 
                                         DataValueField="Key" 
-                                        SelectedValue='<%# Bind("SiPrefixVal") %>'>
+                                        SelectedValue='<%# Bind("SiPrefix") %>'>
                                     </asp:DropDownList>
                                     <asp:Label ID="unitLabel" runat="server"></asp:Label>
                                     <span ID="isPerKg" class="IsPerKg">/kg</span>
@@ -332,7 +332,7 @@
                                     </div>
                                 </li>
                             <li>
-                                <div class="fieldLabel"><asp:Label runat="server" ID="volumeLabel" AssociatedControlID="volumeDC" >Final Volume:</asp:Label></div>
+                                <div class="fieldLabel"><asp:Label runat="server" ID="volumeLabel" AssociatedControlId="volumeDC" >Final Volume:</asp:Label></div>
                                 <div class="fieldInputs">
                                     <asp:DynamicControl Mode="Edit" ID="volumeDC" DataField="Volume" runat="server" CssClass="singleInput"  ValidationGroup="editDilution" />
                                     <span class="units"> mL</span>
@@ -346,7 +346,7 @@
                                     <asp:DropDownList ID="prefixDropDown" runat="server" 
                                         DataSourceID="SiPrefixesObjDataSrc" DataTextField="Value" 
                                         DataValueField="Key" 
-                                        SelectedValue='<%# Bind("SiPrefixVal") %>'>
+                                        SelectedValue='<%# Bind("SiPrefix") %>'>
                                     </asp:DropDownList>
                                     <asp:Label ID="unitLabel" runat="server"></asp:Label>
                                     <asp:Label ID="IsPerKg" runat="server" CssClass="IsPerKg">/kg</asp:Label>
@@ -401,7 +401,7 @@
                     </li>
                     <li>
                         <span class="fieldLabel">Dilution Method:</span>
-                        <asp:Label ID="DilutionMethodIDLabel" runat="server" />
+                        <asp:Label ID="DilutionMethodIdLabel" runat="server" />
                     </li>
                     <asp:PlaceHolder ID="variableTimeSpecific" runat="server">
                         <li>

@@ -1,7 +1,11 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
+using DBToJSON.SqlEntities.Infusions;
 using PICUdrugs.DAL;
+using DBToJSON.SqlEntities;
+using DBToJSON.SqlEntities.Enums;
+
 namespace PICUdrugs.BLL
 {
     public class InfusionBL:IDisposable
@@ -110,20 +114,20 @@ namespace PICUdrugs.BLL
             }
             FormatReferencePage(infDil);
         }
-        private void ValidateVariableTimeVolume(int? volume, int dilutionMethodId)
+        private void ValidateVariableTimeVolume(int? volume, DilutionMethod dilutionMethodId)
         {
             if (volume.HasValue) { return; }
-            var dilType = _drugConcRepository.GetDilutionMethod(dilutionMethodId);
+            var dilType = DilutionLogic.GetMethod(dilutionMethodId);
             if (!(dilType.IsVaryVolume && dilType.IsVaryConcentration))
             {
                 throw new InvalidNullCombination("Volume can only be null if dilution method is of variable volume and fixed flow");
             }
 
         }
-        private void ValidateFixedTimeVolume(int? volume, int dilutionMethodId)
+        private void ValidateFixedTimeVolume(int? volume, DilutionMethod dilutionMethodId)
         {
             if (volume.HasValue) { return; }
-            var dilType = _drugConcRepository.GetDilutionMethod(dilutionMethodId);
+            var dilType = DilutionLogic.GetMethod(dilutionMethodId);
             if (!(dilType.IsPerKg && !dilType.IsVaryConcentration && !dilType.IsVaryVolume))
             {
                 throw new InvalidNullCombination("Volume must be entered with this dilution method");
@@ -344,10 +348,6 @@ namespace PICUdrugs.BLL
         public IEnumerable<DoseCat> GetDoseCats()
         {
             return _drugConcRepository.GetDoseCats();
-        }
-        public IEnumerable<DilutionMethod> GetDilutionMethods()
-        {
-            return _drugConcRepository.GetDilutionMethods();
         }
 
         private bool disposedValue = false; 

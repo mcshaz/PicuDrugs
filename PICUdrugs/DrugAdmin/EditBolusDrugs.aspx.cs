@@ -6,6 +6,7 @@ using System.Web.UI.WebControls;
 using PICUdrugs.DAL;
 using PICUdrugs.BLL;
 using PICUdrugs.Utils;
+using DBToJSON.SqlEntities.BolusDrugs;
 
 namespace PICUdrugs.drugAdmin
 {

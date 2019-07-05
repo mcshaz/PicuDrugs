@@ -10,7 +10,7 @@
 namespace PICUdrugs.drugAdmin {
     
     
-    public partial class editDefib {
+    public partial class EditDefib {
         
         /// <summary>
         /// allDefibs control.

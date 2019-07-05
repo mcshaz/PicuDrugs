@@ -4,6 +4,8 @@ using System.Linq;
 using PICUdrugs.DAL;
 using PICUdrugs.Code.Utilities;
 using PICUdrugs.Html.Utilities;
+using DBToJSON.SqlEntities.BolusDrugs;
+
 namespace PICUdrugs.BLL
 {
     public class SortingDrugItem
@@ -135,15 +137,14 @@ namespace PICUdrugs.BLL
             BolusSortOrdering[] sort = new BolusSortOrdering[newOrder.Length];
             for (int i = 0; i < newOrder.Length; i++)
             {
-                int drugId;
-                if (int.TryParse(newOrder[i], out drugId))
+                if (int.TryParse(newOrder[i], out int drugId))
                 {
                     sort[i] = new BolusSortOrdering
                     {
                         WardId = WardId,
                         SortOrder = i + 1,
                     };
-                    if (drugId >0)
+                    if (drugId > 0)
                     {
                         sort[i].BolusDrugId = drugId;
                     }

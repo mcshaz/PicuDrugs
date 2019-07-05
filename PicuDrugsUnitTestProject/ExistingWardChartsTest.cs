@@ -5,6 +5,7 @@ using PICUdrugs.DAL;
 using PICUdrugs.Utils;
 using System.Collections.Generic;
 using System.Linq;
+using DBToJSON.SqlEntities;
 
 namespace PicuDrugsUnitTestProject
 {

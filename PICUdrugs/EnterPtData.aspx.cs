@@ -9,6 +9,9 @@ using System.Web.Script.Serialization;
 using PICUdrugs.Utils;
 using PICUdrugs.DAL;
 using StatsForAge.DataSets;
+using DBToJSON.SqlEntities;
+using DBToJSON;
+
 namespace PICUdrugs.Pages
 {
     public partial class EnterPtData : Page
@@ -317,7 +320,7 @@ namespace PICUdrugs.Pages
             {
                 
                 List<Ward> wards;
-                using (var db = new DataContext())
+                using (DrugSqlContext db = new DrugSqlContext())
                 {
                     wards = db.Wards.ToList();
                              //where w.IsLive || w.WardId==userWardId
@@ -354,7 +357,7 @@ namespace PICUdrugs.Pages
             else
             {
                 IEnumerable<Ward> wards;
-                using (var db = new DataContext())
+                using (DrugSqlContext db = new DrugSqlContext())
                 {
                     wards = (from w in db.Wards
                              where w.IsLive

@@ -248,7 +248,7 @@
     };
     var uniqueId = 0;
     function getUniqueId() {
-        return "runtimeID_" + uniqueId++;
+        return "runtimeId_" + uniqueId++;
     };
     function row_altered(e) {
         var tableObj = e.data.tableData,

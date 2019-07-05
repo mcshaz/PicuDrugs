@@ -1,6 +1,8 @@
 ﻿using System;
 using System.Collections.Generic;
-using PICUdrugs.DAL;
+using DBToJSON.SqlEntities.Enums;
+using DBToJSON.SqlEntities.Infusions;
+
 namespace PICUdrugs.DAL
 {
     public interface IInfusionRepository : IDisposable
@@ -35,8 +37,6 @@ namespace PICUdrugs.DAL
         IEnumerable<FixedTimeConcentration> GetFixedTimeConcentrationsByStopTime(int DilutionId, int totalMinutes);
 
         IEnumerable<DoseCat> GetDoseCats();
-        IEnumerable<DilutionMethod> GetDilutionMethods();
-        DilutionMethod GetDilutionMethod(int dilutionMethodId);
         DoseCat GetDoseCatById(int? DoseCatId);
     }
 }

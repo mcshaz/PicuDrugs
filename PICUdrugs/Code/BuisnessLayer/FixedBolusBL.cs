@@ -5,6 +5,8 @@ using System.Web;
 using PICUdrugs.DAL;
 using PICUdrugs.Html.Utilities;
 using PICUdrugs.Code.Utilities;
+using DBToJSON.SqlEntities.BolusDrugs;
+
 namespace PICUdrugs.BLL
 {
     public class FixedBolusBL:IDisposable

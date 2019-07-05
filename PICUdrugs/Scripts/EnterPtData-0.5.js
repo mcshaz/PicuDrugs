@@ -293,8 +293,8 @@
 
         pic.el.chooseLbl.appendChild(pic.el.drugName);
 
-        ValidatorHookupControlID(pic.el.yrs.id, pic.el.WtOrAgeVal);
-        ValidatorHookupControlID(pic.el.months.id, pic.el.WtOrAgeVal);
+        ValidatorHookupControlId(pic.el.yrs.id, pic.el.WtOrAgeVal);
+        ValidatorHookupControlId(pic.el.months.id, pic.el.WtOrAgeVal);
 
         pic.util.addEvent(pic.el.medianWeightBtn, 'click', pic.page.getMedianWt);
         pic.util.addEvent(pic.el.yrs, 'blur', function () {

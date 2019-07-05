@@ -8,6 +8,7 @@ using System.Web.DynamicData;
 using PICUdrugs.DAL;
 using PICUdrugs.BLL;
 using PICUdrugs.Utils;
+using DBToJSON.SqlEntities.BolusDrugs;
 
 namespace PICUdrugs.drugAdmin
 {

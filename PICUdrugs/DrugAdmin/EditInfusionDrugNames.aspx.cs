@@ -5,6 +5,7 @@ using System.Web.UI;
 using System.Web.UI.WebControls;
 using PICUdrugs.DAL;
 using PICUdrugs.BLL;
+using DBToJSON.SqlEntities.Infusions;
 
 namespace PICUdrugs.drugAdmin
 {
@@ -18,7 +19,7 @@ namespace PICUdrugs.drugAdmin
         }
         protected void Page_Init(object sender, EventArgs e)
         {
-            InfusionListview.EnableDynamicData(typeof(PICUdrugs.DAL.InfusionDrug));
+            InfusionListview.EnableDynamicData(typeof(InfusionDrug));
         }
         protected void InfusionLV_dataBound(object sender, ListViewItemEventArgs e)
         {
@@ -35,7 +36,7 @@ namespace PICUdrugs.drugAdmin
             Label nameLbl = e.Item.FindControl("fullnameLabel") as Label;
             if (nameLbl!=null) nameLbl.Text=infDrug.Fullname.Replace("/","/<br>");
             Label prefixLbl = e.Item.FindControl("SiPrefixValLabel") as Label;
-            if (prefixLbl != null) prefixLbl.Text = SiPrefixesList[infDrug.SiPrefixVal];
+            if (prefixLbl != null) prefixLbl.Text = SiPrefixesList[infDrug.SiPrefix];
         }
         IEnumerable<KeyValuePair<int?, string>> _wards;
         private IEnumerable<KeyValuePair<int?, string>> Wards

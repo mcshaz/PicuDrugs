@@ -5,6 +5,9 @@ using System.Web;
 using System.Text.RegularExpressions;
 using PICUdrugs.DAL;
 using System.ComponentModel.DataAnnotations;
+using DBToJSON.SqlEntities;
+using DBToJSON.SqlEntities.Infusions;
+
 namespace PICUdrugs.BLL
 {
     public class ReferenceModel

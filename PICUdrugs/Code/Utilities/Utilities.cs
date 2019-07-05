@@ -7,6 +7,7 @@ using System.Text;
 using System.Net;
 //remove after debugging
 using System.Diagnostics;
+using DBToJSON.SqlEntities.Enums;
 
 namespace PICUdrugs.Utils
 {
@@ -86,10 +87,10 @@ namespace PICUdrugs.Utils
                     return "";
             }
         }
-        public static string UnitString(int logVal, string unitName, out bool pleuralise)
+        public static string UnitString(int logVal, SiUnit unit, out bool pleuralise)
         {
             pleuralise = false;
-            if (unitName == "gram") 
+            if (unit == SiUnit.gram) 
             { 
                 switch (logVal)
                 {
@@ -101,12 +102,12 @@ namespace PICUdrugs.Utils
                         break;
                 }
             }
-            else if (unitName == "mole" && logVal == -3)
+            else if (unit == SiUnit.mole && logVal == -3)
             {
                 return "mmol";
             }
             pleuralise = true;
-            return LogSiToString(logVal) + unitName;
+            return LogSiToString(logVal) + unit.ToString();
         }
         public static char LogSiToChar(int logVal)
         {

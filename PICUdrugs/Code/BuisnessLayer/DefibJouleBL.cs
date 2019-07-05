@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Web;
+using DBToJSON.SqlEntities.BolusDrugs;
 using PICUdrugs.DAL;
 namespace PICUdrugs.BLL
 {

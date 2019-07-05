@@ -1,4 +1,6 @@
-﻿using System;
+﻿using DBToJSON;
+using DBToJSON.SqlEntities.Infusions;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Web;
@@ -7,10 +9,10 @@ namespace PICUdrugs.DAL
 {
     public class InfusionDrugNameRepository :IDisposable
     {
-        private DataContext _db = new DataContext();
+        private DrugSqlContext _db = new DrugSqlContext();
         public IEnumerable<InfusionDrug> GetInfusionDrugs()
         {
-            return _db.InfusionDrugs.Include("SiUnit").Include("SiUnit").Include("DrugReferenceSource").Include("InfusionDiluent").Include("DrugRoute")
+            return _db.InfusionDrugs.Include("DrugReferenceSource").Include("InfusionDiluent").Include("DrugRoute")
                 .OrderBy(d=>d.Fullname)
                 .ToList();
         }

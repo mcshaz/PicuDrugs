@@ -1,4 +1,5 @@
-﻿using PICUdrugs.DAL;
+﻿using DBToJSON;
+using PICUdrugs.DAL;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -20,7 +21,7 @@ namespace PICUdrugs.Utils
     }
     public static class TableExtensioons
     {
-        public static string toHtml(this BooleanTable tbl,string trueHtm = "&#x2611;", string falseHtm = "&#x2610;", string thead="", string id="", string colHeadFormat="{0}")
+        public static string ToHtml(this BooleanTable tbl,string trueHtm = "&#x2611;", string falseHtm = "&#x2610;", string thead="", string id="", string colHeadFormat="{0}")
         {
             var sb = new StringBuilder();
             sb.AppendFormat("<table {0}>\n\t<thead>\n\t\t<tr>\n", string.IsNullOrEmpty(id)?"":"id='"+id+"'");
@@ -54,7 +55,7 @@ namespace PICUdrugs.Utils
     }
     public class DrugUseTables: IDisposable
     {
-        private DataContext _db = new DataContext();
+        private DrugSqlContext _db = new DrugSqlContext();
         private Dictionary<int, Vector> _wards;
         private Dictionary<int, Vector> GetWards()
         {
@@ -68,8 +69,10 @@ namespace PICUdrugs.Utils
         }
         public BooleanTable BolusTable()
         {
-            var tbl = new BooleanTable();
-            tbl.Cols = GetWards();
+            var tbl = new BooleanTable
+            {
+                Cols = GetWards()
+            };
             int i=0;
             tbl.Rows = (from b in _db.BolusDrugs
                         orderby b.DrugName
@@ -89,8 +92,10 @@ namespace PICUdrugs.Utils
         }
         public BooleanTable InfusionTable()
         {
-            var tbl = new BooleanTable();
-            tbl.Cols = GetWards();
+            var tbl = new BooleanTable
+            {
+                Cols = GetWards()
+            };
             int i = 0;
             tbl.Rows = (from b in _db.InfusionDrugs
                         where b.IsTitratable

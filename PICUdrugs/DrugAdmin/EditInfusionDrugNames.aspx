@@ -50,7 +50,7 @@
                     <asp:DropDownList ID="prefixDropDown" runat="server" 
                             DataSourceID="SiPrefixesObjDataSrc" DataTextField="Value" 
                             DataValueField="Key" 
-                            SelectedValue='<%# Bind("SiPrefixVal") %>'>
+                            SelectedValue='<%# Bind("SiPrefix") %>'>
                     </asp:DropDownList>
                 </td>
                 <td>
@@ -61,7 +61,7 @@
                     </asp:DropDownList>
                 </td>
                 <td>
-                    <asp:DropDownList ID="routeIDdropDown" runat="server" 
+                    <asp:DropDownList ID="routeIddropDown" runat="server" 
                     DataTextField="abbrev" DataValueField="routeId"
                     Text='<%# Bind("RouteId") %>' 
                     DataSourceID="DrugRoutesEntity"
@@ -70,7 +70,7 @@
                     </asp:DropDownList>
                 </td>
                 <td>
-                    <asp:DropDownList ID="diluentIDdropDown" runat="server" 
+                    <asp:DropDownList ID="diluentIddropDown" runat="server" 
                     DataTextField="abbrev" DataValueField="DiluentId"
                     Text='<%# Bind("InfusionDiluentId") %>' 
                     DataSourceID="diluentsEntity"
@@ -79,7 +79,7 @@
                     </asp:DropDownList>
                 </td>
                 <td>
-                    <asp:DropDownList ID="ReferenceIDdropDown" runat="server" 
+                    <asp:DropDownList ID="ReferenceIddropDown" runat="server" 
                     DataTextField="abbrev" DataValueField="DrugReferenceId"
                     Text='<%# Bind("DrugReferenceId") %>' 
                     DataSourceID="referencesEntity"/>
@@ -126,7 +126,7 @@
                     <asp:DropDownList ID="prefixDropDown" runat="server" 
                             DataSourceID="SiPrefixesObjDataSrc" DataTextField="Value" 
                             DataValueField="Key" 
-                            SelectedValue='<%# Bind("SiPrefixVal") %>'>
+                            SelectedValue='<%# Bind("SiPrefix") %>'>
                     </asp:DropDownList>
                 </td>
                 <td>
@@ -136,7 +136,7 @@
                     </asp:DropDownList>
                 </td>
                 <td>
-                    <asp:DropDownList ID="routeIDdropDown" runat="server" 
+                    <asp:DropDownList ID="routeIddropDown" runat="server" 
                     DataTextField="Abbrev" DataValueField="RouteId"
                     Text='<%# Bind("RouteId") %>' 
                     DataSourceID="DrugRoutesEntity"
@@ -145,7 +145,7 @@
                     </asp:DropDownList>
                 </td>
                 <td>
-                    <asp:DropDownList ID="diluentIDdropDown" runat="server" 
+                    <asp:DropDownList ID="diluentIddropDown" runat="server" 
                     DataTextField="Abbrev" DataValueField="DiluentId"
                     Text='<%# Bind("InfusionDiluentId") %>' 
                     DataSourceID="diluentsEntity"
@@ -154,7 +154,7 @@
                     </asp:DropDownList>
                 </td>
                 <td>
-                    <asp:DropDownList ID="ReferenceIDdropDown" runat="server" 
+                    <asp:DropDownList ID="ReferenceIddropDown" runat="server" 
                     DataTextField="Abbrev" DataValueField="DrugReferenceId"
                     Text='<%# Bind("DrugReferenceId") %>'
                     DataSourceID="referencesEntity"/>
@@ -196,7 +196,7 @@
                     <asp:Label ID="SiPrefixValLabel" runat="server" />
                 </td>
                 <td>
-                    <asp:Label ID="SiUnitIDLabel" runat="server" Text='<%# Eval("SiUnit.Measure") %>' />
+                    <asp:Label ID="SiUnitIdLabel" runat="server" Text='<%# Eval("SiUnit.Measure") %>' />
                 </td>
                 <td>
                     <asp:Label ID="routeLabel" runat="server" Text='<%# Eval("DrugRoute.Abbrev") %>' />
@@ -205,7 +205,7 @@
                     <asp:Label ID="Label1" runat="server" Text='<%# Eval("InfusionDiluent.Abbrev") %>' />
                 </td>
                 <td>
-                    <asp:Label ID="ReferenceIDLabel" runat="server" Text='<%# Eval("DrugReferenceSource.Abbrev") %>' />
+                    <asp:Label ID="ReferenceIdLabel" runat="server" Text='<%# Eval("DrugReferenceSource.Abbrev") %>' />
                 </td>
                 <td>
                     <asp:Label ID="NoteLabel" runat="server" Text='<%# Eval("Note") %>' />

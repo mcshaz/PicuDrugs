@@ -39,12 +39,12 @@
 			                        <%#Eval("DefibModel.Name")%>
 		                        </ItemTemplate>
 		                        <InsertItemTemplate>
-			                        <asp:DropDownList ID="DefibList" datasourceid="allDefibs" ValidationGroup="wardDetails"
+			                        <asp:DropDownList ID="DefibList" DataSourceID="allDefibs" ValidationGroup="wardDetails"
 				                        datatextfield="Name" DataValueField="Id" 
 				                        SelectedValue='<%# Bind("DefibId") %>' runat="server"/>
 		                        </InsertItemTemplate>
 		                        <EditItemTemplate>
-			                        <asp:DropDownList ID="DefibList" datasourceid="allDefibs" ValidationGroup="wardDetails"
+			                        <asp:DropDownList ID="DefibList" DataSourceID="allDefibs" ValidationGroup="wardDetails"
 				                        datatextfield="Name" DataValueField="Id" 
 				                        SelectedValue='<%# Bind("DefibId") %>' runat="server"/>
 		                        </EditItemTemplate>

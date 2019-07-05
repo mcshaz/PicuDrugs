@@ -1,8 +1,8 @@
 ﻿<%@ Page Title="" Language="C#" MasterPageFile="~/Site.Master" AutoEventWireup="true" CodeBehind="EmailMembers.aspx.cs" Inherits="PICUdrugs.WebsiteAdmin.EmailMembers" %>
-<asp:Content ID="Content3" ContentPlaceHolderID="headings" runat="server">
+<asp:Content ID="Content3" ContentPlaceHolderId="headings" runat="server">
     <h3>Email Members</h3>
 </asp:Content>
-<asp:Content ID="Content4" ContentPlaceHolderID="MainContent" runat="server">
+<asp:Content ID="Content4" ContentPlaceHolderId="MainContent" runat="server">
     <asp:GridView ID="MembershipList" runat="server" AutoGenerateColumns = "false">
         <Columns>
             <asp:Boundfield DataField="UserName" HeaderText="User" />

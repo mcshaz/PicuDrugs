@@ -9,6 +9,7 @@ using PICUdrugs.BLL;
 using PICUdrugs.Utils;
 using System.Web.UI.HtmlControls;
 using System.Web.Helpers;
+using DBToJSON.SqlEntities.BolusDrugs;
 
 namespace PICUdrugs.WardAdmin
 {
@@ -153,7 +154,7 @@ namespace PICUdrugs.WardAdmin
             }
         }
 
-        protected void cloneBolusGo_Click(object sender, EventArgs e)
+        protected void CloneBolusGo_Click(object sender, EventArgs e)
         {
             int cloneTo = int.Parse(Request.Form[cloneBolusSelect.UniqueID]);
             CloneWardBoluses(WardList.SelectedWardId, cloneTo);

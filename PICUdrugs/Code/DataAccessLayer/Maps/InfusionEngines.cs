@@ -1,9 +1,13 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Web;
 using PICUdrugs.Utils;
 using PICUdrugs.DAL;
+using DBToJSON;
+using DBToJSON.SqlEntities.Infusions;
+using DBToJSON.SqlEntities;
+using DBToJSON.SqlEntities.Enums;
+
 namespace PICUdrugs.Utils
 {
     public static partial class UserSelectedInfusion
@@ -30,9 +34,9 @@ namespace PICUdrugs.Utils
         }
         public static SingleInfusion[] GetSingleInfusions()
         {
-            using (DataContext db = new DataContext())
+            using (DrugSqlContext db = new DrugSqlContext())
             {
-                return (from drug in db.InfusionDrugs.Include("DrugAmpuleConcentrations").Include("SiUnit")
+                return (from drug in db.InfusionDrugs.Include("DrugAmpuleConcentrations")
                           where db.FixedTimeDilutions.Any(dil => dil.InfusionDrugId == drug.InfusionDrugId)
                                 && drug.DrugAmpuleConcentrations.Any()
                           select drug).ToArray() //converting toArray so that static methods (drugUnits) do not confuse linq to entities
@@ -51,9 +55,9 @@ namespace PICUdrugs.Utils
         public static SingleInfusion GetSingleInfusion(string infusionName)
         {
             InfusionDrug drug;
-            using (DataContext db = new DataContext())
+            using (DrugSqlContext db = new DrugSqlContext())
             {
-                drug = (from d in db.InfusionDrugs.Include("DrugAmpuleConcentrations").Include("SiUnit")
+                drug = (from d in db.InfusionDrugs.Include("DrugAmpuleConcentrations")
                         where d.Fullname == infusionName || d.Abbrev == infusionName
                               && d.DrugAmpuleConcentrations.Any()
                         select d).FirstOrDefault();
@@ -73,7 +77,7 @@ namespace PICUdrugs.Utils
         }
         public static AmpuleDetail[] AmpConc(int drugId)
         {
-            using (DataContext myEntities = new DataContext())
+            using (DrugSqlContext myEntities = new DrugSqlContext())
             {
                 //to do - if neat, only one concentration appropriate
                 var concentrations = (from conc in myEntities.DrugAmpuleConcentrations.Include("InfusionDrug").Include("InfusionDrug.SiUnit")
@@ -96,9 +100,9 @@ namespace PICUdrugs.DAL
                     double weight,
                     double concentration,
                     double? Volume,
+                    int ampulePrefix,
                     int infusionPrefix,
-                    int ampPrefix,
-                    string unitMeasure,
+                    SiUnit unit,
                     bool isPerKg,
                     bool isPerMin,
                     bool isVaryConcentration,
@@ -111,7 +115,7 @@ namespace PICUdrugs.DAL
             {
                 throw new Exception(FieldConst.wtErr);
             }
-            double ampConvFact = Math.Pow(10, infusionPrefix - ampPrefix);
+            double ampConvFact = Math.Pow(10, infusionPrefix - ampulePrefix);
             _isNeat = neat;
             if (isVaryConcentration)
             {
@@ -161,9 +165,9 @@ namespace PICUdrugs.DAL
                     }
                 }
             }
-            DrawingUpUnits = Formulas.UnitString(ampPrefix, unitMeasure, out bool pleuralise);
+            DrawingUpUnits = Formulas.UnitString(ampulePrefix, unit, out bool pleuralise);
             if (pleuralise && Math.Round(DrawingUpDose, closeTo1) != 1) { DrawingUpUnits += "s"; }
-            _infusionUnits = Formulas.UnitString(infusionPrefix, unitMeasure, out _pleuraliseInfusionUnits);
+            _infusionUnits = Formulas.UnitString(infusionPrefix, unit, out _pleuraliseInfusionUnits);
             _perKg = (isPerKg ? "/kg" : "");
             FinalConcentrationUnits = GetRateUnits(FinalConcentration) + (isPerMin ? "/min" : "/hr");
             _isPerMin = isPerMin;
@@ -242,20 +246,20 @@ namespace PICUdrugs.DAL
     public class StandardInfusion : DrugInfusion
     {
         public StandardInfusion(double weight,
-                    double Concentration,
-                    int? Volume,
-                    int InfusionPrefix,
-                    int ampPrefix,
-                    string unitMeasure,
-                    bool IsPerKg,
-                    bool IsPerMin,
-                    bool IsVaryConcentration,
-                    bool IsVaryVolume,
+                    double concentration,
+                    int? volume,
+                    int ampulePrefix,
+                    int infusionPrefix,
+                    SiUnit unit,
+                    bool isPerKg,
+                    bool isPerMin,
+                    bool isVaryConcentration,
+                    bool isVaryVolume,
                     bool neat,
                     double minDoseRate,
                     double maxDoseRate):
-            base(weight, Concentration, Volume, InfusionPrefix, ampPrefix,
-                unitMeasure, IsPerKg, IsPerMin, IsVaryConcentration, IsVaryVolume, neat)
+            base(weight, concentration, volume, ampulePrefix, infusionPrefix,
+                unit, isPerKg, isPerMin, isVaryConcentration, isVaryVolume, neat)
         {
             DoseRate = new NumericRange
             {
@@ -360,9 +364,9 @@ namespace PICUdrugs.DAL
         public FixedDurationInfusion(double weight,
                     double concentration,
                     int? volume,
+                    int ampulePrefix,
                     int infusionPrefix,
-                    int ampPrefix,
-                    string unitMeasure,
+                    SiUnit unit,
                     bool isPerKg,
                     bool isPerMin,
                     bool isVaryConcentration,
@@ -377,9 +381,9 @@ namespace PICUdrugs.DAL
                 //if isPerKg && !(isVarConcentration || isVaryVolume) - work out volume = (amount administered = weight*finaldose) / concentration 
                 //conc = 1ml/hr = x units/(kg)/mh
                 //if 
-                infusionPrefix, 
-                ampPrefix,
-                unitMeasure, 
+                ampulePrefix, 
+                infusionPrefix,
+                unit, 
                 isPerKg, 
                 isPerMin, 
                 isVaryConcentration, 
@@ -392,7 +396,7 @@ namespace PICUdrugs.DAL
             DoseRate = doseRate;
             FlowRate = doseRate/FinalConcentration;
             _unitsPerMin = (DoseRate*Math.Pow(10,infusionPrefix))/ (isPerMin?1:60);
-            _unitMeasure = unitMeasure + (isPerKg?"/kg":"");
+            _unitMeasure = unit.ToString() + (isPerKg?"/kg":"");
 
             if (minsDuration > FieldConst.maxStop || minsDuration < FieldConst.minStop) throw new Exception(FieldConst.stopErr);
             MinsDuration = minsDuration;
@@ -409,7 +413,7 @@ namespace PICUdrugs.DAL
                 siPrefix = 0;  //not usually talking kilograms or kilounits
             }
             DoseTotal = dose;
-            DoseTotalUnits = Formulas.UnitString(siPrefix, unitMeasure, out bool pleuraliseTotalUits);
+            DoseTotalUnits = Formulas.UnitString(siPrefix, unit, out bool pleuraliseTotalUits);
             DoseTotalUnits += (pleuraliseTotalUits?"s":string.Empty) + _perKg;
 
         }

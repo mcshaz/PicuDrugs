@@ -78,8 +78,8 @@
     <footer class="footer">
 
     </footer>
-</form>
-     <asp:ContentPlaceHolder runat="server" ID="MasterScripts">
+</form>     
+    <asp:ContentPlaceHolder runat="server" ID="MasterScripts">
         <asp:ScriptManager runat="server" EnablePartialRendering="false" ID="ScriptManager1">
             <Scripts>
                 <asp:ScriptReference Path="~/scripts/Bootstrap.min.js" />

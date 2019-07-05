@@ -1,4 +1,5 @@
-﻿using System;
+﻿using DBToJSON.SqlEntities.BolusDrugs;
+using System;
 using System.Collections.Generic;
 namespace PICUdrugs.DAL
 {

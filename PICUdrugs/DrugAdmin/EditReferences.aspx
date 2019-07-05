@@ -21,7 +21,7 @@
     UpdateMethod="UpdateReference" DeleteMethod="DeleteReference" TypeName="PICUdrugs.BLL.referenceBL"
     OnUpdated="reference_CRUD" OnInserted="reference_CRUD" OnDeleted="reference_CRUD" DataObjectTypeName="PICUdrugs.BLL.ReferenceModel" >
     <SelectParameters>
-        <asp:controlparameter Name="refId" ControlID="RefAbrevDDL" PropertyName="SelectedValue"/>
+        <asp:controlparameter Name="refId" ControlId="RefAbrevDDL" PropertyName="SelectedValue"/>
     </SelectParameters>
     </asp:ObjectDataSource>
     <asp:DropDownList ID="RefAbrevDDL" runat="server" AutoPostBack="True" 

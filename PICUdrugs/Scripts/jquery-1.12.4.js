@@ -1763,8 +1763,8 @@ Expr = Sizzle.selectors = {
 
 							// Support: IE <9 only
 							// Defend against cloned attroperties (jQuery gh-1709)
-							uniqueCache = outerCache[ node.uniqueID ] ||
-								(outerCache[ node.uniqueID ] = {});
+							uniqueCache = outerCache[ node.uniqueId ] ||
+								(outerCache[ node.uniqueId ] = {});
 
 							cache = uniqueCache[ type ] || [];
 							nodeIndex = cache[ 0 ] === dirruns && cache[ 1 ];
@@ -1792,8 +1792,8 @@ Expr = Sizzle.selectors = {
 
 								// Support: IE <9 only
 								// Defend against cloned attroperties (jQuery gh-1709)
-								uniqueCache = outerCache[ node.uniqueID ] ||
-									(outerCache[ node.uniqueID ] = {});
+								uniqueCache = outerCache[ node.uniqueId ] ||
+									(outerCache[ node.uniqueId ] = {});
 
 								cache = uniqueCache[ type ] || [];
 								nodeIndex = cache[ 0 ] === dirruns && cache[ 1 ];
@@ -1818,8 +1818,8 @@ Expr = Sizzle.selectors = {
 
 											// Support: IE <9 only
 											// Defend against cloned attroperties (jQuery gh-1709)
-											uniqueCache = outerCache[ node.uniqueID ] ||
-												(outerCache[ node.uniqueID ] = {});
+											uniqueCache = outerCache[ node.uniqueId ] ||
+												(outerCache[ node.uniqueId ] = {});
 
 											uniqueCache[ type ] = [ dirruns, diff ];
 										}
@@ -2207,7 +2207,7 @@ function addCombinator( matcher, combinator, base ) {
 
 						// Support: IE <9 only
 						// Defend against cloned attroperties (jQuery gh-1709)
-						uniqueCache = outerCache[ elem.uniqueID ] || (outerCache[ elem.uniqueID ] = {});
+						uniqueCache = outerCache[ elem.uniqueId ] || (outerCache[ elem.uniqueId ] = {});
 
 						if ( (oldCache = uniqueCache[ dir ]) &&
 							oldCache[ 0 ] === dirruns && oldCache[ 1 ] === doneName ) {

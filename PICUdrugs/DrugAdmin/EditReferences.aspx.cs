@@ -4,6 +4,7 @@ using System.Linq;
 using System.Web;
 using System.Web.UI;
 using System.Web.UI.WebControls;
+using DBToJSON.SqlEntities.Infusions;
 using PICUdrugs.BLL;
 using PICUdrugs.DAL;
 using PICUdrugs.Utils;
@@ -33,14 +34,15 @@ namespace PICUdrugs.drugAdmin
              */
         }
 
-        protected void reference_CRUD(object sender, ObjectDataSourceStatusEventArgs e)
+        protected void Reference_CRUD(object sender, ObjectDataSourceStatusEventArgs e)
         {
             if (e.Exception != null)
             {
-                var overlappingAgeWtValidator = new CustomValidator();
-                overlappingAgeWtValidator.IsValid = false;
-
-                overlappingAgeWtValidator.ErrorMessage = "Update failed: " + Formulas.GetExceptionMessages(e.Exception);
+                var overlappingAgeWtValidator = new CustomValidator
+                {
+                    IsValid = false,
+                    ErrorMessage = "Update failed: " + Formulas.GetExceptionMessages(e.Exception)
+                };
                 Page.Validators.Add(overlappingAgeWtValidator);
                 e.ExceptionHandled = true;
             }

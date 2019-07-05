@@ -1,4 +1,7 @@
-﻿using PICUdrugs.DAL;
+﻿using DBToJSON;
+using DBToJSON.SqlEntities.Enums;
+using DBToJSON.SqlEntities.Infusions;
+using PICUdrugs.DAL;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -12,12 +15,12 @@ namespace PICUdrugs.DAL
         {
             if (_drugRoutes == null)
             {
-                using (var db = new DataContext())
+                using (DrugSqlContext db = new DrugSqlContext())
                 {
                     _drugRoutes = db.DrugRoutes.ToList();
                     _infusionDiluents = db.InfusionDiluents.ToList();
-                    _siUnits = db.SiUnits.ToList();
                 }
+                _siUnits = Enum.GetValues(typeof(SiUnit)).Cast<SiUnit>();
             }
         }
         static IEnumerable<DrugRoute> _drugRoutes;

@@ -4,18 +4,19 @@ using System.Linq;
 using System.Web;
 using PICUdrugs.Utils;
 using PICUdrugs.BLL;
+using DBToJSON;
 
 namespace PICUdrugs.DAL
 {
-    public class StatisticalTables:IDisposable
+    public class StatisticalTables : IDisposable
     {
-        private readonly DataContext _db;
+        private readonly DrugSqlContext _db;
         private readonly int _lookupVal;
         public StatisticalTables(ChildAge ptAge, bool isMale)
-            : this(new DataContext(),ptAge, isMale)
+            : this(new DrugSqlContext(),ptAge, isMale)
         {
         }
-        public StatisticalTables(DataContext db, ChildAge ptAge, bool isMale)
+        public StatisticalTables(DrugSqlContext db, ChildAge ptAge, bool isMale)
         {
             _db = db;
             _lookupVal = CdcLookupFormat(ptAge, isMale);

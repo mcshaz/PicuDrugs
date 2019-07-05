@@ -1,13 +1,13 @@
 ﻿<%@ PreviousPageType VirtualPath="~/EnterPtAnthropometry.aspx" %>
 <%@ Page Title="Anthropometry" Language="C#" MasterPageFile="~/Site.Master" AutoEventWireup="true" CodeBehind="DisplayAnthropometry.aspx.cs" Inherits="PICUdrugs.DisplayAnthropometry" %>
-<asp:Content ID="Content1" ContentPlaceHolderID="MasterScripts" runat="server">
+<asp:Content ID="Content1" ContentPlaceHolderId="MasterScripts" runat="server">
 </asp:Content>
-<asp:Content ID="Content2" ContentPlaceHolderID="HeadContent" runat="server">
+<asp:Content ID="Content2" ContentPlaceHolderId="HeadContent" runat="server">
 </asp:Content>
-<asp:Content ID="Content3" ContentPlaceHolderID="headings" runat="server">
+<asp:Content ID="Content3" ContentPlaceHolderId="headings" runat="server">
     <h2>Anthropometry</h2>
 </asp:Content>
-<asp:Content ID="Content4" ContentPlaceHolderID="MainContent" runat="server" EnableViewState="false">
+<asp:Content ID="Content4" ContentPlaceHolderId="MainContent" runat="server" EnableViewState="false">
 <fieldset id="resultSet">
     <legend>Age: <asp:Literal runat="server" ID="age"></asp:Literal></legend>
     <asp:PlaceHolder runat="server" ID="weightDetails">
