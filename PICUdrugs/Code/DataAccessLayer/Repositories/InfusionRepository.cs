@@ -13,14 +13,14 @@ namespace PICUdrugs.DAL
 
         public IEnumerable<VariableTimeDilution> GetVariableTimeDilutions(int drugId)
         {
-            return (from i in _db.VariableTimeDilutions.Include("DilutionMethod")  //.Include(".DoseCat")
+            return (from i in _db.VariableTimeDilutions.Include("InfusionDrug") //.Include("DilutionMethod")  //.Include(".DoseCat")
                     where i.InfusionDrugId == drugId
                     orderby i.AgeMinMonths, i.WeightMin
                     select i).ToList();
         }
         public IEnumerable<FixedTimeDilution> GetFixedTimeDilutions(int drugId)
         {
-            return (from i in _db.FixedTimeDilutions.Include("DilutionMethod") // now being handled in query string ->.Include("InfusionDrug.SiUnit")
+            return (from i in _db.FixedTimeDilutions.Include("InfusionDrug") //.Include("DilutionMethod") // now being handled in query string ->.Include("InfusionDrug.SiUnit")
                     where i.InfusionDrugId == drugId
                     orderby i.AgeMinMonths, i.WeightMin
                     select i).ToList();

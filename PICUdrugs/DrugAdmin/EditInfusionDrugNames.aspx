@@ -196,7 +196,7 @@
                     <asp:Label ID="SiPrefixValLabel" runat="server" />
                 </td>
                 <td>
-                    <asp:Label ID="SiUnitIdLabel" runat="server" Text='<%# Eval("SiUnit.Measure") %>' />
+                    <asp:Label ID="SiUnitIdLabel" runat="server" />
                 </td>
                 <td>
                     <asp:Label ID="routeLabel" runat="server" Text='<%# Eval("DrugRoute.Abbrev") %>' />

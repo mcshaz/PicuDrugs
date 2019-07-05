@@ -10,6 +10,8 @@
     <link href="Content/font-awesome.min.css" rel="stylesheet" />
     <!--[if lt IE 8]><link href="<%# ResolveUrl("~/Content/ie6and7DataEntry.css")%>" rel="stylesheet" type="text/css"/><![endif]-->
     <asp:ContentPlaceHolder runat="server" ID="masterStyles" />
+    <title>paediatric drugs
+    </title>
 </head>
 <body>
     <noscript>
@@ -17,10 +19,19 @@
             Please note that you have JavaScript disabled. Some program features will not function, and important safety calculations will be ommited. It is advised you enable JavaScript before continuing.
         </p>
     </noscript>
-    <asp:SiteMapDataSource ID="SiteMapDataSource1" runat="server" />
+
      <form ID="mainForm" runat="server" class="mainForm form-inline">
+        <asp:SiteMapDataSource ID="SiteMapDataSource1" runat="server" />
+        <asp:ScriptManager runat="server" ID="ScriptManager1" OnLoad="ScriptManager1_Load"
+                    EnablePageMethods="true" EnableScriptGlobalization="true">
+            <Scripts>
+                <asp:ScriptReference Path="~/scripts/Bootstrap.min.js" />
+            </Scripts>
+        </asp:ScriptManager>
+        <asp:ContentPlaceHolder runat="server" ID="MasterScripts">
+        </asp:ContentPlaceHolder>
         <header class="clearfix">
-            <nav class="navbar navbar-default navbar-fixed-top">
+            <nav class="navbar navbar-default navbar-top">
               <div class="container">
                 <div class="navbar-header">
                   <a class="navbar-brand" href="#" title="calculators for hospitalised children">PaediatricDrugs.net</a>
@@ -58,33 +69,10 @@
             <asp:ContentPlaceHolder runat="server" ID="headings" />
             <asp:ContentPlaceHolder ID="MainContent" runat="server"/>
         </div>
-        <div class="panel panel-warning">
-        <div class="panel-heading">
-            <h4 class="panel-title">Changes are afoot.</h4></div>
-        <div class="panel-body">
-            <p> This page will be undergoing some changes over the coming months, including:</p>
-            <ul class="fa-ul">
-                <li><i class="fa-li fa fa-check-square"></i>more mobile friendly layout</li>
-                <li><i class="fa-li fa fa-square"></i>option to choose between PDF (better for printer) and web layout (better for mobile devices)</li>
-                <li><i class="fa-li fa fa-check-square"></i>secure (https) connection</li>
-                <li><i class="fa-li fa fa-square"></i>including drugs which require dilution to be given to small children in sensible doses, for example naloxone</li>
-            </ul>
-        </div>
-        <div class="panel-footer">
-            <p>The only downside will be dropping support for Internet Explorer 6. If you still use IE6 and also this site, please <a href="mailto:brentm@adhb.govt.nz">let me know</a>.</p>
-        </div>
-    </div>
     </section>
     <footer class="footer">
 
     </footer>
 </form>     
-    <asp:ContentPlaceHolder runat="server" ID="MasterScripts">
-        <asp:ScriptManager runat="server" EnablePartialRendering="false" ID="ScriptManager1">
-            <Scripts>
-                <asp:ScriptReference Path="~/scripts/Bootstrap.min.js" />
-            </Scripts>
-        </asp:ScriptManager>
-    </asp:ContentPlaceHolder>
 </body>
 </html>

@@ -251,5 +251,4 @@ paket-files/
 # JetBrains Rider
 .idea/
 *.sln.iml
-/PICUdrugs/App_Data/error-2017-09-07212436Z-f0623125-c3cb-4899-962f-cfb885a7d965.xml
-/PICUdrugs/App_Data/error-2019-03-13012217Z-4d53e3a1-37a2-43fe-a6c2-bfb1cc789d97.xml
+/PICUdrugs/App_Data/

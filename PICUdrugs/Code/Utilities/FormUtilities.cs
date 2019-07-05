@@ -29,7 +29,7 @@ namespace PICUdrugs.Utils
         {
             return SiPrefixesList(0);
         }
-        public static Dictionary<int,string> SiPrefixesList(int excludeAbove=0)
+        public static Dictionary<int,string> SiPrefixesList(int excludeAbove)
         {
             Dictionary<int, string> returnCollection = new Dictionary<int, string>();
             //using intentional fall through - wait, c# doesn't allow this *%$#%&!^

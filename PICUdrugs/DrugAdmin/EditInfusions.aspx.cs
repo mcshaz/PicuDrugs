@@ -153,7 +153,7 @@ namespace PICUdrugs.drugAdmin
                         varTimeLbl.Text = (dilution.IsVaryVolume)?"N/A (vary by weight)":(varyDil.Volume.ToString() + " mL");
                         varTimeLbl = (Label)e.Item.FindControl("rangeUnitLabel");
                         varTimeLbl.Text = varyDil.RateUnits();
-                        infDil = (IInfusionDilution)varyDil;
+                        infDil = varyDil;
                     }
                     parameter.DefaultValue = infDil.InfusionDilutionId.ToString();
                     PlaceHolder refPg = (PlaceHolder)e.Item.FindControl("refPgLabel");
@@ -359,7 +359,8 @@ namespace PICUdrugs.drugAdmin
 
         protected void DilutionMethodDropDown_DataBinding(object sender, EventArgs e)
         {
-            ((DropDownList)sender).DataSource = Enum.GetValues(typeof(DilutionMethod)).Cast<DilutionMethod>().Select(m=> new { Value = (int)m, Text = m.ToString()  });
+            ((DropDownList)sender).DataSource = Enum.GetValues(typeof(DilutionMethod)).Cast<DilutionMethod>()
+                .Select(m=> new { Value = m, Text = m.ToString()  });
         }
         protected void DoseCatDDL_DataBinding(object sender, EventArgs e)
         {

@@ -71,7 +71,7 @@
         </asp:ListView>
     </div>
     <div id="bolusOrder" class="orderGroup">
-        <h4 class="clickHandle">Emergency bolus drugs <span class="dragInstruction">(drag and drop between lists)</span> <label runat="server" id="cloneBolusLabel">Clone These To: <asp:DropDownList runat="server" id="cloneBolusSelect" /></label><asp:Button text="go" id="cloneBolusGo" runat="server" OnClick="cloneBolusGo_Click"/><span class="updateStatus"></span></h4>
+        <h4 class="clickHandle">Emergency bolus drugs <span class="dragInstruction">(drag and drop between lists)</span> <label runat="server" id="cloneBolusLabel">Clone These To: <asp:DropDownList runat="server" id="cloneBolusSelect" /></label><asp:Button text="go" id="cloneBolusGo" runat="server" OnClick="CloneBolusGo_Click"/><span class="updateStatus"></span></h4>
         <div id="bolusListAndSubmit" class="druglist">
             <div id="includedBoluses">
                 <h5>Used:</h5>  

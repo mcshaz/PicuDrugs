@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Diagnostics;
 using System.Linq;
 using System.Text;
+using System.Text.RegularExpressions;
 using System.Web;
 using System.Web.Security;
 using System.Web.UI;
@@ -17,6 +18,7 @@ namespace PICUdrugs
         protected const string AntiXsrfTokenKey = "__AntiXsrfToken";
         protected const string AntiXsrfUserNameKey = "__AntiXsrfUserName";
         private string _antiXsrfTokenValue;
+        private List<ScriptReference> _waitingScripts = new List<ScriptReference>();
         bool _validateXsrfToken = true; 
         public bool ValidateXsrfToken 
         {
@@ -127,7 +129,7 @@ namespace PICUdrugs
         {
             if (_jHtmlAreaIncluded) { return; }
 #if DEBUG
-            CreateScript("/Scripts/tinymce/tinymce.js", false);
+            CreateScript("/Scripts/tinymce/tinymce.js");
 #else
             CreateScript("/Scripts/tinymce/tinymce.min.js", false);
 #endif
@@ -142,7 +144,7 @@ namespace PICUdrugs
             if (IncludesCurrentBrowser(BrowserType.IeLegacy))
             {
 #if DEBUG
-                CreateScript("/Scripts/jquery-1.12.4.min.js", true);
+                CreateScript("/Scripts/jquery-1.12.4.min.js");
 #else
                 CreateScript("//ajax.googleapis.com/ajax/libs/jquery/1.12.4/jquery.min.js", true);
 #endif
@@ -150,7 +152,7 @@ namespace PICUdrugs
             else 
             {
 #if DEBUG
-                CreateScript("/Scripts/jquery-2.2.4.min.js", true);
+                CreateScript("/Scripts/jquery-2.2.4.min.js");
 #else
                 CreateScript("//ajax.googleapis.com/ajax/libs/jquery/2.2.4/jquery.min.js", true);
 #endif
@@ -164,7 +166,7 @@ namespace PICUdrugs
             if (IncludesCurrentBrowser(BrowserType.Ie6))
             {
 #if DEBUG
-                CreateScript("/Scripts/jquery-ui-1.9.2.js", true);
+                CreateScript("/Scripts/jquery-ui-1.9.2.js");
 #else
                 CreateScript("//ajax.googleapis.com/ajax/libs/jqueryui/1.9.2/jquery-ui.min.js", true);
 #endif
@@ -172,7 +174,7 @@ namespace PICUdrugs
             else
             {
 #if DEBUG
-                CreateScript("/Scripts/jquery-ui-1.10.4.js", true);
+                CreateScript("/Scripts/jquery-ui-1.10.4.js");
 #else
                 CreateScript("//ajax.googleapis.com/ajax/libs/jqueryui/1.10.4/jquery-ui.min.js", true);
 #endif
@@ -182,20 +184,35 @@ namespace PICUdrugs
         }
         public ScriptReference CreateScript(string src)
         {
-            return CreateScript(src, false);
-        }
-        private ScriptReference CreateScript(string src, bool jQuery)
-        {
-            var ctrl = new ScriptReference('~' + src);
-            if (jQuery)
+            if (src[0] == '/')
             {
-                ScriptManager1.Scripts.Insert(0, ctrl);
-            } else
-            {
-                ScriptManager1.Scripts.Add(ctrl);
+                src = '~' + src;
             }
-            
+            else if (src[0] != '~')
+            {
+                src = "~/" + src;
+            }
+            var ctrl = new ScriptReference(src);
+            if (ScriptManager1 != null)
+            {
+                InsertScript(ctrl);
+            }
+            else
+            {
+                _waitingScripts.Add(ctrl);
+            }
             return ctrl;
+        }
+        private void InsertScript(ScriptReference src)
+        {
+            if (Regex.IsMatch(src.Path, @"/jquery-\d+\.\d+\.\d+(\.min)?.js$"))
+            {
+                ScriptManager1.Scripts.Insert(0, src);
+            }
+            else
+            {
+                ScriptManager1.Scripts.Add(src);
+            }
         }
         public HtmlLink CreateStyle(string src)
         {
@@ -246,6 +263,14 @@ namespace PICUdrugs
         {
             if (browserType == BrowserType.All) { return true; }
             return browserType.HasFlag(RequestingBrowser);
+        }
+
+        protected void ScriptManager1_Load(object sender, EventArgs e)
+        {
+            foreach (var w in _waitingScripts)
+            {
+                InsertScript(w);
+            }
         }
     }
 }

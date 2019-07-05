@@ -37,6 +37,8 @@ namespace PICUdrugs.drugAdmin
             if (nameLbl!=null) nameLbl.Text=infDrug.Fullname.Replace("/","/<br>");
             Label prefixLbl = e.Item.FindControl("SiPrefixValLabel") as Label;
             if (prefixLbl != null) prefixLbl.Text = SiPrefixesList[infDrug.SiPrefix];
+            Label unitLabel = e.Item.FindControl("SiUnitIdLabel") as Label;
+            if (unitLabel != null) unitLabel.Text = infDrug.SiUnitId.ToString();
         }
         IEnumerable<KeyValuePair<int?, string>> _wards;
         private IEnumerable<KeyValuePair<int?, string>> Wards

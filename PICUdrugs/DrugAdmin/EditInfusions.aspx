@@ -310,8 +310,8 @@
                             <div class="fieldInputs">
                                 <span class="midVert">
                                     <asp:DropDownList ID="DilutionMethodDropDown" runat="server" 
-                                        DataTextField="Description" OnDataBinding="DilutionMethodDropDown_DataBinding"
-                                        DataValueField="DilutionMethodId" CssClass="DilutionDropDown" 
+                                        DataTextField="Text" OnDataBinding="DilutionMethodDropDown_DataBinding"
+                                        DataValueField="Value" CssClass="DilutionDropDown" 
                                         SelectedValue='<%# Bind("DilutionMethodId") %>' />
                                 </span>
                             </div>
@@ -636,7 +636,7 @@
     </asp:ListView>
 </asp:Content>
 <asp:Content ID="MyScripts" ContentPlaceHolderId="MasterScripts" runat="server">
-    <asp:ScriptManagerProxy runat="server" EnableViewState="false">
+    <asp:ScriptManagerProxy runat="server" EnableViewState="false" ID="smp1">
         <Scripts>
             <asp:ScriptReference Path="~/Scripts/editInfusion.js" />
         </Scripts>
