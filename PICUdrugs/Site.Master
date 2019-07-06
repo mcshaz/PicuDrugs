@@ -22,14 +22,7 @@
 
      <form ID="mainForm" runat="server" class="mainForm form-inline">
         <asp:SiteMapDataSource ID="SiteMapDataSource1" runat="server" />
-        <asp:ScriptManager runat="server" ID="ScriptManager1" OnLoad="ScriptManager1_Load"
-                    EnablePageMethods="true" EnableScriptGlobalization="true">
-            <Scripts>
-                <asp:ScriptReference Path="~/scripts/Bootstrap.min.js" />
-            </Scripts>
-        </asp:ScriptManager>
-        <asp:ContentPlaceHolder runat="server" ID="MasterScripts">
-        </asp:ContentPlaceHolder>
+
         <header class="clearfix">
             <nav class="navbar navbar-default navbar-top">
               <div class="container">
@@ -45,7 +38,6 @@
                         MaximumDynamicDisplayLevels="2" 
                         StaticDisplayLevels="3" 
                         Orientation="Horizontal" 
-                        DynamicPopOutImageUrl="/content/images/arrow.png" 
                         StaticEnableDefaultPopOutImage="False"
                         CssClass="nav navbar-nav navbar-left" 
                         StaticMenuStyle-CssClass="nav navbar-nav" 
@@ -70,9 +62,15 @@
             <asp:ContentPlaceHolder ID="MainContent" runat="server"/>
         </div>
     </section>
-    <footer class="footer">
-
-    </footer>
-</form>     
+    <asp:ScriptManager runat="server" ID="ScriptManager1" OnLoad="ScriptManager1_Load" LoadScriptsBeforeUI="false"
+            EnablePageMethods="true" EnableScriptGlobalization="true">
+        <CompositeScript>
+            <Scripts>
+                
+            </Scripts>
+        </CompositeScript>
+    </asp:ScriptManager>
+</form>
+<asp:ContentPlaceHolder runat="server" ID="MasterScripts" />
 </body>
 </html>

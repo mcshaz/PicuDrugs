@@ -11,7 +11,7 @@
                 }
                 return pic.page.getCentileText(centileRange.max);
             }
-            if (centileRange.max == 'undefined' || Math.round(centileRange.min) == Math.round(centileRange.max)) {
+            if (typeof centileRange.max === 'undefined' || Math.round(centileRange.min) === Math.round(centileRange.max)) {
                 return pic.page.getCentileText(centileRange.min);
             }
             return pic.page.getCentileText(centileRange.min) + '-' + pic.page.getCentileText(centileRange.max);;

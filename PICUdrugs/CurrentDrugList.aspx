@@ -40,10 +40,12 @@
 </asp:Content>
 <asp:Content ID="MyScripts" ContentPlaceHolderId="MasterScripts" runat="server">
 <asp:ScriptManagerProxy runat="server" EnableViewState="false">
+    <CompositeScript>
         <Scripts>
             <asp:ScriptReference Path="~/Scripts/PICUdrugUtils-0.5.js" />
         </Scripts>
-    </asp:ScriptManagerProxy>
+    </CompositeScript>
+</asp:ScriptManagerProxy>
     <script type="text/javascript">
         pic.util.addEvent(window, 'load', function () {
             var bolus = document.getElementById('bolusDrugs'),

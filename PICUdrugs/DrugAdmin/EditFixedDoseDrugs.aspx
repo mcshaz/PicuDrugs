@@ -180,7 +180,9 @@
 </asp:Content>
 <asp:Content ID="MyScripts" ContentPlaceHolderId="MasterScripts" runat="server">
 <asp:ScriptManagerProxy runat="server" EnableViewState="false">
+    <CompositeScript>
         <Scripts>
             <asp:ScriptReference Path="~/Scripts/editBolus.js" />
         </Scripts>
-    </asp:ScriptManagerProxy></asp:Content>
+    </CompositeScript>
+</asp:ScriptManagerProxy></asp:Content>

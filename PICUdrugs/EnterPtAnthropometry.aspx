@@ -104,9 +104,11 @@
 </asp:Content>
 <asp:Content ID="MyScripts" ContentPlaceHolderId="MasterScripts" runat="server">
 <asp:ScriptManagerProxy runat="server" EnableViewState="false">
+    <CompositeScript>
         <Scripts>
             <asp:ScriptReference Path="~/Scripts/DobAgePageManagement-0.2.js" />
         </Scripts>
-    </asp:ScriptManagerProxy>
-    <script src="<%= ResolveUrl("Scripts/EnterAnthropometry.js")%>" type="text/javascript"></script>
+    </CompositeScript>
+</asp:ScriptManagerProxy>
+<script src="<%= ResolveUrl("Scripts/EnterAnthropometry.js")%>" type="text/javascript"></script>
 </asp:Content>

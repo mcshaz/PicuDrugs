@@ -637,8 +637,10 @@
 </asp:Content>
 <asp:Content ID="MyScripts" ContentPlaceHolderId="MasterScripts" runat="server">
     <asp:ScriptManagerProxy runat="server" EnableViewState="false" ID="smp1">
-        <Scripts>
-            <asp:ScriptReference Path="~/Scripts/editInfusion.js" />
-        </Scripts>
+        <CompositeScript>
+            <Scripts>
+                <asp:ScriptReference Path="~/Scripts/editInfusion.js" />
+            </Scripts>
+        </CompositeScript>
     </asp:ScriptManagerProxy>
 </asp:Content>

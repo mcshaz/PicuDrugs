@@ -207,11 +207,11 @@ namespace PICUdrugs
         {
             if (Regex.IsMatch(src.Path, @"/jquery-\d+\.\d+\.\d+(\.min)?.js$"))
             {
-                ScriptManager1.Scripts.Insert(0, src);
+                ScriptManager1.CompositeScript.Scripts.Insert(0, src);
             }
             else
             {
-                ScriptManager1.Scripts.Add(src);
+                ScriptManager1.CompositeScript.Scripts.Add(src);
             }
         }
         public HtmlLink CreateStyle(string src)

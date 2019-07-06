@@ -59,8 +59,10 @@
 </asp:Content>
 <asp:Content ID="MyScripts" ContentPlaceHolderId="MasterScripts" runat="server">
     <asp:ScriptManagerProxy runat="server" EnableViewState="false">
-        <Scripts>
-            <asp:ScriptReference Path="~/Scripts/manageUser.js" />
-        </Scripts>
+        <CompositeScript>
+            <Scripts>
+                <asp:ScriptReference Path="~/Scripts/manageUser.js" />
+            </Scripts>
+        </CompositeScript>
     </asp:ScriptManagerProxy>
 </asp:Content>

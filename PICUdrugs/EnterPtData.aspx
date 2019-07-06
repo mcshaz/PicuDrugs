@@ -8,10 +8,6 @@
     <h2>Drug Doses</h2>
 </asp:Content>
 <asp:Content ID="FormContent" ContentPlaceHolderId="MainContent" runat="server">
-    <!--
-    <asp:ScriptManager ID="PICUScriptManager" runat="server" EnablePageMethods="true" EnableScriptGlobalization="true">
-    </asp:ScriptManager>
-    -->
     <a id="TopOfForm" ></a>
     <fieldset id="ptDataEntry">
 
