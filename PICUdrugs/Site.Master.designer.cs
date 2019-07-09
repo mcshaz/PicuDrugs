@@ -49,13 +49,13 @@ namespace PICUdrugs {
         protected global::System.Web.UI.WebControls.SiteMapDataSource SiteMapDataSource1;
         
         /// <summary>
-        /// sideMenu control.
+        /// BootstrapMenu2 control.
         /// </summary>
         /// <remarks>
         /// Auto-generated field.
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
-        protected global::System.Web.UI.WebControls.Menu sideMenu;
+        protected global::JK.BootstrapControls.BootstrapMenu BootstrapMenu2;
         
         /// <summary>
         /// LoginStatus1 control.

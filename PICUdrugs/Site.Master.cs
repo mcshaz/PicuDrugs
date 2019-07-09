@@ -83,6 +83,8 @@ namespace PICUdrugs
 
                 Page.PreLoad += master_Page_PreLoad;
             }
+            AddJQuery();
+            CreateScript("/Scripts/bootstrap.min.js");
         }
         protected void master_Page_PreLoad(object sender, EventArgs e)
         {
@@ -128,14 +130,19 @@ namespace PICUdrugs
         public void AddTinyMce()
         {
             if (_jHtmlAreaIncluded) { return; }
+            CreateScript("https://cdnjs.cloudflare.com/ajax/libs/tinymce/4.9.5/tinymce.min.js");
+            /*
 #if DEBUG
             CreateScript("/Scripts/tinymce/tinymce.js");
+            CreateScript("/Scripts/tinymce/themes/modern/theme.js");
 #else
-            CreateScript("/Scripts/tinymce/tinymce.min.js", false);
+            CreateScript("/Scripts/tinymce/tinymce.min.js");
+            CreateScript("/Scripts/tinymce/themes/modern/theme.min.js");
 #endif
             //CreateScript("/Scripts/jHtmlArea.ColorPickerMenu-0.8.min.js", false);
             //CreateStyle("/Content/jHtmlArea/jHtmlArea.css");
             //CreateStyle("/Content/jHtmlArea/ColorPickerMenu.css");
+            */
             _jHtmlAreaIncluded = true;
         }
         public void AddJQuery()
@@ -188,7 +195,7 @@ namespace PICUdrugs
             {
                 src = '~' + src;
             }
-            else if (src[0] != '~')
+            else if (src[0] != '~' && !src.StartsWith("http"))
             {
                 src = "~/" + src;
             }
@@ -205,6 +212,16 @@ namespace PICUdrugs
         }
         private void InsertScript(ScriptReference src)
         {
+            if (src.Path.StartsWith("http"))
+            {
+                ScriptManager1.Scripts.Add(src);
+            }
+            else
+            {
+                ScriptManager1.CompositeScript.Scripts.Add(src);
+            }
+            
+            /*
             if (Regex.IsMatch(src.Path, @"/jquery-\d+\.\d+\.\d+(\.min)?.js$"))
             {
                 ScriptManager1.CompositeScript.Scripts.Insert(0, src);
@@ -213,6 +230,7 @@ namespace PICUdrugs
             {
                 ScriptManager1.CompositeScript.Scripts.Add(src);
             }
+            */
         }
         public HtmlLink CreateStyle(string src)
         {

@@ -28,7 +28,7 @@
 
     <asp:ObjectDataSource ID="AmpConcObjDataSrc" runat="server" SelectMethod="GetAmpules"
         UpdateMethod="UpdateAmpule" DeleteMethod="DeleteAmpule" TypeName="PICUdrugs.BLL.DrugAmpuleBL"
-        OnUpdated="General_CRUD" OnInserted="General_CRUD" DataObjectTypeName="PICUdrugs.DAL.DrugAmpuleConcentration" 
+        OnUpdated="General_CRUD" OnInserted="General_CRUD" DataObjectTypeName="DBToJSON.SqlEntities.Infusions.DrugAmpuleConcentration" 
         ConflictDetection="CompareAllValues"
         OldValuesParameterFormatString="orig{0}" InsertMethod="InsertAmpule" >
         <SelectParameters>

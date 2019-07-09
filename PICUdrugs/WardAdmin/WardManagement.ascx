@@ -1,17 +1,17 @@
 ﻿<%@ Control Language="C#" AutoEventWireup="true" CodeBehind="WardManagement.ascx.cs" Inherits="PICUdrugs.websiteAdmin.WardManagement" %>
  <asp:ObjectDataSource ID="allDpts" runat="server" 
     SelectMethod="GetDepartments" TypeName="PICUdrugs.BLL.WardBL" 
-    DataObjectTypeName="PICUdrugs.DAL.Ward">
+    DataObjectTypeName="DBToJSON.SqlEntities.Ward">
  </asp:ObjectDataSource>
 
 <asp:ObjectDataSource ID="allDefibs" runat="server" 
     SelectMethod="GetDefibs" TypeName="PICUdrugs.BLL.DefibBL"
-    DataObjectTypeName="PICUdrugs.DAL.defibModel">
+    DataObjectTypeName="DBToJSON.SqlEntities.BolusDrugs.DefibModel">
  </asp:ObjectDataSource>
 
  <asp:ObjectDataSource ID="SelectedDptObjDataSrc" runat="server"
     SelectMethod="GetDepartmentByWardId" TypeName="PICUdrugs.BLL.WardBL"  OnDeleted="General_CRUD"
-    DataObjectTypeName="PICUdrugs.DAL.Ward" DeleteMethod="DeleteWard" InsertMethod="InsertWard" UpdateMethod="UpdateWard"
+    DataObjectTypeName="DBToJSON.SqlEntities.Ward" DeleteMethod="DeleteWard" InsertMethod="InsertWard" UpdateMethod="UpdateWard"
     ConflictDetection="CompareAllValues" OldValuesParameterFormatString="orig{0}" OnInserted="General_CRUD"  OnUpdated="General_CRUD" >
      <SelectParameters>
          <asp:ControlParameter ControlId="DptDropDownList" Name="dptId" PropertyName="SelectedValue" Type="Int32" />

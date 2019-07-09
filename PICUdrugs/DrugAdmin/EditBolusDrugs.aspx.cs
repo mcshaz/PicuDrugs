@@ -103,7 +103,7 @@ namespace PICUdrugs.drugAdmin
                 else
                 {
                     LinkButton cancelBtn = (LinkButton)embeddedLV.InsertItem.FindControl("cancelInsert");
-                    cancelBtn.OnClientClick = string.Format("DeleteNumber({0},'{1}')",
+                    cancelBtn.OnClientClick = string.Format("deleteNumber({0},'{1}')",
                                                                 containerDataItem.DataItemIndex,
                                                                 rowsToDisplayInsert.ClientID);
                 }

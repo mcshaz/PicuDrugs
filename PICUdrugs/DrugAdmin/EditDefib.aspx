@@ -10,12 +10,12 @@
 
 <asp:ObjectDataSource ID="allDefibs" runat="server" 
     SelectMethod="GetDefibs" TypeName="PICUdrugs.BLL.DefibBL"
-    DataObjectTypeName="PICUdrugs.DAL.defibModel">
+    DataObjectTypeName="DBToJSON.SqlEntities.BolusDrugs.defibModel">
  </asp:ObjectDataSource>
 
 <asp:ObjectDataSource ID="selectedDefib" runat="server" 
     SelectMethod="GetDefibModelById" TypeName="PICUdrugs.BLL.DefibBL"
-    DataObjectTypeName="PICUdrugs.DAL.defibModel" DeleteMethod="DeleteDefib" InsertMethod="InsertDefib" UpdateMethod="UpdateDefib"
+    DataObjectTypeName="DBToJSON.SqlEntities.BolusDrugs.defibModel" DeleteMethod="DeleteDefib" InsertMethod="InsertDefib" UpdateMethod="UpdateDefib"
     ConflictDetection="CompareAllValues" OldValuesParameterFormatString="orig{0}" OnInserted="General_CRUD"  OnUpdated="General_CRUD" OnDeleted="General_CRUD">
      <SelectParameters>
          <asp:ControlParameter ControlId="DefibDropDownList" Name="defibId" PropertyName="SelectedValue" Type="Int32" />
@@ -24,7 +24,7 @@
 
  <asp:ObjectDataSource ID="selectedDefibJoules" runat="server" 
     SelectMethod="GetDefibJoulesByModelId" TypeName="PICUdrugs.BLL.DefibJouleBL"
-    DataObjectTypeName="PICUdrugs.DAL.defibJoule" DeleteMethod="DeleteDefibJoule" InsertMethod="InsertDefibJoule" UpdateMethod="UpdateDefibJoule"
+    DataObjectTypeName="DBToJSON.SqlEntities.BolusDrugs.defibJoule" DeleteMethod="DeleteDefibJoule" InsertMethod="InsertDefibJoule" UpdateMethod="UpdateDefibJoule"
     ConflictDetection="CompareAllValues" OldValuesParameterFormatString="orig{0}" OnInserted="General_CRUD"  OnUpdated="General_CRUD" OnDeleted="General_CRUD">
      <SelectParameters>
          <asp:ControlParameter ControlId="DefibDropDownList" Name="modelId" PropertyName="SelectedValue" Type="Int32" />

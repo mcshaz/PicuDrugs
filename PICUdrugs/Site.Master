@@ -1,5 +1,5 @@
 ﻿<%@ Master Language="C#" AutoEventWireup="true" CodeBehind="Site.master.cs" Inherits="PICUdrugs.SiteMaster" %>
-
+<%@ Register TagPrefix="jk" Namespace="JK.BootstrapControls" Assembly="PICUdrugs2013" %>
 <!DOCTYPE html>
 <html>
 <head runat="server">
@@ -21,56 +21,50 @@
     </noscript>
 
      <form ID="mainForm" runat="server" class="mainForm form-inline">
-        <asp:SiteMapDataSource ID="SiteMapDataSource1" runat="server" />
-
         <header class="clearfix">
-            <nav class="navbar navbar-default navbar-top">
-              <div class="container">
-                <div class="navbar-header">
-                  <a class="navbar-brand" href="#" title="calculators for hospitalised children">PaediatricDrugs.net</a>
-                </div>
-                <div id="navbar" class="navbar-collapse collapse">
-                    <asp:Menu ID="sideMenu" 
-                        runat="server" 
-                        DataSourceID="SiteMapDataSource1" 
-                        RenderingMode="List"
-                        EnableViewState="false" 
-                        MaximumDynamicDisplayLevels="2" 
-                        StaticDisplayLevels="3" 
-                        Orientation="Horizontal" 
-                        StaticEnableDefaultPopOutImage="False"
-                        CssClass="nav navbar-nav navbar-left" 
-                        StaticMenuStyle-CssClass="nav navbar-nav" 
-                        StaticSelectedStyle-CssClass="active"
-                        DynamicMenuStyle-CssClass="dropdown-menu" 
-                        IncludeStyleBlock="false"
-                        SkipLinkText="">
-                    </asp:Menu>
-                    <ul class="nav navbar-nav navbar-right">
-                        <li class="login-widget" >
-                            <asp:LoginStatus ID="LoginStatus1" runat="server" EnableTheming="False" 
-                                EnableViewState="False" CssClass="sideMenu" LogoutPageUrl="~/EnterPtData.aspx" />
-                        </li>
-                    </ul>
-                </div><!--navbar-collapse-->
-            </div><!--container-->
-        </nav>
-    </header>
-    <section class="container">
-        <div id="content">
-            <asp:ContentPlaceHolder runat="server" ID="headings" />
-            <asp:ContentPlaceHolder ID="MainContent" runat="server"/>
-        </div>
-    </section>
-    <asp:ScriptManager runat="server" ID="ScriptManager1" OnLoad="ScriptManager1_Load" LoadScriptsBeforeUI="false"
-            EnablePageMethods="true" EnableScriptGlobalization="true">
-        <CompositeScript>
-            <Scripts>
+            <nav class="navbar navbar-inverse navbar-top" role="navigation">
+                <div class="container" style="padding: 0; margin: 0;">
+                    <div class="navbar-header">
+                        <button type="button" class="navbar-toggle" data-toggle="collapse" data-target=".navbar-collapse">
+                            <span class="sr-only">Toggle navigation</span>
+                            <span class="icon-bar"></span>
+                            <span class="icon-bar"></span>
+                            <span class="icon-bar"></span>
+                        </button>
+                        <a class="navbar-brand" href="#" title="calculators for hospitalised children">PaediatricDrugs.net</a>
+                    </div>
+                    <div class="navbar-collapse collapse">
+                        <asp:SiteMapDataSource ID="SiteMapDataSource1" runat="server" ShowStartingNode="False" />
+                        <jk:BootstrapMenu ID="BootstrapMenu2" runat="server" DataSourceId="SiteMapDataSource1" HighlightActive="True" />
+                        <ul class="nav navbar-nav navbar-right">
+                            <li class="login-widget" >
+                                <asp:LoginStatus ID="LoginStatus1" runat="server" EnableTheming="False" 
+                                    EnableViewState="False" CssClass="sideMenu" LogoutPageUrl="~/EnterPtData.aspx" />
+                            </li>
+                        </ul>
+                    </div><!--/.nav-collapse -->
+                </div><!--container-->
+            </nav>
+        </header>
+        <section class="container">
+        <h4>
+            Did you really mean to be here? This is an old site which has been preserved to a) support very old browsers b) alter drugs &amp; infusions (administrators only).
+            Otherwise please <a href="https://paediatricdrugs.net">go to the new site</a>.
+        </h4>
+            <div id="content">
+                <asp:ContentPlaceHolder runat="server" ID="headings" />
+                <asp:ContentPlaceHolder ID="MainContent" runat="server"/>
+            </div>
+        </section>
+        <asp:ScriptManager runat="server" ID="ScriptManager1" OnLoad="ScriptManager1_Load" LoadScriptsBeforeUI="false"
+                EnablePageMethods="true" EnableScriptGlobalization="true">
+            <CompositeScript>
+                <Scripts>
                 
-            </Scripts>
-        </CompositeScript>
-    </asp:ScriptManager>
-</form>
-<asp:ContentPlaceHolder runat="server" ID="MasterScripts" />
+                </Scripts>
+            </CompositeScript>
+        </asp:ScriptManager>
+    </form>
+    <asp:ContentPlaceHolder runat="server" ID="MasterScripts" />
 </body>
 </html>

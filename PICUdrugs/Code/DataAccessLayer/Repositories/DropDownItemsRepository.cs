@@ -13,7 +13,7 @@ namespace PICUdrugs.DAL
     {
         public class SiUnitDDD
         {
-            public int SiUnitId { get; set; }
+            public SiUnit SiUnitId { get; set; }
             public string Measure { get; set; }
         }
         public DropDownItemsRepository()
@@ -26,8 +26,8 @@ namespace PICUdrugs.DAL
                     _infusionDiluents = db.InfusionDiluents.ToList();
                 }
                 _siUnits = Enum.GetValues(typeof(SiUnit)).Cast<SiUnit>().Select(u => new SiUnitDDD {
-                    SiUnitId = (int)u, Measure = u.ToString()
-                });
+                    SiUnitId = u, Measure = u.ToString()
+                }).ToList();
             }
         }
         static IEnumerable<DrugRoute> _drugRoutes;

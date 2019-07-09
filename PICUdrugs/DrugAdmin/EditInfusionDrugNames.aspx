@@ -54,7 +54,7 @@
                     </asp:DropDownList>
                 </td>
                 <td>
-                    <asp:DropDownList ID="unitDropDown" runat="server" 
+                    <asp:DropDownList ID="unitDropDown_edit" runat="server" 
                         DataSourceID="EntitySiUnits" DataTextField="Measure" 
                         DataValueField="SiUnitId"
                         SelectedValue='<%# Bind("SiUnitId") %>'>
@@ -130,7 +130,7 @@
                     </asp:DropDownList>
                 </td>
                 <td>
-                    <asp:DropDownList ID="unitDropDown" runat="server" 
+                    <asp:DropDownList ID="unitDropDown_insert" runat="server" 
                         DataSourceID="EntitySiUnits" DataTextField="Measure" 
                         DataValueField="SiUnitId" SelectedValue='<%# Bind("SiUnitId") %>'>
                     </asp:DropDownList>
@@ -253,25 +253,25 @@
         </LayoutTemplate>
     </asp:ListView>
     <asp:ObjectDataSource ID="InfusionDrugsEntity" runat="server" 
-        DataObjectTypeName="PICUdrugs.DAL.InfusionDrug" DeleteMethod="DeleteInfusionDrug" 
+        DataObjectTypeName="DBToJSON.SqlEntities.Infusions.InfusionDrug" DeleteMethod="DeleteInfusionDrug" 
         InsertMethod="InsertInfusionDrug" SelectMethod="GetInfusionDrugs"
         TypeName="PICUdrugs.DAL.InfusionDrugNameRepository" UpdateMethod="UpdateInfusionDrug"
         ConflictDetection="CompareAllValues" OldValuesParameterFormatString="orig{0}">
     </asp:ObjectDataSource>
     <asp:ObjectDataSource ID="referencesEntity" runat="server" 
-        DataObjectTypeName="PICUdrugs.DAL.DrugReferenceSource"
+        DataObjectTypeName="DBToJSON.SqlEntities.Infusions.DrugReferenceSource"
         TypeName="PICUdrugs.DAL.DrugReferenceRepository"
         SelectMethod="GetReferences"
         >
     </asp:ObjectDataSource>
     <asp:ObjectDataSource ID="DrugRoutesEntity" runat="server" 
-        DataObjectTypeName="PICUdrugs.DAL.DrugRoute"
+        DataObjectTypeName="DBToJSON.SqlEntities.Infusions.DrugRoute"
         TypeName="PICUdrugs.DAL.DropDownItemsRepository"
         SelectMethod="GetDrugRoutes"
         >
     </asp:ObjectDataSource>
     <asp:ObjectDataSource ID="diluentsEntity" runat="server" 
-        DataObjectTypeName="PICUdrugs.DAL.InfusionDiluent"
+        DataObjectTypeName="DBToJSON.SqlEntities.Infusions.InfusionDiluent"
         TypeName="PICUdrugs.DAL.DropDownItemsRepository"
         SelectMethod="GetInfusionDiluents"
         >
@@ -279,7 +279,7 @@
     <asp:ObjectDataSource ID="SiPrefixesObjDataSrc" runat="server" 
         SelectMethod="SiPrefixesList" TypeName="PICUdrugs.Utils.formUtilities"></asp:ObjectDataSource>
     <asp:ObjectDataSource ID="EntitySiUnits" runat="server" 
-        DataObjectTypeName="PICUdrugs.DAL.SiUnit"
+        DataObjectTypeName="PICUdrugs.DAL.DropDownItemsRepository.SiUnitDDD"
         TypeName="PICUdrugs.DAL.DropDownItemsRepository"
         SelectMethod="GetSiUnits"
         >

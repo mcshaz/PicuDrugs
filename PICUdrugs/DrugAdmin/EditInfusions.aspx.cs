@@ -42,14 +42,14 @@ namespace PICUdrugs.drugAdmin
 
             if (IsfixedTimeInfusion)
             {
-                DilutionsObjDataSource.DataObjectTypeName = "PICUdrugs.DAL.FixedTimeDilution";
+                DilutionsObjDataSource.DataObjectTypeName = "DBToJSON.SqlEntities.Infusions.FixedTimeDilution";
                 DilutionsObjDataSource.SelectMethod = "GetFixedTimeDilutions";
                 infDilutnLV.EnableDynamicData(typeof(FixedTimeDilution));
                 Master.CreateScript("~/Scripts/editFixedTimeInfusions.js");
             }
             else
             {
-                DilutionsObjDataSource.DataObjectTypeName = "PICUdrugs.DAL.VariableTimeDilution";
+                DilutionsObjDataSource.DataObjectTypeName = "DBToJSON.SqlEntities.Infusions.VariableTimeDilution";
                 DilutionsObjDataSource.SelectMethod = "GetVariableTimeDilutions";
                 infDilutnLV.EnableDynamicData(typeof(VariableTimeDilution));
             }
@@ -133,14 +133,14 @@ namespace PICUdrugs.drugAdmin
                     IInfusionDilution infDil;
                     if (IsfixedTimeInfusion)
                     {
-                        infConcObjDataSrc.DataObjectTypeName = "PICUdrugs.DAL.FixedTimeConcentration";
+                        infConcObjDataSrc.DataObjectTypeName = "DBToJSON.SqlEntities.Infusions.FixedTimeConcentration";
                         infConcObjDataSrc.SelectMethod = "GetFixedTimeConcentrations";
                         infDil = (IInfusionDilution)dataItem.DataItem;
 
                     }
                     else
                     {
-                        infConcObjDataSrc.DataObjectTypeName = "PICUdrugs.DAL.VariableTimeConcentration";
+                        infConcObjDataSrc.DataObjectTypeName = "DBToJSON.SqlEntities.Infusions.VariableTimeConcentration";
                         infConcObjDataSrc.SelectMethod = "GetVariableTimeConcentrations";
                         VariableTimeDilution varyDil = (VariableTimeDilution)dataItem.DataItem;
 

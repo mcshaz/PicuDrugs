@@ -9,7 +9,7 @@
 <asp:Content ID="Content3" ContentPlaceHolderId="MainContent" runat="server">
     <asp:HiddenField ID="rowsToDisplayInsert" runat="server" />
     <asp:ObjectDataSource ID="FixedDrugObjDataSource" runat="server" 
-        DataObjectTypeName="PICUdrugs.DAL.FixedDrug" DeleteMethod="DeleteFixedDrug" 
+        DataObjectTypeName="DBToJSON.SqlEntities.Infusions.FixedDrug" DeleteMethod="DeleteFixedDrug" 
         InsertMethod="InsertFixedDrug" SelectMethod="GetFixedDrugs"
         TypeName="PICUdrugs.BLL.FixedBolusBL" UpdateMethod="UpdateFixedDrug" OnUpdated="General_CRUD" OnInserted="General_CRUD"
         ConflictDetection="CompareAllValues" OldValuesParameterFormatString="orig{0}">
@@ -72,7 +72,7 @@
                     <asp:LinkButton ID="allowInsert" runat="server" Text="Insert" />
                 </td>
                 <asp:ObjectDataSource ID="FixedDoseObjDataSource" runat="server" 
-                    DataObjectTypeName="PICUdrugs.DAL.FixedDose" DeleteMethod="DeleteFixedDose" 
+                    DataObjectTypeName="DBToJSON.SqlEntities.Infusions.FixedDose" DeleteMethod="DeleteFixedDose" 
                     InsertMethod="InsertFixedDose" SelectMethod="GetFixedDoses" OnDeleted="General_CRUD"
                     TypeName="PICUdrugs.BLL.FixedBolusBL" UpdateMethod="UpdateFixedDose" OnUpdated="General_CRUD" OnInserted="General_CRUD"
                     ConflictDetection="CompareAllValues" OldValuesParameterFormatString="orig{0}">
