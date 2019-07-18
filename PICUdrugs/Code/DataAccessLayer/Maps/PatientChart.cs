@@ -215,7 +215,7 @@ namespace PICUdrugs.DAL
                            { 
                                Header = s.SectionHeader, 
                                Drug = s.BolusDrug,
-                               Dose = s.BolusDrug.BolusDoses.FirstOrDefault(d => d.WeightMin < weight && d.WeightMax >= weight),
+                               Dose = s.BolusDrug.BolusDoses.FirstOrDefault(d => d.WeightMin < weight && weight <= d.WeightMax),
                                Fixed = s.FixedDrug,
                                FixDose = s.FixedDrug.FixedDoses.FirstOrDefault(d => (d.MinAgeMonths==0 && d.MaxAgeMonths==1200) || (d.MinAgeMonths < ageMonths && d.MaxAgeMonths >= ageMonths))
                            }).ToList();

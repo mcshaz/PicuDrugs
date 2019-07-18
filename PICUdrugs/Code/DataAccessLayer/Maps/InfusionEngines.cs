@@ -282,7 +282,7 @@ namespace PICUdrugs.DAL
         public string SubHeader{get; internal set;}
         public string Href { get; set; }
     }
-    public enum BolusListItemType { Header, DosePerKg, FixedDose}
+    public enum BolusListItemType { Header, DosePerKg, FixedDose }
     public class BolusDrugListItem
     {
         public BolusListItemType ItemType { get; set; }
